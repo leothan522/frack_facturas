@@ -134,6 +134,11 @@ function verImagen($path, $user = false)
     }
 }
 
+function verUtf8($string){
+    //$utf8_string = "Some UTF-8 encoded BATE QUEBRADO ÑñíÍÁÜ niño ó Ó string: é, ö, ü";
+    return mb_convert_encoding($string, 'UTF-8');
+}
+
 function iconoPlataforma($plataforma)
 {
     if ($plataforma == 0) {

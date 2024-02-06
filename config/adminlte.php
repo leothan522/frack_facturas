@@ -329,6 +329,25 @@ return [
                 ]
             ],
         ],
+        [
+            'text'      => 'Gestionar Facturas',
+            'icon'      => 'fas fa-fw fa-book',
+            'can'       => ['clientes'],
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'icon' => 'fas fa-fw fa-user-tag',
+                    'route'  => 'clientes.index',
+                    'can'  => 'clientes',
+                ],
+                /*[
+                    'text' => 'Parametros',
+                    'icon' => 'fas fa-fw fa-list',
+                    'route' => 'parametros.index',
+                    'can' => 'parametros',
+                ]*/
+            ],
+        ],
     ],
 
     /*'menu' => [
