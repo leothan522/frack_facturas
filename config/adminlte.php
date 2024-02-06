@@ -340,12 +340,12 @@ return [
                     'route'  => 'clientes.index',
                     'can'  => 'clientes',
                 ],
-                /*[
-                    'text' => 'Parametros',
-                    'icon' => 'fas fa-fw fa-list',
-                    'route' => 'parametros.index',
-                    'can' => 'parametros',
-                ]*/
+                [
+                    'text' => 'Organizaciones',
+                    'icon' => 'fas fa-fw fa-satellite-dish',
+                    'route' => 'organizaciones.index',
+                    'can' => 'organizaciones',
+                ]
             ],
         ],
     ],

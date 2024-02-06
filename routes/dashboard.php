@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\ClientesController;
+use App\Http\Controllers\Dashboard\OrganizacionesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ParametrosController;
 use App\Http\Controllers\Dashboard\UsuariosController;
@@ -34,6 +35,7 @@ Route::middleware([
     Route::get('export/usuarios/{buscar?}', [UsuariosController::class, 'export'])->name('usuarios.excel');
 
     Route::get('clientes', [ ClientesController::class, 'index'])->name('clientes.index');
+    Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
 
 });
 

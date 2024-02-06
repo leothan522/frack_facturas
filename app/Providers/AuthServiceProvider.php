@@ -33,5 +33,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('clientes', function ($user){
             return comprobarPermisos('clientes.index');
         });
+
+        Gate::define('organizaciones', function ($user){
+            return comprobarPermisos('organizaciones.index');
+        });
     }
 }

@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('organizaciones', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre')->unique();
+            $table->string('email');
+            $table->string('telefono');
+            $table->string('web');
+            $table->string('moneda');
+            $table->integer('dias_factura');
+            $table->string('formato_factura');
+            $table->integer('proxima_factura');
+            $table->text('direccion');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('organizaciones');
+    }
+};
