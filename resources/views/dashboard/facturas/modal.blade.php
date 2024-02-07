@@ -4,7 +4,7 @@
 
 <div wire:ignore.self class="modal fade" id="modal-servicios" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="modal-dialog">
-        <form>
+        <form wire:submit.prevent="save">
             <div class="modal-content {{--fondo--}}">
                 <div class="modal-header bg-navy">
                     <h4 class="modal-title">Nuevo Servicio</h4>
@@ -78,7 +78,7 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default d-none" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                    <button type="button" class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
                 {!! verSpinner() !!}
             </div>

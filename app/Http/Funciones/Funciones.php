@@ -207,6 +207,53 @@ function numRowsPaginate(){
     return $default;
 }
 
+//funcion formato millares
+function formatoMillares($cantidad, $decimal = 2)
+{
+    return number_format($cantidad, $decimal, ',', '.');
+}
+
+//Ceros a la izquierda
+function cerosIzquierda($cantidad, $cantCeros = 2)
+{
+    if ($cantidad == 0) {
+        return 0;
+    }
+    return str_pad($cantidad, $cantCeros, "0", STR_PAD_LEFT);
+}
+
+function numSizeCodigo(){
+    $default = 6;
+    $parametro = Parametro::where("nombre", "size_codigo")->first();
+    if ($parametro) {
+        if (is_numeric($parametro->tabla_id)) {
+            return $parametro->tabla_id;
+        }
+    }
+    return $default;
+}
+
+function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id = "N" ){
+    $codigo = null;
+
+    //buscamos algun formato para el codigo
+    $parametro = Parametro::where("nombre", $parametros_nombre)->where('tabla_id', $parametros_tabla_id)->first();
+    if ($parametro) {
+        $codigo = $parametro->valor;
+    }else{
+        $codigo = "N".$parametros_tabla_id.'-';
+    }
+
+    if (!is_numeric($next)){ $next = 1; }
+
+    $size = cerosIzquierda($next, numSizeCodigo());
+
+    return $codigo . $size;
+
+}
+
+
+
 //-------------------------------------------------------------------------------------
 
 
@@ -234,23 +281,6 @@ function mesEspanol($numMes){
     $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     $mes = $meses[$numMes - 1];
     return $mes;
-}
-
-
-
-//funcion formato millares
-function formatoMillares($cantidad, $decimal = 2)
-{
-    return number_format($cantidad, $decimal, ',', '.');
-}
-
-//Ceros a la izquierda
-function cerosIzquierda($cantidad, $cantCeros = 2)
-{
-    if ($cantidad == 0) {
-        return 0;
-    }
-    return str_pad($cantidad, $cantCeros, "0", STR_PAD_LEFT);
 }
 
 //calculo de porcentaje
@@ -345,6 +375,56 @@ function verImg($path, $banner = false)
     }
     return $img;
 }
+
+/*function nextCodigoAjuste($empresa_id){
+    $codigo = array();
+
+    $parametro = Parametro::where("nombre", "proximo_codigo_ajutes")->where('tabla_id', $empresa_id)->first();
+    if ($parametro) {
+        $codigo['id'] = $parametro->id;
+        $codigo['proximo'] = (int)$parametro->valor;
+    }else{
+        $parametro = new Parametro();
+        $parametro->tabla_id = $empresa_id;
+        $parametro->nombre = "proximo_codigo_ajutes";
+        $parametro->valor = 1;
+        $parametro->save();
+        $codigo['id'] = $parametro->id;
+        $codigo['proximo'] = (int)$parametro->valor;
+    }
+
+    $parametro = Parametro::where("nombre", "formato_codigo_ajutes")->where('tabla_id', $empresa_id)->first();
+    if ($parametro) {
+        $codigo['formato'] = $parametro->valor;
+    }else{
+        $codigo['formato'] = $empresa_id.'-';
+    }
+
+    $parametro = Parametro::where("nombre", "editable_codigo_ajutes")->where('tabla_id', $empresa_id)->first();
+    if ($parametro){
+        if ($parametro->valor == 1){
+            $codigo['editable'] = true;
+        }else{
+            $codigo['editable'] = false;
+        }
+    }else{
+        $codigo['editable'] = false;
+    }
+
+    $parametro = Parametro::where("nombre", "editable_fecha_ajutes")->where('tabla_id', $empresa_id)->first();
+    if ($parametro){
+        if ($parametro->valor == 1){
+            $codigo['editable_fecha'] = true;
+        }else{
+            $codigo['editable_fecha'] = false;
+        }
+    }else{
+        $codigo['editable_fecha'] = false;
+    }
+
+    return $codigo;
+
+}*/
 
 /*function crearMiniaturas($data, $path, $width = 320, $height = 320)
 {

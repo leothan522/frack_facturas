@@ -31,6 +31,11 @@ class Organizacion extends Model
         return $this->hasMany(Plan::class, 'organizaciones_id', 'id');
     }
 
+    public function servicios(): HasMany
+    {
+        return $this->hasMany(Servicio::class, 'organizaciones_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('nombre', 'LIKE', "%$keyword%")

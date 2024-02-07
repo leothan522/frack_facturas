@@ -5,38 +5,42 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Plan extends Model
+class Servicio extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table = "planes";
+    protected $table = "servicios";
     protected $fillable = [
-        'nombre',
-        'bajada',
-        'subida',
-        'precio',
+        'codigo',
+        'clientes_id',
         'organizaciones_id',
+        'planes_id'
     ];
+
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Cliente::class, 'clientes_id', 'id');
+    }
 
     public function organizacion(): BelongsTo
     {
         return $this->belongsTo(Organizacion::class, 'organizaciones_id', 'id');
     }
 
-    public function servicios(): HasMany
+    public function plan(): BelongsTo
     {
-        return $this->hasMany(Servicio::class, 'planes_id', 'id');
+        return $this->belongsTo(Plan::class, 'planes_id', 'id');
     }
 
     public function scopeBuscar($query, $keyword)
     {
-        return $query->where('nombre', 'LIKE', "%$keyword%")
+        return $query->where('codigo', 'LIKE', "%$keyword%")
             /*->orWhere('nombre', 'LIKE', "%$keyword%")*/
             ;
     }
+
 
 }
