@@ -3,7 +3,7 @@
 @section('title', 'Planes de Servicio')
 
 @section('content_header')
-    <h1>Planes de Servicio</h1>
+    <h1><i class="fas fa-list-ol"></i> Planes de Servicio</h1>
 @endsection
 
 @section('content')

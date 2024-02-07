@@ -3,7 +3,7 @@
 @section('title', 'Clientes')
 
 @section('content_header')
-    <h1>Clientes</h1>
+    <h1><i class="fas fa-user-friends"></i> Clientes</h1>
 @endsection
 
 @section('content')

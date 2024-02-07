@@ -3,7 +3,7 @@
 @section('title', 'Organizaciones')
 
 @section('content_header')
-    <h1>Organizaciones</h1>
+    <h1><i class="fas fa-satellite-dish"></i> Organizaciones</h1>
 @endsection
 
 @section('content')
