@@ -311,13 +311,38 @@ return [
         // Sidebar items:
 
         [
+            'text'      => 'Gestionar Facturas',
+            'icon'      => 'fas fa-fw fa-book',
+            'can'       => ['clientes', 'organizaciones', 'planes'],
+            'submenu' => [
+                [
+                    'text' => 'Clientes',
+                    'icon' => 'fas fa-fw fa-user-friends',
+                    'route'  => 'clientes.index',
+                    'can'  => 'clientes',
+                ],
+                [
+                    'text' => 'Planes de servicio',
+                    'icon' => 'fas fa-fw fa-list-ol',
+                    'route'  => 'planes.index',
+                    'can'  => 'planes',
+                ],
+                [
+                    'text' => 'Organizaciones',
+                    'icon' => 'fas fa-fw fa-satellite-dish',
+                    'route' => 'organizaciones.index',
+                    'can' => 'organizaciones',
+                ]
+            ],
+        ],
+        [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
             'can'       => ['usuarios', 'parametros'],
             'submenu' => [
                 [
                     'text' => 'Usuarios',
-                    'icon' => 'fas fa-fw fa-users',
+                    'icon' => 'fas fa-fw fa-users-cog',
                     'route'  => 'usuarios.index',
                     'can'  => 'usuarios',
                 ],
@@ -329,25 +354,8 @@ return [
                 ]
             ],
         ],
-        [
-            'text'      => 'Gestionar Facturas',
-            'icon'      => 'fas fa-fw fa-book',
-            'can'       => ['clientes'],
-            'submenu' => [
-                [
-                    'text' => 'Clientes',
-                    'icon' => 'fas fa-fw fa-user-tag',
-                    'route'  => 'clientes.index',
-                    'can'  => 'clientes',
-                ],
-                [
-                    'text' => 'Organizaciones',
-                    'icon' => 'fas fa-fw fa-satellite-dish',
-                    'route' => 'organizaciones.index',
-                    'can' => 'organizaciones',
-                ]
-            ],
-        ],
+
+
     ],
 
     /*'menu' => [

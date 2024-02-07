@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Organizaciones')
 
 @section('content_header')
     <h1>Organizaciones</h1>
@@ -25,18 +25,6 @@
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
-
-        function search(){
-            let input = $("#navbarSearch");
-            let keyword  = input.val();
-            if (keyword.length > 0){
-                input.blur();
-                alert('Falta vincular con el componente Livewire');
-                //Livewire.emit('increment', keyword);
-            }
-            return false;
-        }
-
         console.log('Hi!');
     </script>
 @endsection

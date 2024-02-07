@@ -88,7 +88,11 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text text-bold">Moneda</span>
                     </div>
-                    <input type="text" class="form-control" wire:model.defer="moneda" placeholder="[string]">
+                    <select wire:model.defer="moneda" class="custom-select">
+                        <option value="">Seleccione</option>
+                        <option value="Bs.">Bs.</option>
+                        <option value="USD">USD</option>
+                    </select>
                     @error('moneda')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -103,7 +107,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text text-bold">Dias Factura</span>
                     </div>
-                    <input type="text" class="form-control" wire:model.defer="dias" placeholder="[string]">
+                    <input type="text" class="form-control" wire:model.defer="dias" placeholder="[integer]">
                     @error('dias')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -133,7 +137,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text text-bold">Proxima Factura</span>
                     </div>
-                    <input type="text" class="form-control" wire:model.defer="proxima" placeholder="[string]">
+                    <input type="text" class="form-control" wire:model.defer="proxima" placeholder="[integer]">
                     @error('proxima')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>

@@ -32,29 +32,41 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($clientes as $cliente)
-                <tr>
-                    <td>{{ $cliente->cedula }}</td>
-                    <td>{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
-                    <td>{{ $cliente->telefono }}</td>
-                    <td class="d-none d-lg-table-cell">{{ $cliente->email }}</td>
-                    {{--<td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_instalacion) }}</td>--}}
-                    <td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_pago) }}</td>
-                    <td class="d-none d-lg-table-cell">{{ $cliente->latitud }}</td>
-                    <td class="d-none d-lg-table-cell">{{ $cliente->longitud }}</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button wire:click="edit({{ $cliente->id }})" class="btn btn-primary btn-sm">
-                                <i class="fas fa-edit"></i>
-                            </button>
+            @if($clientes->isNotEmpty())
+                @foreach($clientes as $cliente)
+                    <tr>
+                        <td>{{ $cliente->cedula }}</td>
+                        <td>{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
+                        <td>{{ $cliente->telefono }}</td>
+                        <td class="d-none d-lg-table-cell">{{ $cliente->email }}</td>
+                        {{--<td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_instalacion) }}</td>--}}
+                        <td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_pago) }}</td>
+                        <td class="d-none d-lg-table-cell">{{ $cliente->latitud }}</td>
+                        <td class="d-none d-lg-table-cell">{{ $cliente->longitud }}</td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <button wire:click="edit({{ $cliente->id }})" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
 
-                            {{--<button --}}{{--wire:click="destroy({{ $parametro->id }})"--}}{{-- class="btn btn-primary btn-sm">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>--}}
-                        </div>
+                                {{--<button --}}{{--wire:click="destroy({{ $parametro->id }})"--}}{{-- class="btn btn-primary btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>--}}
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr class="text-center">
+                    <td colspan="8">
+                        @if($keyword)
+                            <span>Sin resultados</span>
+                        @else
+                            <span>Sin registros guardados</span>
+                        @endif
                     </td>
                 </tr>
-            @endforeach
+            @endif
             </tbody>
         </table>
     </div>

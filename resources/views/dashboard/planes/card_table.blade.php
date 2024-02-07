@@ -6,13 +6,13 @@
                 <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Organizaciones Registradas
+                Planes Registrados
             @endif
         </h3>
 
         <div class="card-tools">
             <ul class="pagination pagination-sm float-right m-1">
-                {{ $organizaciones->links() }}
+                {{ $planes->links() }}
             </ul>
         </div>
     </div>
@@ -20,32 +20,28 @@
         <table class="table {{--table-head-fixed--}} table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
+                <th>Organización</th>
                 <th>Nombre</th>
-                <th class="d-none d-lg-table-cell">Email</th>
-                <th>Telefono</th>
-                <th>Moneda</th>
-                {{--<th class="d-none d-lg-table-cell">Web</th>--}}
-                <th class="d-none d-lg-table-cell text-right">Dias Factura</th>
-                <th class="d-none d-lg-table-cell text-right">Formato Factura</th>
-                <th class="d-none d-lg-table-cell text-right">Proxima Factura</th>
+                <th class="text-right">Subida</th>
+                <th class="text-right">Bajada</th>
+                <th class="text-right">Precio</th>
+                <th style="width: 5%;">Moneda</th>
                 <th style="width: 5%;">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
-            @if($organizaciones->isNotEmpty())
-                @foreach($organizaciones as $organizacion)
+            @if($planes->isNotEmpty())
+                @foreach($planes as $plan)
                     <tr>
-                        <td>{{ $organizacion->nombre }}</td>
-                        <td class="d-none d-lg-table-cell">{{ $organizacion->email }}</td>
-                        <td>{{ $organizacion->telefono }}</td>
-                        <td>{{ $organizacion->moneda }}</td>
-                        {{--<td class="d-none d-lg-table-cell">{{ $organizacion->dias_factura }}</td>--}}
-                        <td class="d-none d-lg-table-cell text-right">{{ $organizacion->dias_factura }}</td>
-                        <td class="d-none d-lg-table-cell text-right">{{ $organizacion->formato_factura }}</td>
-                        <td class="d-none d-lg-table-cell text-right">{{ $organizacion->proxima_factura }}</td>
+                        <td>{{ $plan->organizacion->nombre }}</td>
+                        <td>{{ $plan->nombre }}</td>
+                        <td class="text-right">{{ $plan->bajada }} Mbps.</td>
+                        <td class="text-right">{{ $plan->subida }} Mbps.</td>
+                        <td class="text-right">{{ formatoMillares($plan->precio, 2) }}</td>
+                        <td>{{ $plan->organizacion->moneda }} </td>
                         <td class="text-center">
                             <div class="btn-group">
-                                <button wire:click="edit({{ $organizacion->id }})" class="btn btn-primary btn-sm">
+                                <button wire:click="edit({{ $plan->id }})" class="btn btn-primary btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
@@ -54,7 +50,7 @@
                 @endforeach
             @else
                 <tr class="text-center">
-                    <td colspan="8">
+                    <td colspan="6">
                         @if($keyword)
                             <span>Sin resultados</span>
                         @else

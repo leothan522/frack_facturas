@@ -34,6 +34,7 @@ class ClientesComponent extends Component
             'cedula', 'nombre', 'apellido', 'email', 'telefono', 'direccion', 'instalacion',
             'pago', 'latitud', 'longitud', 'gps', 'cliente_id', 'nuevo', 'editar', 'keyword'
         ]);
+        $this->resetErrorBag();
     }
 
     protected function rules()

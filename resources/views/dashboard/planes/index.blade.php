@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Clientes')
+@section('title', 'Planes de Servicio')
 
 @section('content_header')
-    <h1>Clientes</h1>
+    <h1>Planes de Servicio</h1>
 @endsection
 
 @section('content')
-    @livewire('dashboard.clientes-component')
+    @livewire('dashboard.planes-component')
 @endsection
 
 @section('right-sidebar')
@@ -20,7 +20,6 @@
 
 @section('css')
     {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
-
 @stop
 
 @section('js')

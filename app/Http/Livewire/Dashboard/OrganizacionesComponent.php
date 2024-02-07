@@ -33,7 +33,7 @@ class OrganizacionesComponent extends Component
             'nombre', 'email', 'telefono', 'web', 'moneda', 'dias', 'formato', 'proxima',
             'direccion', 'organizaciones_id', 'nuevo', 'editar', 'keyword'
         ]);
-
+        $this->resetErrorBag();
     }
 
     protected function rules()
@@ -44,9 +44,9 @@ class OrganizacionesComponent extends Component
             'telefono' => 'required',
             'web' => 'required',
             'moneda' => 'required',
-            'dias' => 'required|integer',
+            'dias' => 'required|integer|gt:0',
             'formato' => 'required',
-            'proxima' => 'required|integer',
+            'proxima' => 'required|integer|gt:0',
             'direccion' => 'required',
         ];
     }
