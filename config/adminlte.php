@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>SPORTEC</b> FACTURA',
+    'logo' => '<b>SPORTEC</b> FACTURAS',
     /*'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',*/
     'logo_img' => 'img/logo_small_50x50.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
@@ -320,6 +320,12 @@ return [
                     'icon' => 'fas fa-fw fa-user-friends',
                     'route'  => 'clientes.index',
                     'can'  => 'clientes',
+                ],
+                [
+                    'text' => 'Facturas',
+                    'icon' => 'fas fa-fw fa-file-invoice',
+                    'route'  => 'facturas.index',
+                    'can'  => 'facturas',
                 ],
                 [
                     'text' => 'Planes de servicio',

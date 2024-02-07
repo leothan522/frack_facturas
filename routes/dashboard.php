@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\ClientesController;
+use App\Http\Controllers\Dashboard\FacturasController;
 use App\Http\Controllers\Dashboard\OrganizacionesController;
 use App\Http\Controllers\Dashboard\PlanesController;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,7 @@ Route::middleware([
     Route::get('clientes', [ ClientesController::class, 'index'])->name('clientes.index');
     Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
+    Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
 
 });
 
