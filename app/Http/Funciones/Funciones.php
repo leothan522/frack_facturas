@@ -233,7 +233,7 @@ function numSizeCodigo(){
     return $default;
 }
 
-function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id = "N" ){
+function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id = null ){
     $codigo = null;
 
     //buscamos algun formato para el codigo

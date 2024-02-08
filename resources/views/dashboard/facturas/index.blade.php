@@ -71,6 +71,10 @@
             $('#select_clientes').val(cliente).trigger('change');
         });
 
+        Livewire.on('cerrarModalServicios', () => {
+            $('#btn_modal_servicios').click();
+        });
+
         console.log('Hi!');
     </script>
 @endsection

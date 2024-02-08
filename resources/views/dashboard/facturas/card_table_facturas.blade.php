@@ -6,57 +6,81 @@
                 <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Fixed Header Table
+                Facturas del Cliente
             @endif
         </h3>
 
         <div class="card-tools">
-            <ul class="pagination pagination-sm float-right">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
+            <ul class="pagination pagination-sm float-right m-1">
+                {{--<li class="page-item"><a class="page-link" href="#">«</a></li>
                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
+                <li class="page-item"><a class="page-link" href="#">»</a></li>--}}
             </ul>
         </div>
     </div>
-    <div class="card-body table-responsive p-0" {{--style="height: 400px;"--}}>
-        <table class="table {{--table-head-fixed--}} table-hover text-nowrap">
-            <thead>
-            <tr class="text-navy">
-                <th>ID</th>
-                <th>User</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th style="width: 5%;">Reason</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>183</td>
-                <td>John Doe</td>
-                <td>11-7-2014</td>
-                <td><span class="tag tag-success">Approved</span></td>
-                <td class="justify-content-end">
-                    <div class="btn-group">
-                        <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                        <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="card-body table-responsive" {{--style="height: 400px;"--}}>
+        @if($viewFactura)
+            <div class="row">
+                <div class="col-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active">{{ $codigo }}</li>
+                        <li class="breadcrumb-item active">{{ $nombreCliente }}</li>
+                        <li class="breadcrumb-item active">{{ $nombrePlan }}</li>
+                        <li class="breadcrumb-item active">{{ $nombreOrganizacion }}</li>
+                    </ol>
+                </div>
+            </div>
+            <table class="table {{--table-head-fixed--}} table-hover text-nowrap">
+                <thead>
+                <tr class="text-navy">
+                    <th>Factura</th>
+                    <th>Plan</th>
+                    <th class="text-center">Fecha</th>
+                    <th class="text-right">Total</th>
+                    <th style="width: 5%;">Moneda</th>
+                    <th style="width: 5%;">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>183</td>
+                    <td>5 megas</td>
+                    <td class="text-center">11-7-2014</td>
+                    <td class="text-right">5</td>
+                    <td><span class="tag tag-success">USD</span></td>
+                    <td class="justify-content-end">
+                        <div class="btn-group">
+                            <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                            <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        @else
+            <div class="row m-5">
+                <div class="col-12">
+                    Debes Seleccionar un cliente para empezar...
+                </div>
+            </div>
+        @endif
     </div>
-    <div class="modal-footer justify-content-end">
-        <div class="card-tools">
-            <span class="btn btn-sm btn-tool"><i class="fas fa-file"></i> Generar Factura</span>
+    @if($viewFactura)
+        <div class="modal-footer justify-content-end">
+            <div class="card-tools">
+                <button class="btn btn-sm btn-tool"><i class="fas fa-file"></i> Generar Factura</button>
+                <button class="btn btn-sm btn-tool" wire:click="limpiarFactuas">Cerrar</button>
+            </div>
         </div>
-    </div>
+    @endif
+    {!! verSpinner() !!}
 </div>

@@ -1,22 +1,18 @@
 <div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
-            @if(/*$keyword*/false)
+            @if($keyword)
                 Resultados de la Busqueda { <b class="text-danger">{{ $keyword }}</b> }
                 <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Fixed Header Table
+                Servicios Registrados
             @endif
         </h3>
 
         <div class="card-tools">
-            <ul class="pagination pagination-sm float-right">
-                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
+            <ul class="pagination pagination-sm float-right m-1">
+                {{ $servicios->links() }}
             </ul>
         </div>
     </div>
@@ -24,32 +20,45 @@
         <table class="table {{--table-head-fixed--}} table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
-                <th>ID</th>
-                <th>User</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th style="width: 5%;">Reason</th>
+                <th class="text-center">Codigo</th>
+                <th>Cliente</th>
+                <th>Plan</th>
+                <th>Organización</th>
+                <th style="width: 5%;">&nbsp;</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>183</td>
-                <td>John Doe</td>
-                <td>11-7-2014</td>
-                <td><span class="tag tag-success">Approved</span></td>
-                <td class="justify-content-end">
-                    <div class="btn-group">
-                        <button {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </button>
+            @if($servicios->isNotEmpty())
+                @foreach($servicios as $servicio)
+                    <tr>
+                        <td class="text-center">{{ $servicio->codigo }}</td>
+                        <td>{{ $servicio->cliente->nombre }} {{ $servicio->cliente->apellido }}</td>
+                        <td>{{ $servicio->plan->nombre }}</td>
+                        <td>{{ $servicio->organizacion->nombre }}</td>
+                        <td class="justify-content-end">
+                            <div class="btn-group">
+                                <button wire:click="edit({{ $servicio->id }})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-servicios">
+                                    <i class="fas fa-edit"></i>
+                                </button>
 
-                        <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                            <i class="fas fa-file-invoice"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-
+                                <button wire:click="getFacturas({{ $servicio->id }})" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-file-invoice"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr class="text-center">
+                    <td colspan="5">
+                        @if($keyword)
+                            <span>Sin resultados</span>
+                        @else
+                            <span>Sin registros guardados</span>
+                        @endif
+                    </td>
+                </tr>
+            @endif
             </tbody>
         </table>
     </div>

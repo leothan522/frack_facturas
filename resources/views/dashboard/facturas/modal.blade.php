@@ -7,7 +7,9 @@
         <form wire:submit.prevent="save">
             <div class="modal-content {{--fondo--}}">
                 <div class="modal-header bg-navy">
-                    <h4 class="modal-title">Nuevo Servicio</h4>
+                    <h4 class="modal-title">
+                        @if($nuevo) Nuevo  @else Editar @endif
+                        Servicio</h4>
                     <button type="button" wire:click="limpiar" class="close" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true" class="text-white">×</span>
@@ -75,10 +77,10 @@
 
                 </div>
 
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default d-none" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                <div class="modal-footer @if($nuevo) justify-content-end @else justify-content-between @endif">
+                    <button type="button" class="btn btn-default d-none" data-dismiss="modal" id="btn_modal_servicios">Close</button>
+                    <button type="button" class="btn btn-danger @if($nuevo) d-none @endif" wire:click="destroy({{ $servicios_id }})"><i class="fas fa-trash-alt"></i></button>
+                    <button type="submit" class="btn @if($nuevo) btn-success @else btn-primary @endif">Guardar @if($editar) Cambios @endif</button>
                 </div>
                 {!! verSpinner() !!}
             </div>
