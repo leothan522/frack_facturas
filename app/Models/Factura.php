@@ -19,7 +19,7 @@ class Factura extends Model
         'factura_subtotal',
         'factura_iva',
         'factura_total',
-        //'servicios_codigo',
+        'servicios_codigo',
         'organizacion_nombre',
         'organizacion_email',
         'organizacion_telefono',

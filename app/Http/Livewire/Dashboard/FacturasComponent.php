@@ -34,7 +34,7 @@ class FacturasComponent extends Component
     public function render()
     {
         $organizaciones = Organizacion::all();
-        $servicios = Servicio::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate());
+        $servicios = Servicio::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate(), ['*'], 'pageServicio');
         return view('livewire.dashboard.facturas-component')
             ->with('organizaciones', $organizaciones)
             ->with('servicios', $servicios);
@@ -218,7 +218,8 @@ class FacturasComponent extends Component
     public function getFacturas($id)
     {
         $this->edit($id);
-        $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)->get();
+        $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)
+            ->orderBy('factura_fecha', 'DESC')->limit(12)->get();
         $this->viewFactura = true;
     }
 
@@ -250,15 +251,47 @@ class FacturasComponent extends Component
         $factura_fecha = $ultima_fecha;
 
         //montos factura
-        $factura_subtotal = null;
+        $factura_subtotal = $plan->precio;
         $factura_iva = null;
         $factura_total = $plan->precio;
 
         //Guardamos Factura
         $factura = new Factura();
-        
+        $factura->factura_numero = $factura_numero;
+        $factura->factura_fecha = $factura_fecha;
+        $factura->factura_subtotal = $factura_subtotal;
+        $factura->factura_iva = $factura_iva;
+        $factura->factura_total = $factura_total;
+        $factura->servicios_codigo = $servicio->codigo;
+        $factura->organizacion_nombre = $organizacion->nombre;
+        $factura->organizacion_email = $organizacion->email;
+        $factura->organizacion_telefono = $organizacion->telefono;
+        $factura->organizacion_web = $organizacion->web;
+        $factura->organizacion_moneda = $organizacion->moneda;
+        $factura->cliente_cedula = $cliente->cedula;
+        $factura->cliente_nombre = $cliente->nombre;
+        $factura->cliente_apellido = $cliente->apellido;
+        $factura->cliente_email = $cliente->email;
+        $factura->cliente_telefono = $cliente->telefono;
+        $factura->cliente_latitud = $cliente->latitud;
+        $factura->cliente_longitud = $cliente->longitud;
+        $factura->cliente_gps = $cliente->gps;
+        $factura->cliente_fecha_instalacion = $cliente->fecha_instalacion;
+        $factura->cliente_fecha_pago = $cliente->fecha_pago;
+        $factura->cliente_direccion = $cliente->direccion;
+        $factura->plan_nombre = $plan->nombre;
+        $factura->plan_bajada = $plan->bajada;
+        $factura->plan_subida = $plan->subida;
+        $factura->plan_precio = $plan->precio;
+        $factura->servicios_id = $servicio->id;
+        $factura->clientes_id = $cliente->id;
+        $factura->organizaciones_id = $organizacion->id;
+        $factura->planes_id = $plan->id;
+        $factura->save();
 
-        $this->alert('success', 'pruebas: '.$factura_total);
+        $this->getFacturas($this->servicios_id);
+
+        $this->alert('success', 'Factura Generada.');
     }
 
 }
