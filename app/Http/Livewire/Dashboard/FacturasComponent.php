@@ -3,10 +3,12 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Cliente;
+use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
+use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -26,7 +28,7 @@ class FacturasComponent extends Component
 
     public $planes = array(), $nuevo = true, $editar = false, $viewFactura = false, $servicios_id, $keyword;
     public $cliente, $organizacion, $plan, $codigo;
-    public $nombreCliente, $nombrePlan, $nombreOrganizacion;
+    public $nombreCliente, $nombrePlan, $nombreOrganizacion, $listarFacturas;
 
 
     public function render()
@@ -209,14 +211,54 @@ class FacturasComponent extends Component
     {
         $this->limpiar();
         $this->reset([
-            'nombreCliente', 'nombrePlan', 'nombreOrganizacion'
+            'nombreCliente', 'nombrePlan', 'nombreOrganizacion', 'listarFacturas'
         ]);
     }
 
     public function getFacturas($id)
     {
         $this->edit($id);
+        $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)->get();
         $this->viewFactura = true;
+    }
+
+    public function generarFactura()
+    {
+        $servicio = Servicio::find($this->servicios_id);
+        $organizacion = Organizacion::find($servicio->organizaciones_id);
+        $cliente = Cliente::find($servicio->clientes_id);
+        $plan = Plan::find($servicio->planes_id);
+
+        //numero Fcaura
+        $next = $organizacion->proxima_factura;
+        $formato = $organizacion->formato_factura;
+        $i = 0;
+        do{
+            $next = $next + $i;
+            $factura_numero = nextCodigo($next, null, null, $formato);
+            $existe = Factura::where('factura_numero', $factura_numero)->where('organizaciones_id', $organizacion->id)->first();
+            if ($existe){ $i++; }
+        }while($existe);
+
+        //fecha factura
+        $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
+        if ($ultima) {
+            $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
+        }else{
+            $ultima_fecha = $cliente->fecha_pago;
+        }
+        $factura_fecha = $ultima_fecha;
+
+        //montos factura
+        $factura_subtotal = null;
+        $factura_iva = null;
+        $factura_total = $plan->precio;
+
+        //Guardamos Factura
+        $factura = new Factura();
+        
+
+        $this->alert('success', 'pruebas: '.$factura_total);
     }
 
 }

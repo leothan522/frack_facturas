@@ -44,26 +44,43 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>183</td>
-                    <td>5 megas</td>
-                    <td class="text-center">11-7-2014</td>
-                    <td class="text-right">5</td>
-                    <td><span class="tag tag-success">USD</span></td>
-                    <td class="justify-content-end">
-                        <div class="btn-group">
-                            <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                            <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                @if($listarFacturas->isNotEmpty())
+                    @foreach($listarFacturas as $factura)
+                        <tr>
+                            <td>{{ $factura->factura_numero }}</td>
+                            <td>5 megas</td>
+                            <td class="text-center">{{ verFecha($factura->factura_fecha) }}</td>
+                            <td class="text-right">{{ $factura->factura_total }}</td>
+                            <td><span>{{ $factura->organizacion_moneda }}</span></td>
+                            <td class="justify-content-end">
+                                <div class="btn-group">
+                                    <button
+                                        {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <button
+                                        {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button
+                                        {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr class="text-center">
+                        <td colspan="6">
+                            @if($keyword)
+                                <span>Sin resultados</span>
+                            @else
+                                <span>Sin registros guardados</span>
+                            @endif
+                        </td>
+                    </tr>
+                @endif
                 </tbody>
             </table>
         @else
@@ -77,7 +94,7 @@
     @if($viewFactura)
         <div class="modal-footer justify-content-end">
             <div class="card-tools">
-                <button class="btn btn-sm btn-tool"><i class="fas fa-file"></i> Generar Factura</button>
+                <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
                 <button class="btn btn-sm btn-tool" wire:click="limpiarFactuas">Cerrar</button>
             </div>
         </div>

@@ -32,6 +32,11 @@ class Cliente extends Model
         return $this->hasMany(Servicio::class, 'clientes_id', 'id');
     }
 
+    public function facturas(): HasMany
+    {
+        return $this->hasMany(Factura::class, 'clientes_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('cedula', 'LIKE', "%$keyword%")

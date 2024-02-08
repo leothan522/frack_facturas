@@ -233,7 +233,7 @@ function numSizeCodigo(){
     return $default;
 }
 
-function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id = null ){
+function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id = null, $formato = null){
     $codigo = null;
 
     //buscamos algun formato para el codigo
@@ -241,7 +241,11 @@ function nextCodigo($next = 1, $parametros_nombre = null, $parametros_tabla_id =
     if ($parametro) {
         $codigo = $parametro->valor;
     }else{
-        $codigo = "N".$parametros_tabla_id.'-';
+        if (is_null($formato)){
+            $codigo = "N".$parametros_tabla_id.'-';
+        }else{
+            $codigo = $formato;
+        }
     }
 
     if (!is_numeric($next)){ $next = 1; }

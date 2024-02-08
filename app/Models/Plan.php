@@ -32,6 +32,11 @@ class Plan extends Model
         return $this->hasMany(Servicio::class, 'planes_id', 'id');
     }
 
+    public function facturas(): HasMany
+    {
+        return $this->hasMany(Factura::class, 'planes_id', 'id');
+    }
+
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('nombre', 'LIKE', "%$keyword%")
