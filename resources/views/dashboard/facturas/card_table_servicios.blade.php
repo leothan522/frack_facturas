@@ -24,6 +24,7 @@
                 <th>Cliente</th>
                 <th>Plan</th>
                 <th>Organización</th>
+                <th class="text-center">Fecha Pago</th>
                 <th style="width: 5%;">&nbsp;</th>
             </tr>
             </thead>
@@ -35,6 +36,7 @@
                         <td>{{ $servicio->cliente->nombre }} {{ $servicio->cliente->apellido }}</td>
                         <td>{{ $servicio->plan->nombre }}</td>
                         <td>{{ $servicio->organizacion->nombre }}</td>
+                        <td class="text-center">{{ verFecha($servicio->cliente->fecha_pago) }}</td>
                         <td class="justify-content-end">
                             <div class="btn-group">
                                 <button wire:click="edit({{ $servicio->id }})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-servicios">

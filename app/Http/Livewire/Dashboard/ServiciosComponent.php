@@ -31,7 +31,7 @@ class ServiciosComponent extends Component
     public function render()
     {
         $organizaciones = Organizacion::all();
-        $servicios = Servicio::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate(), ['*'], 'pageServicio');
+        $servicios = Servicio::buscar($this->keyword)->orderBy('id', 'DESC')->paginate(numRowsPaginate(), ['*'], 'pageServicio');
         return view('livewire.dashboard.servicios-component')
             ->with('organizaciones', $organizaciones)
             ->with('servicios', $servicios);

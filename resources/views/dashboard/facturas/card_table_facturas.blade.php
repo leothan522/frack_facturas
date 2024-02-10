@@ -25,6 +25,7 @@
                         <li class="breadcrumb-item active">{{ $cliente }}</li>
                         <li class="breadcrumb-item active">{{ $plan }}</li>
                         <li class="breadcrumb-item active">{{ $organizacion }}</li>
+                        <li class="breadcrumb-item active">{{ verFecha($fecha_pago, "j-m-Y") }}</li>
                     </ol>
                 </div>
             </div>
@@ -42,21 +43,21 @@
                 </thead>
                 <tbody>
                 @if($listarFacturas->isNotEmpty())
+                    @php($borrar = true)
                     @foreach($listarFacturas as $factura)
                         <tr>
                             <td>{{ $factura->factura_numero }}</td>
-                            <td>5 megas</td>
+                            <td>{{ $factura->plan_nombre }}</td>
                             <td class="text-center">{{ verFecha($factura->factura_fecha) }}</td>
                             <td class="text-right">{{ $factura->factura_total }}</td>
                             <td><span>{{ $factura->organizacion_moneda }}</span></td>
                             <td class="justify-content-end">
                                 <div class="btn-group">
-                                    <button
-                                        {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                    <button wire:click="destroy({{ $factura->id }})" class="btn btn-primary btn-sm"
+                                        @if(!$borrar) disabled @endif >
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <button
-                                        {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                    <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button
@@ -66,6 +67,7 @@
                                 </div>
                             </td>
                         </tr>
+                        @if($borrar) @php($borrar = false) @endif
                     @endforeach
                 @else
                     <tr class="text-center">
