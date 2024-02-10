@@ -19,7 +19,7 @@ class PlanesComponent extends Component
     protected $listeners = ['confirmed', 'buscar'];
 
     public $nuevo = true, $editar = false, $planes_id, $keyword;
-    public $nombre, $bajada, $subida, $precio, $organizaciones_id;
+    public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta;
 
     public function render()
     {
@@ -34,7 +34,7 @@ class PlanesComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'nombre', 'bajada', 'subida', 'precio', 'organizaciones_id', 'planes_id',
+            'nombre', 'bajada', 'subida', 'precio', 'organizaciones_id', 'planes_id', 'etiqueta',
             'nuevo', 'editar', 'keyword'
         ]);
         $this->resetErrorBag();
@@ -44,6 +44,7 @@ class PlanesComponent extends Component
     {
         return [
             'nombre' => 'required|min:4',
+            'etiqueta' => 'required|min:4',
             'bajada' => 'required|integer|gt:0',
             'subida' => 'required|integer|gt:0',
             'precio' => 'required|numeric|gt:0',
@@ -63,6 +64,7 @@ class PlanesComponent extends Component
             $plan = new Plan();
         }
         $plan->nombre = $this->nombre;
+        $plan->etiqueta_factura = $this->etiqueta;
         $plan->bajada = $this->bajada;
         $plan->subida = $this->subida;
         $plan->precio = $this->precio;
@@ -78,6 +80,7 @@ class PlanesComponent extends Component
     {
         $plan = Plan::find($id);
         $this->nombre = $plan->nombre;
+        $this->etiqueta = $plan->etiqueta_factura;
         $this->bajada = $plan->bajada;
         $this->subida = $plan->subida;
         $this->precio = $plan->precio;

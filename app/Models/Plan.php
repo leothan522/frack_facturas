@@ -16,6 +16,7 @@ class Plan extends Model
     protected $table = "planes";
     protected $fillable = [
         'nombre',
+        'etiqueta_factura',
         'bajada',
         'subida',
         'precio',

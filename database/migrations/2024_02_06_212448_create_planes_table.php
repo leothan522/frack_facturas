@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('planes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('etiqueta_factura');
             $table->integer('bajada');
             $table->integer('subida');
             $table->decimal('precio', 12, 2);

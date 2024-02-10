@@ -23,7 +23,7 @@
                 <th>Cedula</th>
                 <th>Nombre</th>
                 <th>Telefono</th>
-                <th class="d-none d-lg-table-cell">Email</th>
+                <th class="d-none {{--d-lg-table-cell--}}">Email</th>
                 {{--<th class="d-none d-lg-table-cell">Instalación</th>--}}
                 <th class="d-none d-lg-table-cell">Fecha Pago</th>
                 <th class="d-none d-lg-table-cell">Latitud</th>
@@ -38,7 +38,7 @@
                         <td>{{ $cliente->cedula }}</td>
                         <td>{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
                         <td>{{ $cliente->telefono }}</td>
-                        <td class="d-none d-lg-table-cell">{{ $cliente->email }}</td>
+                        <td class="d-none {{--d-lg-table-cell--}}">{{ $cliente->email }}</td>
                         {{--<td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_instalacion) }}</td>--}}
                         <td class="d-none d-lg-table-cell">{{ verFecha($cliente->fecha_pago) }}</td>
                         <td class="d-none d-lg-table-cell">{{ $cliente->latitud }}</td>

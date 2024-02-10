@@ -21,9 +21,9 @@
             <thead>
             <tr class="text-navy">
                 <th>Nombre</th>
-                <th class="d-none d-lg-table-cell">Email</th>
+                <th class="d-none {{--d-lg-table-cell--}}">Email</th>
                 <th>Telefono</th>
-                <th>Moneda</th>
+                <th class="text-center" style="width: 5%;">Moneda</th>
                 {{--<th class="d-none d-lg-table-cell">Web</th>--}}
                 <th class="d-none d-lg-table-cell text-right">Dias Factura</th>
                 <th class="d-none d-lg-table-cell text-right">Formato Factura</th>
@@ -36,9 +36,9 @@
                 @foreach($organizaciones as $organizacion)
                     <tr>
                         <td>{{ $organizacion->nombre }}</td>
-                        <td class="d-none d-lg-table-cell">{{ $organizacion->email }}</td>
+                        <td class="d-none {{--d-lg-table-cell--}}">{{ $organizacion->email }}</td>
                         <td>{{ $organizacion->telefono }}</td>
-                        <td>{{ $organizacion->moneda }}</td>
+                        <td class="text-center">{{ $organizacion->moneda }}</td>
                         {{--<td class="d-none d-lg-table-cell">{{ $organizacion->dias_factura }}</td>--}}
                         <td class="d-none d-lg-table-cell text-right">{{ $organizacion->dias_factura }}</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $organizacion->formato_factura }}</td>

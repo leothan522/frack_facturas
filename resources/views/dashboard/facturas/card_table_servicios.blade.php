@@ -69,4 +69,5 @@
             </button>
         </div>
     </div>
+    {!!  verSpinner() !!}
 </div>

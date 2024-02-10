@@ -43,7 +43,8 @@ class FacturasComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'cliente', 'organizacion', 'plan', 'codigo', 'servicios_id', 'keyword', 'viewFactura'
+            'cliente', 'organizacion', 'plan', 'codigo', 'servicios_id',
+            'viewFactura', 'nuevo', 'editar', 'keyword'
         ]);
         $this->resetErrorBag();
 
