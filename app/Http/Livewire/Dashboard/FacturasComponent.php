@@ -23,7 +23,7 @@ class FacturasComponent extends Component
         'getFacturas'
     ];
 
-    public $viewFactura = false,$limit = 12, $servicios_id, $botonMasFacturas = false;
+    public $viewFactura = false, $limit = 12, $servicios_id, $botonMasFacturas = false;
     public $codigo, $cliente, $plan, $organizacion, $listarFacturas;
 
     public function render()
@@ -34,15 +34,18 @@ class FacturasComponent extends Component
     public function limpiarFacturas()
     {
         $this->reset([
-            'codigo', 'cliente', 'plan', 'organizacion', 'viewFactura', 'listarFacturas', 'botonMasFacturas'
+            'viewFactura', 'botonMasFacturas', 'limit'
         ]);
     }
 
     public function getFacturas($id)
     {
-        $this->servicios_id = $id;
+        if ($this->servicios_id != $id){
+            $this->servicios_id = $id;
+            $this->limpiarFacturas();
+        }
 
-        $servicio = Servicio::find($id);
+        $servicio = Servicio::find($this->servicios_id);
         $this->codigo = $servicio->codigo;
         $this->cliente = $servicio->cliente->nombre." ".$servicio->cliente->apellido;
         $this->plan = $servicio->plan->nombre;
@@ -53,9 +56,12 @@ class FacturasComponent extends Component
 
         $facturas = Factura::where('servicios_id', $this->servicios_id)->count();
         $actual = $this->listarFacturas->count();
-        if ($facturas > 12 && $this->limit < $actual){
+        if ($facturas > 12 && $facturas > $actual){
             $this->botonMasFacturas = true;
+        }else{
+            $this->botonMasFacturas = false;
         }
+
         $this->viewFactura = true;
     }
 
@@ -66,7 +72,7 @@ class FacturasComponent extends Component
         $cliente = Cliente::find($servicio->clientes_id);
         $plan = Plan::find($servicio->planes_id);
 
-        //numero Fcaura
+        //numero Factura
         $next = $organizacion->proxima_factura;
         $formato = $organizacion->formato_factura;
         $i = 0;
@@ -128,6 +134,12 @@ class FacturasComponent extends Component
         $this->getFacturas($this->servicios_id);
 
         $this->alert('success', 'Factura Generada.');
+    }
+
+    public function verMasFacturas($limit)
+    {
+        $this->limit = $limit + 12;
+        $this->getFacturas($this->servicios_id);
     }
 
 }

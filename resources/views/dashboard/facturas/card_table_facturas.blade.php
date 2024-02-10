@@ -11,16 +11,12 @@
         </h3>
 
         <div class="card-tools">
-            <ul class="pagination pagination-sm float-right m-1">
-                {{--<li class="page-item"><a class="page-link" href="#">«</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>--}}
-            </ul>
+            @if($viewFactura)
+                <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
+            @endIF
         </div>
     </div>
-    <div class="card-body table-responsive" {{--style="height: 400px;"--}}>
+    <div class="card-body">
         @if($viewFactura)
             <div class="row">
                 <div class="col-12">
@@ -32,7 +28,8 @@
                     </ol>
                 </div>
             </div>
-            <table class="table {{--table-head-fixed--}} table-hover text-nowrap">
+        <div class="row table-responsive" @if($limit > 12) style="height: 550px;" @endif >
+            <table class="table table-sm table-head-fixed table-hover text-nowrap">
                 <thead>
                 <tr class="text-navy">
                     <th>Factura</th>
@@ -83,6 +80,8 @@
                 @endif
                 </tbody>
             </table>
+        </div>
+
         @else
             <div class="row m-5">
                 <div class="col-12">
@@ -96,9 +95,8 @@
             @if($viewFactura)
             <div class="card-tools">
                 @if($botonMasFacturas)
-                    <button class="btn btn-sm btn-tool" {{--wire:click="generarFactura"--}}><i class="fas fa-arrow-down"></i> Ver mas facturas</button>
+                    <button class="btn btn-sm btn-tool" wire:click="verMasFacturas({{ $limit }})"><i class="fas fa-arrow-down"></i> Ver mas facturas</button>
                 @endif
-                <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
                 <button class="btn btn-sm btn-tool" wire:click="limpiarFacturas">Cerrar</button>
             </div>
             @endif
