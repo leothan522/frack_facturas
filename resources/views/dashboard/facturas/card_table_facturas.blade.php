@@ -26,9 +26,9 @@
                 <div class="col-12">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active">{{ $codigo }}</li>
-                        <li class="breadcrumb-item active">{{ $nombreCliente }}</li>
-                        <li class="breadcrumb-item active">{{ $nombrePlan }}</li>
-                        <li class="breadcrumb-item active">{{ $nombreOrganizacion }}</li>
+                        <li class="breadcrumb-item active">{{ $cliente }}</li>
+                        <li class="breadcrumb-item active">{{ $plan }}</li>
+                        <li class="breadcrumb-item active">{{ $organizacion }}</li>
                     </ol>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 @else
                     <tr class="text-center">
                         <td colspan="6">
-                            @if($keyword)
+                            @if(/*$keyword*/false)
                                 <span>Sin resultados</span>
                             @else
                                 <span>Sin registros guardados</span>
@@ -91,13 +91,17 @@
             </div>
         @endif
     </div>
-    @if($viewFactura)
-        <div class="modal-footer justify-content-end">
+
+        <div class="modal-footer">
+            @if($viewFactura)
             <div class="card-tools">
+                @if($botonMasFacturas)
+                    <button class="btn btn-sm btn-tool" {{--wire:click="generarFactura"--}}><i class="fas fa-arrow-down"></i> Ver mas facturas</button>
+                @endif
                 <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
-                <button class="btn btn-sm btn-tool" wire:click="limpiarFactuas">Cerrar</button>
+                <button class="btn btn-sm btn-tool" wire:click="limpiarFacturas">Cerrar</button>
             </div>
+            @endif
         </div>
-    @endif
     {!! verSpinner() !!}
 </div>

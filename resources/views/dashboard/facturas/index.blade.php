@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    @livewire('dashboard.facturas-component')
+    @include('dashboard.facturas.content')
 @endsection
 
 @section('right-sidebar')
@@ -74,6 +74,10 @@
         Livewire.on('cerrarModalServicios', () => {
             $('#btn_modal_servicios').click();
         });
+
+        function getFacturas(id) {
+            Livewire.emit('getFacturas', id);
+        }
 
         console.log('Hi!');
     </script>

@@ -41,7 +41,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <button wire:click="getFacturas({{ $servicio->id }})" class="btn btn-primary btn-sm">
+                                <button onclick="getFacturas({{ $servicio->id }})" class="btn btn-primary btn-sm">
                                     <i class="fas fa-file-invoice"></i>
                                 </button>
                             </div>

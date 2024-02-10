@@ -1,9 +1,8 @@
 <div class="row">
     <div class="col-md-6">
-        @include('dashboard.facturas.card_table_servicios')
-        @include('dashboard.facturas.modal')
+        @livewire('dashboard.servicios-component')
     </div>
     <div class="col-md-6">
-        @include('dashboard.facturas.card_table_facturas')
+        @livewire('dashboard.facturas-component')
     </div>
 </div>
