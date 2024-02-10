@@ -40,6 +40,7 @@ Route::middleware([
     Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
+    Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
 
 });
 

@@ -36,6 +36,7 @@ return new class extends Migration
             $table->date('cliente_fecha_pago');
             $table->text('cliente_direccion');
             $table->string('plan_nombre');
+            $table->string('plan_etiqueta');
             $table->integer('plan_bajada');
             $table->integer('plan_subida');
             $table->decimal('plan_precio', 12, 2);

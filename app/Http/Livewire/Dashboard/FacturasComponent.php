@@ -139,6 +139,7 @@ class FacturasComponent extends Component
             $factura->cliente_fecha_pago = $cliente->fecha_pago;
             $factura->cliente_direccion = $cliente->direccion;
             $factura->plan_nombre = $plan->nombre;
+            $factura->plan_etiqueta = $plan->etiqueta_factura;
             $factura->plan_bajada = $plan->bajada;
             $factura->plan_subida = $plan->subida;
             $factura->plan_precio = $plan->precio;

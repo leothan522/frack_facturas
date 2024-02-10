@@ -57,9 +57,9 @@
                                         @if(!$borrar) disabled @endif >
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <button {{--wire:click="destroy({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
+                                    <a href="{{ route('facturas.pdf', $factura->id) }}" target="_blank" class="btn btn-primary btn-sm">
                                         <i class="fas fa-eye"></i>
-                                    </button>
+                                    </a>
                                     <button
                                         {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
                                         <i class="fas fa-paper-plane"></i>

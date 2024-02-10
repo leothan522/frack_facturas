@@ -37,6 +37,7 @@ class Factura extends Model
         'cliente_fecha_pago',
         'cliente_direccion',
         'plan_nombre',
+        'plan_etiqueta',
         'plan_bajada',
         'plan_subida',
         'plan_precio',
