@@ -316,16 +316,16 @@ return [
             'can'       => ['clientes', 'organizaciones', 'planes'],
             'submenu' => [
                 [
-                    'text' => 'Clientes',
-                    'icon' => 'fas fa-fw fa-user-friends',
-                    'route'  => 'clientes.index',
-                    'can'  => 'clientes',
-                ],
-                [
                     'text' => 'Facturas',
                     'icon' => 'fas fa-fw fa-file-invoice',
                     'route'  => 'facturas.index',
                     'can'  => 'facturas',
+                ],
+                [
+                    'text' => 'Clientes',
+                    'icon' => 'fas fa-fw fa-user-friends',
+                    'route'  => 'clientes.index',
+                    'can'  => 'clientes',
                 ],
                 [
                     'text' => 'Planes de servicio',
