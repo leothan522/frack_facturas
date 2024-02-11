@@ -44,6 +44,7 @@ return new class extends Migration
             $table->bigInteger('clientes_id')->unsigned();
             $table->bigInteger('organizaciones_id')->unsigned();
             $table->bigInteger('planes_id')->unsigned()->nullable();
+            $table->boolean('send')->default(false);
             $table->foreign('servicios_id')->references('id')->on('servicios')->cascadeOnDelete();
             $table->foreign('clientes_id')->references('id')->on('clientes')->cascadeOnDelete();
             $table->foreign('organizaciones_id')->references('id')->on('organizaciones')->cascadeOnDelete();

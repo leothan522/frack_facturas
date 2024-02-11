@@ -41,6 +41,7 @@ class Factura extends Model
         'plan_bajada',
         'plan_subida',
         'plan_precio',
+        'send',
     ];
 
     public function servicio(): BelongsTo

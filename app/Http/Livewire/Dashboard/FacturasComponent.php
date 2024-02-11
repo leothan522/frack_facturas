@@ -2,12 +2,16 @@
 
 namespace App\Http\Livewire\Dashboard;
 
+use App\Mail\FacturasMail;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,7 +24,7 @@ class FacturasComponent extends Component
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
-        'getFacturas', 'confirmedFactura'
+        'getFacturas', 'confirmedFactura', 'confirmedEnviar', 'limpiarFacturas'
     ];
 
     public $viewFactura = false, $limit = 12, $servicios_id, $botonMasFacturas = false;
@@ -81,7 +85,7 @@ class FacturasComponent extends Component
         $i = 0;
         do{
             $next = $next + $i;
-            $factura_numero = cerosIzquierda($formato . $next, numSizeCodigo());
+            $factura_numero = $formato . cerosIzquierda($next, numSizeCodigo());
             $existe = Factura::where('factura_numero', $factura_numero)->where('organizaciones_id', $organizacion->id)->first();
             if ($existe){ $i++; }
         }while($existe);
@@ -205,6 +209,63 @@ class FacturasComponent extends Component
             $this->reset('facturas_id');
             $this->getFacturas($this->servicios_id);
         }
+    }
+
+    public function sendFactura($id)
+    {
+        $factura = Factura::find($id);
+
+        $data = [
+            'factura' => $factura
+        ];
+        //creamos el PDF y lo guardamos en Storage => public
+        $filename = "sendFacturaID_$factura->id.pdf";
+        $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
+        $pdf->save($filename, 'public');
+
+        //anexamos los datos extras en data para enviar email
+        $month = mesEspanol(verFecha($factura->factura_fecha, 'm'));
+        $year = verFecha($factura->factura_fecha, 'Y');
+        $data['from_email'] = $factura->organizacion_email;
+        $data['from_name'] = $factura->organizacion_nombre;
+        $data['subject'] = "Factura servicio de Internet $month $year";
+        $data['path'] = "public/$filename";
+        $data['filename'] = "Factura $month $year.pdf";
+
+        //enviamos el correo
+        $to = $factura->cliente_email;
+        Mail::to($to)->send(new FacturasMail($data));
+
+        $path = Storage::exists($data['path']);
+        if ($path){
+            Storage::delete($data['path']);
+        }
+
+        $factura->send = true;
+        $factura->save();
+        $this->getFacturas($this->servicios_id);
+
+        $this->alert("success", 'Factura Enviada.');
+    }
+
+    public function reSendFactura($id)
+    {
+        $this->facturas_id = $id;
+        $this->confirm('¿Estas seguro?', [
+            'toast' => false,
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'confirmButtonText' => '¡Sí, volver a enviar!',
+            'text' => '¡Esta Factura ya fue enviada anteriormente!',
+            'cancelButtonText' => 'No',
+            'onConfirmed' => 'confirmedEnviar',
+        ]);
+    }
+
+    public function confirmedEnviar()
+    {
+        $this->sendFactura($this->facturas_id);
+        $this->reset('facturas_id');
     }
 
 }

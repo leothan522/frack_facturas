@@ -21,6 +21,6 @@ class FacturasController extends Controller
             'factura' => $factura
         ];
         $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-        return $pdf->stream('gola.pdf');
+        return $pdf->stream('factura.pdf');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Cliente;
+use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Parametro;
 use App\Models\Plan;
@@ -149,6 +150,10 @@ class ServiciosComponent extends Component
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
+        $factura = Factura::where('servicios_id', $servicio->id)->first();
+        if ($factura){
+            $vinculado = true;
+        }
 
         if ($vinculado) {
             $this->alert('warning', '¡No se puede Borrar!', [
@@ -168,6 +173,7 @@ class ServiciosComponent extends Component
             );
             $this->limpiar();
             $this->emit('cerrarModalServicios');
+            $this->emit('limpiarFacturas');
         }
     }
 

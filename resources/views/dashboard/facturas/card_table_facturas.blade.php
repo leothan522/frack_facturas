@@ -60,10 +60,15 @@
                                     <a href="{{ route('facturas.pdf', $factura->id) }}" target="_blank" class="btn btn-primary btn-sm">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <button
-                                        {{--wire:click="edit({{ $parametro->id }})"--}} class="btn btn-primary btn-sm">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
+                                    @if($factura->send)
+                                        <button wire:click="reSendFactura({{ $factura->id }})" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-envelope-open"></i>
+                                        </button>
+                                    @else
+                                        <button wire:click="sendFactura({{ $factura->id }})" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
