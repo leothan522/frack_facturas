@@ -74,7 +74,7 @@
                     <select class="custom-select" wire:model.defer="role">
                         <option value="">Seleccione</option>
                         <option value="0">Estandar</option>
-                        @foreach($roles as $role)
+                        @foreach($listarRoles as $role)
                             <option value="{{ $role->id }}">{{ ucwords($role->nombre) }}</option>
                         @endforeach
                         @if(comprobarPermisos())

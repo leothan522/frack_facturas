@@ -72,7 +72,7 @@
             </div>
 
             <div class="form-group text-right">
-                <input type="submit" class="btn btn-block btn-success" value="Guardar @if($view == "edit") Cambios @endif">
+                <input type="submit" class="btn btn-block @if($view == "edit") btn-primary @else btn-success @endif" value="Guardar @if($view == "edit") Cambios @endif">
             </div>
 
         </form>

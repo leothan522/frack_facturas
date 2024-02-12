@@ -15,7 +15,7 @@
         <ul>
             <li>numRowsPaginate[null|numero]</li>
             <li>size_codigo[tamaño|null]</li>
-            <li>formato_codigo_servicios[organizaciones_id|formato]</li>
+            {{--<li>formato_codigo_servicios[organizaciones_id|formato]</li>--}}
             {{--<li>proximo_codigo_ajutes[empresa_id|int]</li>--}}
             {{--<li>iva</li>
             <li>telefono_soporte</li>
