@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Dashboard;
 
 use App\Models\Cliente;
+use App\Models\Factura;
+use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -121,6 +123,16 @@ class ClientesComponent extends Component
         $cliente = Cliente::find($this->cliente_id);
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
+
+        $servicios = Servicio::where('clientes_id', $this->cliente_id)->first();
+        if ($servicios){
+            $vinculado = true;
+        }
+
+        $facturas = Factura::where('clientes_id', $this->cliente_id)->first();
+        if ($facturas){
+            $vinculado = true;
+        }
 
         if ($vinculado) {
             $this->alert('warning', '¡No se puede Borrar!', [

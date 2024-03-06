@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire\Dashboard;
 
+use App\Models\Factura;
 use App\Models\Organizacion;
+use App\Models\Plan;
+use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -115,6 +118,23 @@ class OrganizacionesComponent extends Component
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
+
+        $servicios = Servicio::where('organizaciones_id', $this->organizaciones_id)->first();
+        if ($servicios){
+            $vinculado = true;
+        }
+
+        $facturas = Factura::where('organizaciones_id', $this->organizaciones_id)->first();
+        if ($facturas){
+            $vinculado = true;
+        }
+
+        $planes = Plan::where('organizaciones_id', $this->organizaciones_id)->first();
+        if ($planes){
+            $vinculado = true;
+        }
+
+
 
         if ($vinculado) {
             $this->alert('warning', '¡No se puede Borrar!', [
