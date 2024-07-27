@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>SPORTEC</b> FACTURAS',
+    'logo' => '<b>'.mb_strtoupper(env('APP_NAME', 'Laravel')).'</b>',
     /*'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',*/
     'logo_img' => 'img/logo_small_50x50.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
