@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,8 +18,6 @@ class OrganizacionesComponent extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
-    protected $listeners = ['confirmed', 'buscar'];
 
     public $nuevo = true, $editar = false, $organizaciones_id, $keyword;
     public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion;
@@ -112,6 +111,7 @@ class OrganizacionesComponent extends Component
         ]);
     }
 
+    #[On('confirmed')]
     public function confirmed()
     {
         $organizacion = Organizacion::find($this->organizaciones_id);
@@ -156,6 +156,7 @@ class OrganizacionesComponent extends Component
         }
     }
 
+    #[On('buscar')]
     public function buscar($keyword)
     {
         $this->keyword = $keyword;

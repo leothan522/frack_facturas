@@ -2,7 +2,7 @@
 
 @section('plugins.Select2', true)
 
-@section('title', 'Cloud Messaging (FCM)')
+@section('title', 'Cloud Messaging')
 
 @section('content_header')
     <h1><i class="fas fa-bell"></i> Firebase Cloud Messaging</h1>
@@ -20,15 +20,11 @@
     @include('dashboard.footer')
 @endsection
 
-@section('css')
-    {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
-@stop
-
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        function search(){
+        function buscar(){
             let input = $("#navbarSearch");
             let keyword  = input.val();
             if (keyword.length > 0){
@@ -46,7 +42,7 @@
 
         $('#fcm_token_users').on('change', function () {
             let token = $(this).val();
-            Livewire.emit('tokenSeleccionado', token);
+            Livewire.dispatch('tokenSeleccionado', { token:token });
         });
 
         console.log('Hi!');

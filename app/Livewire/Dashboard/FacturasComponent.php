@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,10 +24,6 @@ class FacturasComponent extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    protected $listeners = [
-        'getFacturas', 'confirmedFactura', 'confirmedEnviar', 'limpiarFacturas'
-    ];
-
     public $viewFactura = false, $limit = 12, $servicios_id, $botonMasFacturas = false;
     public $codigo, $cliente, $plan, $organizacion, $fecha_pago, $listarFacturas, $facturas_id;
 
@@ -35,6 +32,7 @@ class FacturasComponent extends Component
         return view('livewire.dashboard.facturas-component');
     }
 
+    #[On('limpiarFacturas')]
     public function limpiarFacturas()
     {
         $this->reset([
@@ -42,6 +40,7 @@ class FacturasComponent extends Component
         ]);
     }
 
+    #[On('getFacturas')]
     public function getFacturas($id)
     {
         if ($this->servicios_id != $id){
@@ -183,6 +182,7 @@ class FacturasComponent extends Component
         ]);
     }
 
+    #[On('confirmedFactura')]
     public function confirmedFactura()
     {
         $row  = Factura::find($this->facturas_id);
@@ -262,6 +262,7 @@ class FacturasComponent extends Component
         ]);
     }
 
+    #[On('confirmedEnviar')]
     public function confirmedEnviar()
     {
         $this->sendFactura($this->facturas_id);

@@ -7,6 +7,7 @@ use App\Models\Factura;
 use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,8 +17,6 @@ class ClientesComponent extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
-    protected $listeners = ['confirmed', 'buscar'];
 
     public $nuevo = true, $editar = false, $cliente_id, $keyword;
     public $cedula, $nombre, $apellido, $email, $telefono, $direccion, $instalacion, $pago,
@@ -118,6 +117,7 @@ class ClientesComponent extends Component
         ]);
     }
 
+    #[On('confirmed')]
     public function confirmed()
     {
         $cliente = Cliente::find($this->cliente_id);
@@ -154,6 +154,7 @@ class ClientesComponent extends Component
         }
     }
 
+    #[On('buscar')]
     public function buscar($keyword)
     {
         $this->keyword = $keyword;

@@ -11,6 +11,7 @@ use App\Models\Servicio;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -20,10 +21,6 @@ class ServiciosComponent extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
-    protected $listeners = [
-        'getSelectClientes', 'setSelectClientes', 'getCliente', 'cerrarModalServicios', 'confirmed'
-    ];
 
     public $planes = array(), $nuevo = true, $editar = false, $servicios_id, $keyword;
     public $cliente, $organizacion, $plan, $codigo;
@@ -55,7 +52,7 @@ class ServiciosComponent extends Component
             ];
             array_push($data, $option);
         }
-        $this->dispatch('getSelectClientes', $data);
+        $this->dispatch('getSelectClientes', clientes: $data);
     }
 
     protected function rules()
@@ -144,6 +141,7 @@ class ServiciosComponent extends Component
         ]);
     }
 
+    #[On('confirmed')]
     public function confirmed()
     {
         $servicio  = Servicio::find($this->servicios_id);
@@ -177,6 +175,7 @@ class ServiciosComponent extends Component
         }
     }
 
+    #[On('buscar')]
     public function buscar($keyword)
     {
         $this->keyword = $keyword;
@@ -188,20 +187,25 @@ class ServiciosComponent extends Component
         $this->planes = Plan::where('organizaciones_id', $this->organizacion)->get();
     }
 
+    #[On('getCliente')]
     public function getCliente($id)
     {
         $this->cliente = $id;
     }
 
+    #[On('getSelectClientes')]
     public function getSelectClientes($clientes)
     {
         //JS
     }
 
+    #[On('setSelectClientes')]
     public function setSelectClientes($cliente)
     {
         //JS
     }
+
+    #[On('cerrarModalServicios')]
     public function cerrarModalServicios()
     {
         //JS

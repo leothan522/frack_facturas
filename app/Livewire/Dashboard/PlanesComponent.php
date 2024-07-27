@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -17,8 +18,6 @@ class PlanesComponent extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-
-    protected $listeners = ['confirmed', 'buscar'];
 
     public $nuevo = true, $editar = false, $planes_id, $keyword;
     public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta;
@@ -106,6 +105,7 @@ class PlanesComponent extends Component
         ]);
     }
 
+    #[On('confirmed')]
     public function confirmed()
     {
         $plan = Plan::find($this->planes_id);
@@ -113,12 +113,12 @@ class PlanesComponent extends Component
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
 
-        $servicios = Servicio::where('clientes_id', $this->cliente_id)->first();
+        $servicios = Servicio::where('planes_id', $this->planes_id)->first();
         if ($servicios){
             $vinculado = true;
         }
 
-        $facturas = Factura::where('clientes_id', $this->cliente_id)->first();
+        $facturas = Factura::where('planes_id', $this->planes_id)->first();
         if ($facturas){
             $vinculado = true;
         }
@@ -143,6 +143,7 @@ class PlanesComponent extends Component
         }
     }
 
+    #[On('buscar')]
     public function buscar($keyword)
     {
         $this->keyword = $keyword;
