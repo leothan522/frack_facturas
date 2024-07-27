@@ -4,7 +4,7 @@
 
 <div wire:ignore.self class="modal fade" id="modal-servicios" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="modal-dialog">
-        <form wire:submit.prevent="save">
+        <form wire:submit="save">
             <div class="modal-content {{--fondo--}}">
                 <div class="modal-header bg-navy">
                     <h4 class="modal-title">
@@ -39,7 +39,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text text-bold">Organización</span>
                             </div>
-                            <select class="custom-select" wire:model="organizacion">
+                            <select class="custom-select" wire:model.live="organizacion">
                                 <option value="">Seleccione</option>
                                 @foreach($organizaciones as $organizacion)
                                     <option value="{{ $organizacion->id }}">{{ $organizacion->nombre }}</option>
@@ -59,7 +59,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text text-bold">Plan de Servicio</span>
                             </div>
-                            <select class="custom-select" wire:model="plan">
+                            <select class="custom-select" wire:model.live="plan">
                                 <option value="">Seleccione</option>
                                 @foreach($planes as $plan)
                                     <option value="{{ $plan->id }}">{{ $plan->nombre }}</option>

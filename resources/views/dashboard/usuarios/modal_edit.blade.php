@@ -3,7 +3,7 @@
         <div class="modal-content fondo">
             <div class="modal-header">
                 {{--<h4 class="modal-title">Large Modal</h4>--}}
-                <button type="button" wire:click="limpiar()" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" wire:click="limpiar" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -12,7 +12,7 @@
                 <div class="row justify-content-center">
                     <div class="row col-md-11">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12 col-lg-6">
                             <div class="card card-navy card-outline">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
@@ -39,11 +39,11 @@
                                         <li class="list-group-item">
                                             <b>Estatus</b>
                                             <a class="float-right text-danger">
-                                                {!! verEstatusUsuario($estatus) !!}
+                                                {!! $this->getEstatusUsuario($estatus) !!}
                                             </a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Created_at</b>
+                                            <b>Creado</b>
                                             <a class="float-right">
                                                 {{ verFecha($created_at) }}
                                             </a>
@@ -51,7 +51,7 @@
                                         @if($edit_password)
                                             <li class="list-group-item">
                                                 <b class="text-warning">Nueva Contraseña</b>
-                                                <input type="text" wire:model.defer="edit_password" class="form-control col-sm-4 form-control-sm float-right"/>
+                                                <input type="text" wire:model="edit_password" class="form-control col-sm-4 form-control-sm float-right"/>
                                             </li>
                                         @endif
                                     </ul>
@@ -61,20 +61,20 @@
                                             <div class="col-md-6">
                                                 @if ($estatus)
                                                     @php($clase = "btn-danger")
-                                                    @php($texto = "Suspender Usuario")
+                                                    @php($texto = "Suspender <br> Usuario")
                                                 @else
                                                     @php($clase = "btn-success")
-                                                    @php($texto = "Reactivar Usuario")
+                                                    @php($texto = "Reactivar <br> Usuario")
                                                 @endif
                                                 <button type="button" wire:click="cambiarEstatus({{ $usuarios_id }})" class="btn {{ $clase }} btn-block"
                                                         @if(!comprobarPermisos('usuarios.estatus')) disabled @endif>
-                                                    <b>{{ $texto }}</b>
+                                                    <b>{!! $texto !!}</b>
                                                 </button>
                                             </div>
                                             <div class="col-md-6">
                                                 <button type="button" wire:click="restablecerClave({{ $usuarios_id }})" class="btn btn-block btn-secondary"
                                                         @if(!comprobarPermisos('usuarios.password')) disabled @endif>
-                                                    <b>Restablecer Contraseña</b>
+                                                    <b>Restablecer <br> Contraseña</b>
                                                 </button>
                                             </div>
                                         </div>
@@ -84,7 +84,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12 col-lg-6">
 
                             <div class="card card-navy" style="height: inherit; width: inherit; transition: all 0.15s ease 0s;">
 
@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <form wire:submit.prevent="save">
+                                    <form wire:submit="save">
 
                                         <div class="form-group">
                                             <label for="name">{{ __('Name') }}</label>
@@ -109,7 +109,7 @@
                                                         <i class="fas fa-user"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" wire:model.defer="edit_name" placeholder="Nombre y Apellido">
+                                                <input type="text" class="form-control" wire:model="edit_name" placeholder="Nombre y Apellido">
                                                 @error('edit_name')
                                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -127,7 +127,7 @@
                                                         <i class="fas fa-envelope"></i>
                                                     </span>
                                                 </div>
-                                                <input type="text" class="form-control" wire:model.defer="edit_email" placeholder="Email">
+                                                <input type="text" class="form-control" wire:model="edit_email" placeholder="Email">
                                                 @error('edit_email')
                                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -147,7 +147,7 @@
                                                         <i class="fas fa-user-cog"></i>
                                                     </span>
                                                     </div>
-                                                    <select class="custom-select" wire:model.defer="edit_role">
+                                                    <select class="custom-select" wire:model="edit_role">
                                                         <option value="0">Estandar</option>
                                                         @foreach($listarRoles as $role)
                                                             <option
@@ -184,7 +184,7 @@
 
             {!! verSpinner() !!}
 
-            <div class="modal-footer row col-12 justify-content-between">
+            <div class="modal-footer {{--row col-12--}} justify-content-between">
                 <button type="button" class="btn btn-danger btn-sm" wire:click="destroy({{ $usuarios_id }})"
                         @if(!comprobarPermisos('usuarios.destroy') || !($edit_role != 1 || ($edit_role == 1 && comprobarPermisos())) || ($usuarios_id == auth()->id())) disabled @endif >
                     <i class="fas fa-trash-alt"></i>

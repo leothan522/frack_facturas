@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Chat;
+namespace App\Livewire\Chat;
 
 use App\Models\Chat;
 use App\Models\ChatMessage;
@@ -111,7 +111,7 @@ class ChatComponent extends Component
         $chatUser->mensajes_vistos = $this->chat_count;
         $chatUser->save();
         $this->count_new = 0;
-        $this->emit('bajarScroll', $chatmessage->id);
+        $this->dispatch('bajarScroll', $chatmessage->id);
         $this->limpiar();
         $this->alert('success', 'Mensaje Enviado.');
         $this->sendMessage(ucwords($chatmessage->user->name), $chatmessage->message);
@@ -133,7 +133,7 @@ class ChatComponent extends Component
         $chatUser->save();
         $this->count_new = 0;
         $ultimo = ChatMessage::where('chats_id', $this->chat_id)->orderBy('created_at', 'DESC')->first();
-        $this->emit('bajarScroll', $ultimo->id);
+        $this->dispatch('bajarScroll', $ultimo->id);
     }
 
     public function bajarScroll()

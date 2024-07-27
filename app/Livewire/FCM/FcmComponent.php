@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\FCM;
+namespace App\Livewire\FCM;
 
 use App\Models\User;
 use App\Services\FirebaseCloudMessagingService;

@@ -3,7 +3,19 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Dashboard</h1>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark"><i class="fas fa-users-cog"></i> Usuarios</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
+                    <li class="breadcrumb-item active">Usuarios Registrados</li>
+                </ol>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('content')
@@ -26,13 +38,13 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        function search(){
+        function buscar(){
             let input = $("#navbarSearch");
             let keyword  = input.val();
             if (keyword.length > 0){
                 input.blur();
                 alert('Falta vincular con el componente Livewire');
-                //Livewire.emit('increment', keyword);
+                //Livewire.dispatch('buscar', { keyword: keyword });
             }
             return false;
         }

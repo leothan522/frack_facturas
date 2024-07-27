@@ -10,9 +10,9 @@
                         </h4>
                     </div>
                     <div class="col-md-5 justify-content-end">
-                        <form wire:submit.prevent="save">
+                        <form wire:submit="save">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="nombre" wire:model.defer="nombre"
+                                <input type="text" class="form-control" placeholder="nombre" wire:model="nombre"
                                        required>
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary">
@@ -40,10 +40,12 @@
                     </div>
                 </div>
 
-                @include('dashboard.usuarios.show_permisos')
+                @if($roles_id)
+                    @include('dashboard.usuarios.show_permisos')
+                @endif
 
             </div>
-            <div class="modal-footer row col-12 justify-content-between">
+            <div class="modal-footer {{--row col-12--}} justify-content-between">
                 <button type="button" class="btn btn-danger btn-sm" wire:click="destroy({{ $roles_id }})">
                     <i class="fas fa-trash-alt"></i>
                 </button>
@@ -58,7 +60,7 @@
                 </button>
             </div>
 
-            <div class="overlay-wrapper" wire:loading wire:target="save, destroy, savePermisos">
+            <div class="overlay-wrapper" wire:loading wire:target="save, destroy, savePermisos, deletePermisos">
                 <div class="overlay">
                     <div class="spinner-border text-navy" role="status">
                         <span class="sr-only">Loading...</span>

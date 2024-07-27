@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Dashboard;
+namespace App\Livewire\Dashboard;
 
 use App\Models\Cliente;
 use App\Models\Factura;
@@ -55,7 +55,7 @@ class ServiciosComponent extends Component
             ];
             array_push($data, $option);
         }
-        $this->emit('getSelectClientes', $data);
+        $this->dispatch('getSelectClientes', $data);
     }
 
     protected function rules()
@@ -111,7 +111,7 @@ class ServiciosComponent extends Component
         }
 
         $this->limpiar();
-        $this->emit('cerrarModalServicios');
+        $this->dispatch('cerrarModalServicios');
         $this->alert('success', 'Datos Guardados.');
     }
 
@@ -127,7 +127,7 @@ class ServiciosComponent extends Component
         $this->nuevo = false;
         $this->editar = true;
         $this->servicios_id = $servicio->id;
-        $this->emit('setSelectClientes', $this->cliente);
+        $this->dispatch('setSelectClientes', $this->cliente);
     }
 
     public function destroy($id)
@@ -172,8 +172,8 @@ class ServiciosComponent extends Component
                 'Servicio Eliminado.'
             );
             $this->limpiar();
-            $this->emit('cerrarModalServicios');
-            $this->emit('limpiarFacturas');
+            $this->dispatch('cerrarModalServicios');
+            $this->dispatch('limpiarFacturas');
         }
     }
 

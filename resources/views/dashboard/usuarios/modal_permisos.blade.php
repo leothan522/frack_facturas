@@ -17,15 +17,17 @@
                             <li class="breadcrumb-item active" >{{ $edit_name }}</li>
                             <li class="breadcrumb-item active" >{{ $edit_email }}</li>
                             <li class="breadcrumb-item active" >{{ $rol_nombre }}</li>
-                            <li class="breadcrumb-item active" >{!! verEstatusUsuario($estatus, true) !!}</li>
+                            <li class="breadcrumb-item active" >{!! $this->getEstatusUsuario($estatus, true) !!}</li>
                         </ol>
                     </div>
                 </div>
 
-                @include('dashboard.usuarios.show_permisos')
+                @if($usuarios_id)
+                    @include('dashboard.usuarios.show_permisos')
+                @endif
 
             </div>
-            <div class="modal-footer row col-12 justify-content-between">
+            <div class="modal-footer {{--row col-12--}} justify-content-between">
                 <button type="button" class="btn btn-default btn-sm" wire:click="deletePermisos">
                     <i class="fas fa-trash-alt"></i> Quitar Todos
                 </button>
@@ -37,7 +39,7 @@
                 </button>
             </div>
 
-            <div class="overlay-wrapper" wire:loading wire:target="edit, savePermisos">
+            <div class="overlay-wrapper" wire:loading wire:target="edit, savePermisos, deletePermisos">
                 <div class="overlay">
                     <div class="spinner-border text-navy" role="status">
                         <span class="sr-only">Loading...</span>

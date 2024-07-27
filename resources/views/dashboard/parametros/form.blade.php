@@ -12,7 +12,7 @@
         </h3>
         <div class="card-tools">
             @if($view == "create")
-                <span class="btn btn-tool"><i class="fas fa-file"></i></span>
+                <button class="btn btn-tool" wire:click="limpiar"><i class="fas fa-file"></i></button>
                 @else
                 <button class="btn btn-tool text-bold" wire:click="limpiar"><i class="fas fa-ban"></i> Cancelar</button>
             @endif
@@ -60,8 +60,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text text-bold">valor</span>
                     </div>
-                    <input type="text" class="form-control" wire:model="valor" name="valor"
-                           placeholder="[string]">
+                    <input type="text" class="form-control" wire:model="valor" name="valor" placeholder="[string]">
                     @error('valor')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -72,7 +71,7 @@
             </div>
 
             <div class="form-group text-right">
-                <input type="submit" class="btn btn-block @if($view == "edit") btn-primary @else btn-success @endif" value="Guardar @if($view == "edit") Cambios @endif">
+                <input type="submit" class="btn btn-block btn-success" value="Guardar @if($view == "edit") Cambios @endif">
             </div>
 
         </form>

@@ -23,10 +23,6 @@
     @livewire('dashboard.roles-component')
 @endsection
 
-{{--@section('right-sidebar')
-    @include('dashboard.right-sidebar')
-@endsection--}}
-
 @section('footer')
     @include('dashboard.footer')
 @endsection
@@ -42,10 +38,10 @@
         $("#from_role_usuario").submit(function(e) {
             e.preventDefault();
             let nombre = $('#input_role_nombre').val();
-            Livewire.emit('save', nombre);
+            Livewire.dispatch('save', { nombre: nombre });
         });
 
-        Livewire.on('addRolList', (id, nombre, rows) => {
+        Livewire.on('addRoleList', ({ id, nombre, rows }) => {
             $('#input_role_nombre')
                 .val('')
                 .blur();
@@ -57,21 +53,24 @@
 
             $('#div_listar_roles').append(boton);
             $('#span_roles_rows').text(rows);
+            Livewire.dispatch('actualizar');
         });
 
         function showRol(id){
             $('#div_ver_spinner_roles').removeClass('d-none');
-            Livewire.emit('edit', id);
+            Livewire.dispatch('edit', { id: id } );
         }
 
-        Livewire.on('setRolList', (id, nombre) => {
+        Livewire.on('setRolList', ({ id, nombre }) => {
             $('#button_role_id_' + id).text(nombre);
+            Livewire.dispatch('actualizar');
         });
 
-        Livewire.on('removeRolList', id =>{
-            Livewire.emit('limpiar');
+        Livewire.on('removeRolList', ({ id }) =>{
+            Livewire.dispatch('limpiar');
             $('#button_role_id_' + id).addClass('d-none');
             $('#button_rol_modal_cerrar').click();
+            Livewire.dispatch('actualizar');
         });
 
         Livewire.on('cerrarModal', () => {
@@ -85,6 +84,17 @@
         $('#button_permisos_modal_cerrar').click(function (e) {
             $('#div_ver_spinner_usuarios').removeClass('d-none');
         });
+
+        function search(){
+            let input = $("#navbarSearch");
+            let keyword  = input.val();
+            if (keyword.length > 0){
+                input.blur();
+                //alert('Falta vincular con el componente Livewire');
+                Livewire.dispatch('buscar', { keyword:keyword });
+            }
+            return false;
+        }
 
         console.log('Hi!');
     </script>
