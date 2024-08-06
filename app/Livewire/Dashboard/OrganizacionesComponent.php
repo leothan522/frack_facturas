@@ -15,25 +15,51 @@ use Livewire\WithPagination;
 class OrganizacionesComponent extends Component
 {
     use LivewireAlert;
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
+    public $rows = 0, $numero = 14, $tableStyle = false;
     public $nuevo = true, $editar = false, $organizaciones_id, $keyword;
     public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion;
+    public $cerrarModal= true, $show = false;
+
+    public function mount()
+    {
+        $this->setLimit();
+    }
 
     public function render()
     {
-        $organizaciones = Organizacion::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate());
+        $organizaciones = Organizacion::buscar($this->keyword)
+            ->orderBy('updated_at', 'DESC')
+            ->limit($this->rows)
+            ->get();
+
+        $rows = Organizacion::count();
+
+        if ($rows > $this->numero) {
+            $this->tableStyle = true;
+        }
+
         return view('livewire.dashboard.organizaciones-component')
-            ->with('organizaciones', $organizaciones);
+            ->with('organizaciones', $organizaciones)
+            ->with('rowsOrganizaciones', $rows);
+    }
+
+    public function setLimit()
+    {
+        if (numRowsPaginate() < $this->numero) {
+            $rows = $this->numero;
+        } else {
+            $rows = numRowsPaginate();
+        }
+        $this->rows = $this->rows + $rows;
     }
 
     public function limpiar()
     {
         $this->reset([
             'nombre', 'email', 'telefono', 'web', 'moneda', 'dias', 'formato', 'proxima',
-            'direccion', 'organizaciones_id', 'nuevo', 'editar', 'keyword'
+            'direccion', 'organizaciones_id', 'nuevo', 'editar', 'keyword',
+            'show'
         ]);
         $this->resetErrorBag();
     }
@@ -75,26 +101,50 @@ class OrganizacionesComponent extends Component
         $organizacion->direccion = $this->direccion;
         $organizacion->save();
 
-        $this->limpiar();
-
         $this->alert('success', 'Datos Guardados.');
+
+        if ($this->cerrarModal){
+            $this->limpiar();
+            $this->dispatch('cerrarModal');
+        }else{
+            $this->showOrganizacion($organizacion->id);
+        }
+
     }
 
-    public function edit($id)
+    public function edit($id, $cerrarModal = true)
     {
+        $this->limpiar();
         $organizacion = Organizacion::find($id);
-        $this->nombre = $organizacion->nombre;
-        $this->email = $organizacion->email;
-        $this->telefono = $organizacion->telefono;
-        $this->web = $organizacion->web;
-        $this->moneda = $organizacion->moneda;
-        $this->dias = $organizacion->dias_factura;
-        $this->formato = $organizacion->formato_factura;
-        $this->proxima = $organizacion->proxima_factura;
-        $this->direccion = $organizacion->direccion;
-        $this->nuevo = false;
-        $this->editar = true;
-        $this->organizaciones_id = $organizacion->id;
+        if ($organizacion){
+
+            $this->nombre = $organizacion->nombre;
+            $this->email = $organizacion->email;
+            $this->telefono = $organizacion->telefono;
+            $this->web = $organizacion->web;
+            $this->moneda = $organizacion->moneda;
+            $this->dias = $organizacion->dias_factura;
+            $this->formato = $organizacion->formato_factura;
+            $this->proxima = $organizacion->proxima_factura;
+            $this->direccion = $organizacion->direccion;
+
+            $this->nuevo = false;
+            $this->editar = true;
+            $this->organizaciones_id = $organizacion->id;
+
+            if (!$cerrarModal){
+                $this->cerrarModal = false;
+            }
+
+        }else{
+            $this->dispatch('cerrarModal');
+        }
+    }
+
+    public function showOrganizacion($id)
+    {
+        $this->edit($id, false);
+        $this->show = true;
     }
 
     public function destroy($id)
@@ -147,18 +197,25 @@ class OrganizacionesComponent extends Component
                 'confirmButtonText' => 'OK',
             ]);
         } else {
-            $organizacion->delete();
-            $this->alert(
-                'success',
-                'Organización Eliminada.'
-            );
+            if ($organizacion){
+                $organizacion->delete();
+                $this->alert('success', 'Organización Eliminada.');
+            }
+            $this->dispatch('cerrarModal');
             $this->limpiar();
         }
+
     }
 
     #[On('buscar')]
     public function buscar($keyword)
     {
         $this->keyword = $keyword;
+    }
+
+    #[On('cerrarModal')]
+    public function cerrarModal()
+    {
+        //JS
     }
 }

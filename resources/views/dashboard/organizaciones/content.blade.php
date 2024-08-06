@@ -1,8 +1,8 @@
 <div class="row justify-content-center">
-    <div class="col-md-7">
-        @include('dashboard.organizaciones.card_table')
+    <div class="col-12">
+        @include('dashboard.organizaciones.table')
     </div>
-    <div class="col-md-5">
-        @include('dashboard.organizaciones.card_form')
-    </div>
+</div>
+<div class="row">
+    @include('dashboard.organizaciones.modal')
 </div>
