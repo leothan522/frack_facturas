@@ -5,12 +5,12 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <span class="nav-link">
-                        Nombre <span class="float-right text-bold">{{ $nombre }}</span>
+                        Nombre <span class="float-right text-bold text-uppercase">{{ $nombre }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Email <span class="float-right text-bold">{{ $email }}</span>
+                        Email <span class="float-right text-bold text-lowercase">{{ $email }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -20,7 +20,7 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Web <span class="float-right text-bold">{{ $web }}</span>
+                        Web <span class="float-right text-bold text-lowercase">{{ $web }}</span>
                     </span>
                 </li>
                 <li class="nav-item">

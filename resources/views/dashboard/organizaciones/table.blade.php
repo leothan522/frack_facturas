@@ -40,8 +40,8 @@
             @if($organizaciones->isNotEmpty())
                 @foreach($organizaciones as $organizacion)
                     <tr>
-                        <td>{{ $organizacion->nombre }}</td>
-                        <td class="d-none d-lg-table-cell">{{ $organizacion->email }}</td>
+                        <td class="text-uppercase">{{ $organizacion->nombre }}</td>
+                        <td class="d-none d-lg-table-cell text-lowercase">{{ $organizacion->email }}</td>
                         <td class="d-none d-lg-table-cell">{{ $organizacion->telefono }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ $organizacion->moneda }}</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $organizacion->dias_factura }}</td>
