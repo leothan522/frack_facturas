@@ -32,9 +32,9 @@
                 <th class="d-none d-lg-table-cell">Email</th>
                 <th class="d-none d-lg-table-cell text-center">Instalación</th>
                 <th class="d-none d-lg-table-cell text-center">Fecha Pago</th>
-                <th class="d-none d-lg-table-cell">Latitud</th>
+                {{--<th class="d-none d-lg-table-cell">Latitud</th>
                 <th class="d-none d-lg-table-cell">Longitud</th>
-                <th class="d-none d-lg-table-cell">GPS</th>
+                <th class="d-none d-lg-table-cell">GPS</th>--}}
                 <th style="width: 5%;">&nbsp;</th>
             </tr>
             </thead>
@@ -48,9 +48,9 @@
                         <td class="d-none d-lg-table-cell text-lowercase">{{ $cliente->email }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ verFecha($cliente->fecha_instalacion) }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ verFecha($cliente->fecha_pago) }}</td>
-                        <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->latitud }}</small></td>
+                        {{--<td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->latitud }}</small></td>
                         <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->longitud }}</small></td>
-                        <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->gps }}</small></td>
+                        <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->gps }}</small></td>--}}
                         <td class="text-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
