@@ -198,6 +198,8 @@ class OrganizacionesComponent extends Component
             ]);
         } else {
             if ($organizacion){
+                $organizacion->nombre = "*".$organizacion->nombre;
+                $organizacion->save();
                 $organizacion->delete();
                 $this->alert('success', 'Organización Eliminada.');
             }

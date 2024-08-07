@@ -32,7 +32,6 @@ return new class extends Migration
             ->insert([
                 "nombre" => "gestor",
                 "tabla_id" => -1,
-                "valor" => \Carbon\Carbon::now(),
                 "created_at" => \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now(),
             ]);

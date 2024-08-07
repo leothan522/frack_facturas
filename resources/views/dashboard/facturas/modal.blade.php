@@ -42,7 +42,7 @@
                             <select class="custom-select" wire:model.live="organizacion">
                                 <option value="">Seleccione</option>
                                 @foreach($organizaciones as $organizacion)
-                                    <option value="{{ $organizacion->id }}">{{ $organizacion->nombre }}</option>
+                                    <option value="{{ $organizacion->id }}">{{ mb_strtoupper($organizacion->nombre) }}</option>
                                 @endforeach
                             </select>
                             @error('organizacion')
@@ -62,7 +62,7 @@
                             <select class="custom-select" wire:model.live="plan">
                                 <option value="">Seleccione</option>
                                 @foreach($planes as $plan)
-                                    <option value="{{ $plan->id }}">{{ $plan->nombre }}</option>
+                                    <option value="{{ $plan->id }}">{{ mb_strtoupper($plan->nombre) }}</option>
                                 @endforeach
                             </select>
                             @error('plan')

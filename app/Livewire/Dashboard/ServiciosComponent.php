@@ -48,7 +48,7 @@ class ServiciosComponent extends Component
         foreach ($clientes as $row){
             $option = [
                 'id' => $row->id,
-                'text' => $row->cedula." | ".$row->nombre
+                'text' => mb_strtoupper($row->cedula." | ".$row->nombre." ".$row->apellido)
             ];
             array_push($data, $option);
         }
@@ -124,7 +124,7 @@ class ServiciosComponent extends Component
         $this->nuevo = false;
         $this->editar = true;
         $this->servicios_id = $servicio->id;
-        $this->dispatch('setSelectClientes', $this->cliente);
+        $this->dispatch('setSelectClientes', cliente: $this->cliente);
     }
 
     public function destroy($id)

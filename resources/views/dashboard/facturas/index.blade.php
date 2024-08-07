@@ -52,11 +52,11 @@
             });
         }
 
-        Livewire.on('getSelectClientes', clientes => {
+        Livewire.on('getSelectClientes', ({ clientes }) => {
             select_2('select_clientes', clientes);
         });
 
-        Livewire.on('setSelectClientes', cliente => {
+        Livewire.on('setSelectClientes', ({ cliente }) => {
             $('#select_clientes').val(cliente).trigger('change');
         });
 
