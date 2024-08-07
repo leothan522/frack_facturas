@@ -1,8 +1,8 @@
 <div class="row justify-content-center">
-    <div class="col-md-7">
-        @include('dashboard.planes.card_table')
+    <div class="col-12">
+        @include('dashboard.planes.table')
     </div>
-    <div class="col-md-5">
-        @include('dashboard.planes.card_form')
-    </div>
+</div>
+<div class="row">
+    @include('dashboard.planes.modal')
 </div>

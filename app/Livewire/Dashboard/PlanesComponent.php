@@ -15,28 +15,54 @@ use Livewire\WithPagination;
 class PlanesComponent extends Component
 {
     use LivewireAlert;
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
+    public $rows = 0, $numero = 14, $tableStyle = false;
     public $nuevo = true, $editar = false, $planes_id, $keyword;
-    public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta;
+    public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta, $organizacion;
+    public $cerrarModal= true, $show = false;
+
+    public function mount()
+    {
+        $this->setLimit();
+    }
 
     public function render()
     {
-        $planes = Plan::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate());
+        $planes = Plan::buscar($this->keyword)
+            ->orderBy('updated_at', 'DESC')
+            ->limit($this->rows)
+            ->get();
+
+        $rows = Plan::count();
+
+        if ($rows > $this->numero) {
+            $this->tableStyle = true;
+        }
+
         $organizaciones = Organizacion::orderBy('nombre', 'ASC')->get();
+
         return view('livewire.dashboard.planes-component')
             ->with('planes', $planes)
-            ->with('organizaciones', $organizaciones)
-            ;
+            ->with('rowsPlanes', $rows)
+            ->with('organizaciones', $organizaciones);
+    }
+
+    public function setLimit()
+    {
+        if (numRowsPaginate() < $this->numero) {
+            $rows = $this->numero;
+        } else {
+            $rows = numRowsPaginate();
+        }
+        $this->rows = $this->rows + $rows;
     }
 
     public function limpiar()
     {
         $this->reset([
             'nombre', 'bajada', 'subida', 'precio', 'organizaciones_id', 'planes_id', 'etiqueta',
-            'nuevo', 'editar', 'keyword'
+            'nuevo', 'editar', 'keyword', 'organizacion',
+            'show'
         ]);
         $this->resetErrorBag();
     }
@@ -44,8 +70,8 @@ class PlanesComponent extends Component
     protected function rules()
     {
         return [
-            'nombre' => 'required|min:4',
-            'etiqueta' => 'required|min:4',
+            'nombre' => 'required|min:3',
+            'etiqueta' => 'required|min:3',
             'bajada' => 'required|integer|gt:0',
             'subida' => 'required|integer|gt:0',
             'precio' => 'required|numeric|gt:0',
@@ -72,23 +98,47 @@ class PlanesComponent extends Component
         $plan->organizaciones_id = $this->organizaciones_id;
         $plan->save();
 
-        $this->limpiar();
-
         $this->alert('success', 'Datos Guardados.');
+
+        if ($this->cerrarModal){
+            $this->limpiar();
+            $this->dispatch('cerrarModal');
+        }else{
+            $this->showPlan($plan->id);
+        }
     }
 
-    public function edit($id)
+    public function edit($id, $cerrarModal = true)
     {
+        $this->limpiar();
         $plan = Plan::find($id);
-        $this->nombre = $plan->nombre;
-        $this->etiqueta = $plan->etiqueta_factura;
-        $this->bajada = $plan->bajada;
-        $this->subida = $plan->subida;
-        $this->precio = $plan->precio;
-        $this->organizaciones_id = $plan->organizaciones_id;
-        $this->nuevo = false;
-        $this->editar = true;
-        $this->planes_id = $plan->id;
+        if ($plan){
+
+            $this->nombre = $plan->nombre;
+            $this->etiqueta = $plan->etiqueta_factura;
+            $this->bajada = $plan->bajada;
+            $this->subida = $plan->subida;
+            $this->precio = $plan->precio;
+            $this->organizaciones_id = $plan->organizaciones_id;
+            $this->organizacion = $plan->organizacion->nombre;
+
+            $this->nuevo = false;
+            $this->editar = true;
+            $this->planes_id = $plan->id;
+
+            if (!$cerrarModal){
+                $this->cerrarModal = false;
+            }
+
+        }else{
+            $this->dispatch('cerrarModal');
+        }
+    }
+
+    public function showPlan($id)
+    {
+        $this->edit($id, false);
+        $this->show = true;
     }
 
     public function destroy($id)
@@ -134,11 +184,11 @@ class PlanesComponent extends Component
                 'confirmButtonText' => 'OK',
             ]);
         } else {
-            $plan->delete();
-            $this->alert(
-                'success',
-                'Plan Eliminado.'
-            );
+            if ($plan){
+                $plan->delete();
+                $this->alert('success', 'Plan Eliminado.');
+            }
+            $this->dispatch('cerrarModal');
             $this->limpiar();
         }
     }
@@ -147,6 +197,12 @@ class PlanesComponent extends Component
     public function buscar($keyword)
     {
         $this->keyword = $keyword;
+    }
+
+    #[On('cerrarModal')]
+    public function cerrarModal()
+    {
+        //JS
     }
 
 }
