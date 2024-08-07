@@ -27,7 +27,7 @@
             <thead>
             <tr class="text-navy">
                 <th>Nombre</th>
-                <th>Organización</th>
+                <th class="d-none d-lg-table-cell">Organización</th>
                 <th class="d-none d-lg-table-cell text-right">Etiqueta</th>
                 <th class="d-none d-lg-table-cell text-right">Subida</th>
                 <th class="d-none d-lg-table-cell text-right">Bajada</th>
@@ -41,7 +41,7 @@
                 @foreach($planes as $plan)
                     <tr>
                         <td class="text-uppercase">{{ $plan->nombre }}</td>
-                        <td class="text-uppercase"><small>{{ $plan->organizacion->nombre }}</small></td>
+                        <td class="d-none d-lg-table-cell text-uppercase">{{ $plan->organizacion->nombre }}</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $plan->etiqueta_factura }}</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $plan->bajada }} Mbps.</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $plan->subida }} Mbps.</td>
