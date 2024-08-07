@@ -43,7 +43,7 @@
                 @foreach($clientes as $cliente)
                     <tr>
                         <td class="text-uppercase text-right">{{ is_numeric($cliente->cedula) ? formatoMillares($cliente->cedula,0) : $cliente->cedula }}</td>
-                        <td class="text-uppercase">{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
+                        <td class="text-uppercase d-table-cell text-truncate" style="max-width: 150px;">{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
                         <td class="d-none d-lg-table-cell">{{ $cliente->telefono }}</td>
                         <td class="d-none d-lg-table-cell text-lowercase">{{ $cliente->email }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ verFecha($cliente->fecha_instalacion) }}</td>
