@@ -28,8 +28,7 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        function select_2(id, data)
-        {
+        function select_2(id, data) {
             let html = '<div class="input-group-prepend">' +
                 '<span class="input-group-text text-bold">' +
                 'Cliente' +
@@ -39,7 +38,7 @@
             $('#div_' + id).html(html);
 
             $('#'  + id).select2({
-                dropdownParent: $('#modal-servicios'),
+                dropdownParent: $('#modal-default'),
                 theme: 'bootstrap4',
                 data: data,
                 placeholder: 'Seleccione',
@@ -60,12 +59,22 @@
             $('#select_clientes').val(cliente).trigger('change');
         });
 
-        Livewire.on('cerrarModalServicios', () => {
-            $('#btn_modal_servicios').click();
+        Livewire.on('setPlan', ({ plan }) => {
+            setTimeout(function () {
+                $('#select_form_servicio_plan').val(plan).trigger('change');
+            }, 300);
+        });
+
+        Livewire.on('cerrarModal', () => {
+            $('#btn_modal_cerrar').click();
         });
 
         function getFacturas(id) {
             Livewire.dispatch('getFacturas', { id: id });
+        }
+
+        function getServicios() {
+            Livewire.dispatch('cerrarModal');
         }
 
         function search(){
@@ -74,6 +83,7 @@
             if (keyword.length > 0){
                 input.blur();
                 //alert('Falta vincular con el componente Livewire');
+                Livewire.dispatch('limpiarFacturas');
                 Livewire.dispatch('buscar', { keyword:keyword });
             }
             return false;

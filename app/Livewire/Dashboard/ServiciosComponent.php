@@ -18,28 +18,57 @@ use Livewire\WithPagination;
 class ServiciosComponent extends Component
 {
     use LivewireAlert;
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
+    public $rows = 0, $numero = 14, $tableStyle = false;
     public $planes = array(), $nuevo = true, $editar = false, $servicios_id, $keyword;
-    public $cliente, $organizacion, $plan, $codigo;
+    public $cliente, $organizacionesID, $planes_id, $codigo;
+    public $cedula, $nombre, $apellido, $email, $telefono, $pago, $organizacion, $plan;
+    public $cerrarModal= true, $show = false;
 
+    public function mount()
+    {
+        $this->setLimit();
+    }
 
     public function render()
     {
         $organizaciones = Organizacion::all();
-        $servicios = Servicio::buscar($this->keyword)->orderBy('id', 'DESC')->paginate(numRowsPaginate(), ['*'], 'pageServicio');
+
+        $servicios = Servicio::buscar($this->keyword)
+            ->orderBy('id', 'DESC')
+            ->limit($this->rows)
+            ->get();
+
+        $rows = Servicio::count();
+
+        if ($rows > $this->numero) {
+            $this->tableStyle = true;
+        }
+
         return view('livewire.dashboard.servicios-component')
             ->with('organizaciones', $organizaciones)
-            ->with('servicios', $servicios);
+            ->with('servicios', $servicios)
+            ->with('rowsServicios', $rows);
     }
 
+    public function setLimit()
+    {
+        if (numRowsPaginate() < $this->numero) {
+            $rows = $this->numero;
+        } else {
+            $rows = numRowsPaginate();
+        }
+        $this->rows = $this->rows + $rows;
+    }
+
+    #[On('limpiar')]
     public function limpiar()
     {
         $this->reset([
-            'cliente', 'organizacion', 'plan', 'codigo', 'servicios_id',
-            'nuevo', 'editar', 'keyword'
+            'cliente', 'organizacionesID', 'planes_id', 'codigo', 'servicios_id',
+            'nuevo', 'editar', 'keyword',
+            'cedula', 'nombre', 'apellido', 'email', 'telefono', 'pago', 'organizacion', 'plan',
+            'show'
         ]);
         $this->resetErrorBag();
 
@@ -59,13 +88,15 @@ class ServiciosComponent extends Component
     {
         return [
             'cliente' => ['required', Rule::unique('servicios', 'clientes_id')->where(fn (Builder $query) => $query->where('deleted_at', null))->ignore($this->servicios_id)],
-            'organizacion' => 'required',
-            'plan' => 'required',
+            'organizacionesID' => 'required',
+            'planes_id' => 'required',
         ];
     }
 
     protected $messages = [
-        'cliente.unique' => 'El cliente ya tiene un servicio registrado',
+        'cliente.unique' => 'El cliente ya tiene un servicio registrado.',
+        'organizacionesID.required' => 'El campo organización es obligatorio.',
+        'planes_id.required' => 'El campo plan de servicio es obligatorio.',
     ];
 
     public function save()
@@ -78,53 +109,73 @@ class ServiciosComponent extends Component
         }else{
             //nuevo
             $servicios = new Servicio();
-
-            $parametros = Parametro::where('nombre', 'next_codigo_servicios')->where('tabla_id', $this->organizacion)->first();
-            if ($parametros){
-                $next = $parametros->valor;
-            }else{
-                $next = 0;
-                $parametros = new Parametro();
-                $parametros->nombre = 'next_codigo_servicios';
-                $parametros->tabla_id = $this->organizacion;
-            }
-            $i = 1;
-            do{
-                $next = $next + $i;
-                $codigo = nextCodigo($next, 'formato_codigo_servicios', $this->organizacion);
-                $existe = Servicio::where('codigo', $codigo)->count();
-                if ($existe){ $i++; }
-            }while($existe);
-            $servicios->codigo = $codigo;
-        }
-        $servicios->clientes_id = $this->cliente;
-        $servicios->organizaciones_id = $this->organizacion;
-        $servicios->planes_id = $this->plan;
-        $servicios->save();
-
-        if (!$this->servicios_id){
-            $parametros->valor = $next;
-            $parametros->save();
+            $this->codigo = nextCodigo('proximo_codigo_servicios', $this->organizacionesID, 'formato_codigo_servicios');
         }
 
-        $this->limpiar();
-        $this->dispatch('cerrarModalServicios');
-        $this->alert('success', 'Datos Guardados.');
+        if ($servicios){
+
+            $servicios->codigo = $this->codigo;
+            $servicios->clientes_id = $this->cliente;
+            $servicios->organizaciones_id = $this->organizacionesID;
+            $servicios->planes_id = $this->planes_id;
+            $servicios->save();
+
+            $this->alert('success', 'Datos Guardados.');
+
+        }
+
+        if ($this->cerrarModal){
+            $this->limpiar();
+            $this->dispatch('cerrarModal');
+        }else{
+            $this->showServicio($servicios->id);
+        }
+
     }
 
-    public function edit($id)
+    public function edit($id, $cerrarModal = true)
     {
         $this->limpiar();
         $servicio = Servicio::find($id);
-        $this->codigo = $servicio->codigo;
-        $this->cliente = $servicio->clientes_id;
-        $this->organizacion = $servicio->organizaciones_id;
-        $this->updatedOrganizacion();
-        $this->plan = $servicio->planes_id;
-        $this->nuevo = false;
-        $this->editar = true;
-        $this->servicios_id = $servicio->id;
-        $this->dispatch('setSelectClientes', cliente: $this->cliente);
+        if ($servicio){
+
+            $this->codigo = $servicio->codigo;
+            $this->cliente = $servicio->clientes_id;
+            $this->organizacionesID = $servicio->organizaciones_id;
+            $this->updatedOrganizacionesID();
+            $this->planes_id = $servicio->planes_id;
+
+            $this->cedula = $servicio->cliente->cedula;
+            $this->nombre = $servicio->cliente->nombre;
+            $this->apellido = $servicio->cliente->apellido;
+            $this->telefono = $servicio->cliente->telefono;
+            $this->email = $servicio->cliente->email;
+            $this->pago = $servicio->cliente->fecha_pago;
+
+            $this->plan = $servicio->plan->nombre;
+            $this->organizacion = $servicio->organizacion->nombre;
+
+            $this->nuevo = false;
+            $this->editar = true;
+            $this->servicios_id = $servicio->id;
+
+            $this->dispatch('setSelectClientes', cliente: $this->cliente);
+            $this->dispatch('setPlan', plan: $servicio->planes_id);
+
+            if (!$cerrarModal){
+                $this->cerrarModal = false;
+            }
+
+        }else{
+            $this->dispatch('cerrarModal');
+        }
+
+    }
+
+    public function showServicio($id)
+    {
+        $this->edit($id, false);
+        $this->show = true;
     }
 
     public function destroy($id)
@@ -148,7 +199,7 @@ class ServiciosComponent extends Component
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
-        $factura = Factura::where('servicios_id', $servicio->id)->first();
+        $factura = Factura::where('servicios_id', $this->servicios_id)->first();
         if ($factura){
             $vinculado = true;
         }
@@ -164,13 +215,14 @@ class ServiciosComponent extends Component
                 'confirmButtonText' => 'OK',
             ]);
         } else {
-            $servicio->delete();
-            $this->alert(
-                'success',
-                'Servicio Eliminado.'
-            );
+
+            if ($servicio){
+                $servicio->delete();
+                $this->alert('success', 'Servicio Eliminado.');
+            }
+
             $this->limpiar();
-            $this->dispatch('cerrarModalServicios');
+            $this->dispatch('cerrarModal');
             $this->dispatch('limpiarFacturas');
         }
     }
@@ -181,10 +233,10 @@ class ServiciosComponent extends Component
         $this->keyword = $keyword;
     }
 
-    public function updatedOrganizacion()
+    public function updatedOrganizacionesID()
     {
-        $this->reset('plan');
-        $this->planes = Plan::where('organizaciones_id', $this->organizacion)->get();
+        $this->reset('planes_id');
+        $this->planes = Plan::where('organizaciones_id', $this->organizacionesID)->get();
     }
 
     #[On('getCliente')]
@@ -205,8 +257,14 @@ class ServiciosComponent extends Component
         //JS
     }
 
-    #[On('cerrarModalServicios')]
-    public function cerrarModalServicios()
+    #[On('cerrarModal')]
+    public function cerrarModal()
+    {
+        //JS
+    }
+
+    #[On('setPlan')]
+    public function setPlan($plan)
     {
         //JS
     }

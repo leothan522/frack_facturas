@@ -1,30 +1,29 @@
-<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+@if($viewFactura)
+    <div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
             @if(/*$keyword*/false)
-                Resultados de la Busqueda { <b class="text-danger">{{ $keyword }}</b> }
+                Busqueda { <b class="text-danger">{{ $keyword }}</b> }
                 <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Facturas del Cliente
+                Facturas Cliente
             @endif
         </h3>
 
         <div class="card-tools">
-            @if($viewFactura)
-                <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
-            @endIF
+            <button class="btn btn-sm btn-tool" wire:click="generarFactura"><i class="fas fa-file"></i> Generar Factura</button>
+            <button type="button" class="btn btn-tool" wire:click="limpiarFacturas" onclick="getServicios()" data-card-widget="remove"><i class="fas fa-times"></i></button>
         </div>
     </div>
     <div class="card-body">
-        @if($viewFactura)
-            <div class="row">
+        <div class="row">
                 <div class="col-12">
-                    <ol class="breadcrumb">
+                    <ol class="breadcrumb text-uppercase">
                         <li class="breadcrumb-item active">{{ $codigo }}</li>
-                        <li class="breadcrumb-item active">{{ $cliente }}</li>
+                        <li class="breadcrumb-item active d-inline-block text-truncate" style="max-width: 200px;">{{ $cliente }}</li>
                         <li class="breadcrumb-item active">{{ $plan }}</li>
-                        <li class="breadcrumb-item active">{{ $organizacion }}</li>
+                        <li class="breadcrumb-item active d-none d-lg-inline-block">{{ $organizacion }}</li>
                         <li class="breadcrumb-item active">{{ verFecha($fecha_pago, "j-m-Y") }}</li>
                     </ol>
                 </div>
@@ -34,10 +33,10 @@
                 <thead>
                 <tr class="text-navy">
                     <th>Factura</th>
-                    <th>Plan</th>
+                    <th class="d-none d-lg-table-cell">Plan</th>
                     <th class="text-center">Fecha</th>
                     <th class="text-right">Total</th>
-                    <th style="width: 5%;">Moneda</th>
+                    <th class="d-none d-lg-table-cell" style="width: 5%;">Moneda</th>
                     <th style="width: 5%;">&nbsp;</th>
                 </tr>
                 </thead>
@@ -46,26 +45,26 @@
                     @php($borrar = true)
                     @foreach($listarFacturas as $factura)
                         <tr>
-                            <td>{{ $factura->factura_numero }}</td>
-                            <td>{{ $factura->plan_nombre }}</td>
-                            <td class="text-center">{{ verFecha($factura->factura_fecha) }}</td>
-                            <td class="text-right">{{ $factura->factura_total }}</td>
-                            <td><span>{{ $factura->organizacion_moneda }}</span></td>
+                            <td class="text-uppercase">{{ $factura->factura_numero }}</td>
+                            <td class="d-none d-lg-table-cell text-uppercase">{{ $factura->plan_nombre }}</td>
+                            <td class="text-center">{{ verFecha($factura->factura_fecha, 'm-Y') }}</td>
+                            <td class="text-right">{{ formatoMillares($factura->factura_total) }}</td>
+                            <td class="d-none d-lg-table-cell"><span>{{ $factura->organizacion_moneda }}</span></td>
                             <td class="justify-content-end">
                                 <div class="btn-group">
-                                    <button wire:click="destroy({{ $factura->id }})" class="btn btn-primary btn-sm"
+                                    <button wire:click="destroy({{ $factura->id }})" class="btn btn-primary btn-xs"
                                         @if(!$borrar) disabled @endif >
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <a href="{{ route('facturas.pdf', $factura->id) }}" target="_blank" class="btn btn-primary btn-sm">
+                                    <a href="{{ route('facturas.pdf', $factura->id) }}" target="_blank" class="btn btn-primary btn-xs">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     @if($factura->send)
-                                        <button wire:click="reSendFactura({{ $factura->id }})" class="btn btn-primary btn-sm">
+                                        <button wire:click="reSendFactura({{ $factura->id }})" class="btn btn-primary btn-xs">
                                             <i class="fas fa-envelope-open"></i>
                                         </button>
                                     @else
-                                        <button wire:click="sendFactura({{ $factura->id }})" class="btn btn-primary btn-sm">
+                                        <button wire:click="sendFactura({{ $factura->id }})" class="btn btn-primary btn-xs">
                                             <i class="fas fa-paper-plane"></i>
                                         </button>
                                     @endif
@@ -88,25 +87,16 @@
                 </tbody>
             </table>
         </div>
-
-        @else
-            <div class="row m-5">
-                <div class="col-12">
-                    Debes Seleccionar un cliente para empezar...
-                </div>
-            </div>
-        @endif
     </div>
 
         <div class="modal-footer">
-            @if($viewFactura)
             <div class="card-tools">
                 @if($botonMasFacturas)
                     <button class="btn btn-sm btn-tool" wire:click="verMasFacturas({{ $limit }})"><i class="fas fa-arrow-down"></i> Ver mas facturas</button>
                 @endif
-                <button class="btn btn-sm btn-tool" wire:click="limpiarFacturas">Cerrar</button>
+                <button class="btn btn-sm btn-tool" wire:click="limpiarFacturas" onclick="getServicios()" data-card-widget="remove">Cerrar</button>
             </div>
-            @endif
         </div>
     {!! verSpinner() !!}
 </div>
+@endif

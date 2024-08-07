@@ -1,8 +1,11 @@
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-12">
         @livewire('dashboard.servicios-component')
     </div>
-    <div class="col-md-6">
+</div>
+
+<div class="row">
+    <div class="col-12">
         @livewire('dashboard.facturas-component')
     </div>
 </div>

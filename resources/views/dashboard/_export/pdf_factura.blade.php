@@ -111,7 +111,7 @@
                         </td>
 
                         <td>
-                            Factura #: <strong style="font-weight: bold;color: red;">{{ $factura->factura_numero }}</strong><br />
+                            Factura #: <strong style="font-weight: bold;color: red;">{{ mb_strtoupper($factura->factura_numero) }}</strong><br />
                             Fecha: {{ verFecha($factura->factura_fecha) }}
                         </td>
                     </tr>
@@ -125,13 +125,13 @@
                     <tr>
                         <td>
                             Dirección:<br />
-                            {{ $factura->cliente_direccion }}
+                            {{ mb_strtoupper($factura->cliente_direccion) }}
                         </td>
                         <td>
-                            Cedula: {{ $factura->cliente_cedula }}<br />
-                            Nombre: {{ $factura->cliente_nombre }} {{ $factura->cliente_apellido }}<br />
-                            Teléfono: {{ $factura->cliente_telefono }}<br />
-                            Email: {{ $factura->cliente_email }}<br />
+                            Cedula: {{ mb_strtoupper($factura->cliente_cedula) }}<br />
+                            Nombre: {{ mb_strtoupper($factura->cliente_nombre) }} {{ mb_strtoupper($factura->cliente_apellido) }}<br />
+                            Teléfono: {{ mb_strtoupper($factura->cliente_telefono) }}<br />
+                            Email: {{ mb_strtoupper($factura->cliente_email) }}<br />
                     </tr>
                 </table>
             </td>
@@ -145,14 +145,14 @@
 
         <tr class="item">
             <td>
-                {{ $factura->plan_etiqueta }}
+                {{ mb_strtoupper($factura->plan_etiqueta) }}
             </td>
-            <td>{{ $factura->organizacion_moneda }} {{ formatoMillares($factura->plan_precio) }}</td>
+            <td>{{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
         </tr>
 
         <tr class="total">
             <td></td>
-            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small style="float: left;">Subtotal:</small></small> {{ $factura->organizacion_moneda }} {{ formatoMillares($factura->plan_precio) }}</td>
+            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small style="float: left;">Subtotal:</small></small> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
         </tr>
         <tr class="total">
             <td></td>
@@ -160,7 +160,7 @@
         </tr>
         <tr class="total">
             <td></td>
-            <td style="background: #eee; border-bottom: 1px solid #ddd; font-weight: bold;color: red;"><span style="float: left;">Total:</span> {{ $factura->organizacion_moneda }} {{ formatoMillares($factura->plan_precio) }}</td>
+            <td style="background: #eee; border-bottom: 1px solid #ddd; font-weight: bold;color: red;"><span style="float: left;">Total:</span> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
         </tr>
     </table>
 </div>
