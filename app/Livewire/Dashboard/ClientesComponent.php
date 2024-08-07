@@ -14,26 +14,52 @@ use Livewire\WithPagination;
 class ClientesComponent extends Component
 {
     use LivewireAlert;
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
-    public $nuevo = true, $editar = false, $cliente_id, $keyword;
+    public $rows = 0, $numero = 14, $tableStyle = false;
+    public $nuevo = true, $editar = false, $clientes_id, $keyword;
     public $cedula, $nombre, $apellido, $email, $telefono, $direccion, $instalacion, $pago,
         $latitud, $longitud, $gps;
+    public $cerrarModal= true, $show = false;
+
+    public function mount()
+    {
+        $this->setLimit();
+    }
 
     public function render()
     {
-        $clientes = Cliente::buscar($this->keyword)->orderBy('updated_at', 'DESC')->paginate(numRowsPaginate());
+        $clientes = Cliente::buscar($this->keyword)
+            ->orderBy('updated_at', 'DESC')
+            ->limit($this->rows)
+            ->get();
+
+        $rows = Cliente::count();
+
+        if ($rows > $this->numero) {
+            $this->tableStyle = true;
+        }
+
         return view('livewire.dashboard.clientes-component')
-            ->with('clientes', $clientes);
+            ->with('clientes', $clientes)
+            ->with('rowsClientes', $rows);
+    }
+
+    public function setLimit()
+    {
+        if (numRowsPaginate() < $this->numero) {
+            $rows = $this->numero;
+        } else {
+            $rows = numRowsPaginate();
+        }
+        $this->rows = $this->rows + $rows;
     }
 
     public function limpiar()
     {
         $this->reset([
             'cedula', 'nombre', 'apellido', 'email', 'telefono', 'direccion', 'instalacion',
-            'pago', 'latitud', 'longitud', 'gps', 'cliente_id', 'nuevo', 'editar', 'keyword'
+            'pago', 'latitud', 'longitud', 'gps', 'clientes_id', 'nuevo', 'editar', 'keyword',
+            'show'
         ]);
         $this->resetErrorBag();
     }
@@ -41,7 +67,7 @@ class ClientesComponent extends Component
     protected function rules()
     {
         return [
-            'cedula' => ['required', 'integer', Rule::unique('clientes', 'cedula')->ignore($this->cliente_id)],
+            'cedula' => ['required', 'integer', Rule::unique('clientes', 'cedula')->ignore($this->clientes_id)],
             'nombre' => 'required|min:4',
             'apellido' => 'required|min:4',
             'email' => 'required|email',
@@ -59,9 +85,9 @@ class ClientesComponent extends Component
     {
         $this->validate();
 
-        if ($this->cliente_id){
+        if ($this->clientes_id){
             //editar
-            $cliente = Cliente::find($this->cliente_id);
+            $cliente = Cliente::find($this->clientes_id);
         }else{
             //nuevo
             $cliente = new Cliente();
@@ -79,33 +105,58 @@ class ClientesComponent extends Component
         $cliente->gps = $this->gps;
         $cliente->save();
 
-        $this->limpiar();
-
         $this->alert('success', 'Datos Guardados.');
+
+        if ($this->cerrarModal){
+            $this->limpiar();
+            $this->dispatch('cerrarModal');
+        }else{
+            $this->showCliente($cliente->id);
+        }
+
     }
 
-    public function edit($id)
+    public function edit($id, $cerrarModal = true)
     {
+        $this->limpiar();
         $cliente = Cliente::find($id);
-        $this->cedula = $cliente->cedula;
-        $this->nombre = $cliente->nombre;
-        $this->apellido = $cliente->apellido;
-        $this->email = $cliente->email;
-        $this->telefono = $cliente->telefono;
-        $this->direccion = $cliente->direccion;
-        $this->instalacion = $cliente->fecha_instalacion;
-        $this->pago = $cliente->fecha_pago;
-        $this->latitud = $cliente->latitud;
-        $this->longitud = $cliente->longitud;
-        $this->gps = $cliente->gps;
-        $this->nuevo = false;
-        $this->editar = true;
-        $this->cliente_id = $cliente->id;
+        if ($cliente){
+
+            $this->cedula = $cliente->cedula;
+            $this->nombre = $cliente->nombre;
+            $this->apellido = $cliente->apellido;
+            $this->email = $cliente->email;
+            $this->telefono = $cliente->telefono;
+            $this->direccion = $cliente->direccion;
+            $this->instalacion = $cliente->fecha_instalacion;
+            $this->pago = $cliente->fecha_pago;
+            $this->latitud = $cliente->latitud;
+            $this->longitud = $cliente->longitud;
+            $this->gps = $cliente->gps;
+
+            $this->nuevo = false;
+            $this->editar = true;
+            $this->clientes_id = $cliente->id;
+
+            if (!$cerrarModal){
+                $this->cerrarModal = false;
+            }
+
+        }else{
+            $this->dispatch('cerrarModal');
+        }
+
+    }
+
+    public function showCliente($id)
+    {
+        $this->edit($id, false);
+        $this->show = true;
     }
 
     public function destroy($id)
     {
-        $this->cliente_id = $id;
+        $this->clientes_id = $id;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -120,16 +171,16 @@ class ClientesComponent extends Component
     #[On('confirmed')]
     public function confirmed()
     {
-        $cliente = Cliente::find($this->cliente_id);
+        $cliente = Cliente::find($this->clientes_id);
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
 
-        $servicios = Servicio::where('clientes_id', $this->cliente_id)->first();
+        $servicios = Servicio::where('clientes_id', $this->clientes_id)->first();
         if ($servicios){
             $vinculado = true;
         }
 
-        $facturas = Factura::where('clientes_id', $this->cliente_id)->first();
+        $facturas = Factura::where('clientes_id', $this->clientes_id)->first();
         if ($facturas){
             $vinculado = true;
         }
@@ -145,11 +196,13 @@ class ClientesComponent extends Component
                 'confirmButtonText' => 'OK',
             ]);
         } else {
-            $cliente->delete();
-            $this->alert(
-                'success',
-                'Cliente Eliminado.'
-            );
+            if ($cliente){
+                $cliente->cedula = "*".$cliente->cedula;
+                $cliente->save();
+                $cliente->delete();
+                $this->alert('success', 'Cliente Eliminado.');
+            }
+            $this->dispatch('cerrarModal');
             $this->limpiar();
         }
     }
@@ -160,5 +213,10 @@ class ClientesComponent extends Component
         $this->keyword = $keyword;
     }
 
+    #[On('cerrarModal')]
+    public function cerrarModal()
+    {
+        //JS
+    }
 
 }

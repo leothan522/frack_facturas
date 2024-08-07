@@ -27,6 +27,10 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
+        Livewire.on('cerrarModal', () => {
+            $('#btn_modal_cerrar').click();
+        });
+
         function search(){
             let input = $("#navbarSearch");
             let keyword  = input.val();
