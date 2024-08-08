@@ -47,7 +47,7 @@
                         <tr>
                             <td class="text-uppercase">{{ $factura->factura_numero }}</td>
                             <td class="d-none d-lg-table-cell text-uppercase">{{ $factura->plan_nombre }}</td>
-                            <td class="text-center">{{ verFecha($factura->factura_fecha, 'm-Y') }}</td>
+                            <td class="text-center">{{ verFecha($factura->factura_fecha) }}</td>
                             <td class="text-right">{{ formatoMillares($factura->factura_total) }}</td>
                             <td class="d-none d-lg-table-cell"><span>{{ $factura->organizacion_moneda }}</span></td>
                             <td class="justify-content-end">

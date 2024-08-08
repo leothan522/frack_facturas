@@ -112,6 +112,10 @@ class FacturasComponent extends Component
 
         }else{
 
+            if (!$ultima){
+                $factura_fecha = $hoy->format('Y')."-".$hoy->format('m')."-".Carbon::parse($cliente->fecha_pago)->format('d');
+            }
+
             //montos factura
             $factura_subtotal = $plan->precio;
             $factura_iva = null;

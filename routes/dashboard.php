@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\ClientesController;
 use App\Http\Controllers\Dashboard\FacturasController;
 use App\Http\Controllers\Dashboard\OrganizacionesController;
 use App\Http\Controllers\Dashboard\PlanesController;
+use App\Http\Controllers\Dashboard\PruebasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\ParametrosController;
 use App\Http\Controllers\Dashboard\UsuariosController;
@@ -41,6 +42,8 @@ Route::middleware([
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
     Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
+
+    Route::get('pruebas', [PruebasController::class, 'index'])->name('pagina.pruebas');
 
 });
 

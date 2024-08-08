@@ -357,7 +357,13 @@ return [
                     'icon' => 'fas fa-fw fa-list',
                     'route' => 'parametros.index',
                     'can' => 'parametros',
-                ]
+                ],
+                [
+                'text' => 'Pruebas',
+                'icon' => 'fas fa-fw fa-tools',
+                'route' => 'pagina.pruebas',
+                'can' => 'parametros',
+            ]
             ],
         ],
 
