@@ -2,12 +2,16 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\FacturasMail;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -58,11 +62,15 @@ class PruebasComponent extends Component
                 if ($ultima) {
                     $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
                 }else{
-                    $ultima_fecha = $year."-".Carbon::parse($cliente->fecha_pago)->format('m-d');
+                    $ultima_fecha = Carbon::parse($cliente->fecha_pago);
                 }
                 $factura_fecha = Carbon::parse($ultima_fecha);
 
                 if (!$factura_fecha->gt($hoy)){
+
+                    if (!$ultima){
+                        $factura_fecha = $year."-".$mes."-".Carbon::parse($cliente->fecha_pago)->format('d');
+                    }
 
                     //montos factura
                     $factura_subtotal = $plan->precio;
@@ -106,6 +114,38 @@ class PruebasComponent extends Component
 
                     $organizacion->proxima_factura = ++$next;
                     $organizacion->save();
+
+
+                    //sendFactura al correo
+
+                    $data = [
+                        'factura' => $factura
+                    ];
+                    //creamos el PDF y lo guardamos en Storage => public
+                    $filename = "sendFacturaID_$factura->id.pdf";
+                    $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
+                    $pdf->save($filename, 'public');
+
+                    //anexamos los datos extras en data para enviar email
+                    $month = mesEspanol(verFecha($factura->factura_fecha, 'm'));
+                    $year = verFecha($factura->factura_fecha, 'Y');
+                    $data['from_email'] = $factura->organizacion_email;
+                    $data['from_name'] = $factura->organizacion_nombre;
+                    $data['subject'] = "Factura servicio de Internet $month $year";
+                    $data['path'] = "public/$filename";
+                    $data['filename'] = "Factura $month $year.pdf";
+
+                    //enviamos el correo
+                    $to = $factura->cliente_email;
+                    Mail::to($to)->send(new FacturasMail($data));
+
+                    $path = Storage::exists($data['path']);
+                    if ($path){
+                        Storage::delete($data['path']);
+                    }
+
+                    $factura->send = true;
+                    $factura->save();
 
                 }
             }

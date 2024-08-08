@@ -29,7 +29,7 @@ class ClientesComponent extends Component
     public function render()
     {
         $clientes = Cliente::buscar($this->keyword)
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->limit($this->rows)
             ->get();
 

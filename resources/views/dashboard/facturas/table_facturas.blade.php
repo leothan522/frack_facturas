@@ -52,7 +52,7 @@
                             <td class="d-none d-lg-table-cell"><span>{{ $factura->organizacion_moneda }}</span></td>
                             <td class="justify-content-end">
                                 <div class="btn-group">
-                                    <button wire:click="destroy({{ $factura->id }})" class="btn btn-primary btn-xs"
+                                    <button wire:click="destroyFactura({{ $factura->id }})" class="btn btn-primary btn-xs"
                                         @if(!$borrar) disabled @endif >
                                         <i class="fas fa-trash-alt"></i>
                                     </button>

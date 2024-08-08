@@ -41,7 +41,7 @@ class ServiciosComponent extends Component
         $organizaciones = Organizacion::all();
 
         $servicios = Servicio::buscar($this->keyword)
-            ->orderBy('id', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->limit($this->rows)
             ->get();
 

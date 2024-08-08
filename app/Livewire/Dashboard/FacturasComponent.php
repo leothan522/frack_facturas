@@ -49,119 +49,132 @@ class FacturasComponent extends Component
         }
 
         $servicio = Servicio::find($this->servicios_id);
-        $this->codigo = $servicio->codigo;
-        $this->cliente = $servicio->cliente->nombre." ".$servicio->cliente->apellido;
-        $this->plan = $servicio->plan->nombre;
-        $this->organizacion = $servicio->organizacion->nombre;
-        $this->fecha_pago = $servicio->cliente->fecha_pago;
 
-        $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)
-            ->orderBy('factura_fecha', 'DESC')->limit($this->limit)->get();
+        if ($servicio){
 
-        $facturas = Factura::where('servicios_id', $this->servicios_id)->count();
-        $actual = $this->listarFacturas->count();
-        if ($facturas > 12 && $facturas > $actual){
-            $this->botonMasFacturas = true;
+            $this->codigo = $servicio->codigo;
+            $this->cliente = $servicio->cliente->nombre." ".$servicio->cliente->apellido;
+            $this->plan = $servicio->plan->nombre;
+            $this->organizacion = $servicio->organizacion->nombre;
+            $this->fecha_pago = $servicio->cliente->fecha_pago;
+
+            $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)
+                ->orderBy('factura_fecha', 'DESC')->limit($this->limit)->get();
+
+            $facturas = Factura::where('servicios_id', $this->servicios_id)->count();
+            $actual = $this->listarFacturas->count();
+            if ($facturas > 12 && $facturas > $actual){
+                $this->botonMasFacturas = true;
+            }else{
+                $this->botonMasFacturas = false;
+            }
+
+            $this->viewFactura = true;
+
         }else{
-            $this->botonMasFacturas = false;
+            $this->reset(['servicios_id']);
         }
 
-        $this->viewFactura = true;
     }
 
     public function generarFactura()
     {
         $servicio = Servicio::find($this->servicios_id);
-        $organizacion = Organizacion::find($servicio->organizaciones_id);
-        $cliente = Cliente::find($servicio->clientes_id);
-        $plan = Plan::find($servicio->planes_id);
 
-        $hoy = Carbon::parse(date("Y-m-d"));
+        if ($servicio){
 
-        //numero Factura
-        $next = $organizacion->proxima_factura;
-        $formato = $organizacion->formato_factura;
-        $i = 0;
-        do{
-            $next = $next + $i;
-            $factura_numero = $formato . cerosIzquierda($next, numSizeCodigo());
-            $existe = Factura::where('factura_numero', $factura_numero)->where('organizaciones_id', $organizacion->id)->first();
-            if ($existe){ $i++; }
-        }while($existe);
+            $organizacion = Organizacion::find($servicio->organizaciones_id);
+            $cliente = Cliente::find($servicio->clientes_id);
+            $plan = Plan::find($servicio->planes_id);
 
-        //fecha factura
-        $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
-        if ($ultima) {
-            $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
-        }else{
-            $ultima_fecha = Carbon::parse($cliente->fecha_pago);
-        }
-        $factura_fecha = Carbon::parse($ultima_fecha);
+            $hoy = Carbon::parse(date("Y-m-d"));
 
-        if ($factura_fecha->gt($hoy)){
-            //no
-            $this->alert('warning', '¡No se puede Generar la Factura!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'Aún no se ha alcanzado la fecha de pago del cliente para la proxima factura.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
-            ]);
+            //numero Factura
+            $next = $organizacion->proxima_factura;
+            $formato = $organizacion->formato_factura;
+            $i = 0;
+            do{
+                $next = $next + $i;
+                $factura_numero = $formato . cerosIzquierda($next, numSizeCodigo());
+                $existe = Factura::where('factura_numero', $factura_numero)->where('organizaciones_id', $organizacion->id)->first();
+                if ($existe){ $i++; }
+            }while($existe);
 
-        }else{
+            //fecha factura
+            $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
+            if ($ultima) {
+                $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
+            }else{
+                $ultima_fecha = Carbon::parse($cliente->fecha_pago);
+            }
+            $factura_fecha = Carbon::parse($ultima_fecha);
 
-            if (!$ultima){
-                $factura_fecha = $hoy->format('Y')."-".$hoy->format('m')."-".Carbon::parse($cliente->fecha_pago)->format('d');
+            if ($factura_fecha->gt($hoy)){
+                //no
+                $this->alert('warning', '¡No se puede Generar la Factura!', [
+                    'position' => 'center',
+                    'timer' => '',
+                    'toast' => false,
+                    'text' => 'Aún no se ha alcanzado la fecha de pago del cliente para la proxima factura.',
+                    'showConfirmButton' => true,
+                    'onConfirmed' => '',
+                    'confirmButtonText' => 'OK',
+                ]);
+
+            }else{
+
+                if (!$ultima){
+                    $factura_fecha = $hoy->format('Y')."-".$hoy->format('m')."-".Carbon::parse($cliente->fecha_pago)->format('d');
+                }
+
+                //montos factura
+                $factura_subtotal = $plan->precio;
+                $factura_iva = null;
+                $factura_total = $plan->precio;
+
+                //Guardamos Factura
+                $factura = new Factura();
+                $factura->factura_numero = $factura_numero;
+                $factura->factura_fecha = $factura_fecha;
+                $factura->factura_subtotal = $factura_subtotal;
+                $factura->factura_iva = $factura_iva;
+                $factura->factura_total = $factura_total;
+                $factura->servicios_codigo = $servicio->codigo;
+                $factura->organizacion_nombre = $organizacion->nombre;
+                $factura->organizacion_email = $organizacion->email;
+                $factura->organizacion_telefono = $organizacion->telefono;
+                $factura->organizacion_web = $organizacion->web;
+                $factura->organizacion_moneda = $organizacion->moneda;
+                $factura->cliente_cedula = $cliente->cedula;
+                $factura->cliente_nombre = $cliente->nombre;
+                $factura->cliente_apellido = $cliente->apellido;
+                $factura->cliente_email = $cliente->email;
+                $factura->cliente_telefono = $cliente->telefono;
+                $factura->cliente_latitud = $cliente->latitud;
+                $factura->cliente_longitud = $cliente->longitud;
+                $factura->cliente_gps = $cliente->gps;
+                $factura->cliente_fecha_instalacion = $cliente->fecha_instalacion;
+                $factura->cliente_fecha_pago = $cliente->fecha_pago;
+                $factura->cliente_direccion = $cliente->direccion;
+                $factura->plan_nombre = $plan->nombre;
+                $factura->plan_etiqueta = $plan->etiqueta_factura;
+                $factura->plan_bajada = $plan->bajada;
+                $factura->plan_subida = $plan->subida;
+                $factura->plan_precio = $plan->precio;
+                $factura->servicios_id = $servicio->id;
+                $factura->clientes_id = $cliente->id;
+                $factura->organizaciones_id = $organizacion->id;
+                $factura->planes_id = $plan->id;
+                $factura->save();
+
+                $this->getFacturas($this->servicios_id);
+
+                $organizacion->proxima_factura = ++$next;
+                $organizacion->save();
+
+                $this->alert('success', 'Factura Generada.');
             }
 
-            //montos factura
-            $factura_subtotal = $plan->precio;
-            $factura_iva = null;
-            $factura_total = $plan->precio;
-
-            //Guardamos Factura
-            $factura = new Factura();
-            $factura->factura_numero = $factura_numero;
-            $factura->factura_fecha = $factura_fecha;
-            $factura->factura_subtotal = $factura_subtotal;
-            $factura->factura_iva = $factura_iva;
-            $factura->factura_total = $factura_total;
-            $factura->servicios_codigo = $servicio->codigo;
-            $factura->organizacion_nombre = $organizacion->nombre;
-            $factura->organizacion_email = $organizacion->email;
-            $factura->organizacion_telefono = $organizacion->telefono;
-            $factura->organizacion_web = $organizacion->web;
-            $factura->organizacion_moneda = $organizacion->moneda;
-            $factura->cliente_cedula = $cliente->cedula;
-            $factura->cliente_nombre = $cliente->nombre;
-            $factura->cliente_apellido = $cliente->apellido;
-            $factura->cliente_email = $cliente->email;
-            $factura->cliente_telefono = $cliente->telefono;
-            $factura->cliente_latitud = $cliente->latitud;
-            $factura->cliente_longitud = $cliente->longitud;
-            $factura->cliente_gps = $cliente->gps;
-            $factura->cliente_fecha_instalacion = $cliente->fecha_instalacion;
-            $factura->cliente_fecha_pago = $cliente->fecha_pago;
-            $factura->cliente_direccion = $cliente->direccion;
-            $factura->plan_nombre = $plan->nombre;
-            $factura->plan_etiqueta = $plan->etiqueta_factura;
-            $factura->plan_bajada = $plan->bajada;
-            $factura->plan_subida = $plan->subida;
-            $factura->plan_precio = $plan->precio;
-            $factura->servicios_id = $servicio->id;
-            $factura->clientes_id = $cliente->id;
-            $factura->organizaciones_id = $organizacion->id;
-            $factura->planes_id = $plan->id;
-            $factura->save();
-
-            $this->getFacturas($this->servicios_id);
-
-            $organizacion->proxima_factura = ++$next;
-            $organizacion->save();
-
-            $this->alert('success', 'Factura Generada.');
         }
 
     }
@@ -172,7 +185,7 @@ class FacturasComponent extends Component
         $this->getFacturas($this->servicios_id);
     }
 
-    public function destroy($id)
+    public function destroyFactura($id)
     {
         $this->facturas_id = $id;
         $this->confirm('¿Estas seguro?', [
@@ -205,11 +218,10 @@ class FacturasComponent extends Component
                 'confirmButtonText' => 'OK',
             ]);
         } else {
-            $row->delete();
-            $this->alert(
-                'success',
-                'Factura Eliminada.'
-            );
+            if ($row) {
+                $row->delete();
+                $this->alert('success', 'Factura Eliminada.');
+            }
             $this->reset('facturas_id');
             $this->getFacturas($this->servicios_id);
         }

@@ -46,5 +46,9 @@ class AuthServiceProvider extends ServiceProvider
             return comprobarPermisos('facturas.index');
         });
 
+        Gate::define('prueba', function ($user){
+            return $user->role == 100;
+        });
+
     }
 }

@@ -344,7 +344,7 @@ return [
         [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
-            'can'       => ['usuarios', 'parametros'],
+            'can'       => ['usuarios', 'parametros', 'prueba'],
             'submenu' => [
                 [
                     'text' => 'Usuarios',
@@ -362,7 +362,7 @@ return [
                 'text' => 'Pruebas',
                 'icon' => 'fas fa-fw fa-tools',
                 'route' => 'pagina.pruebas',
-                'can' => 'parametros',
+                'can' => 'prueba',
             ]
             ],
         ],

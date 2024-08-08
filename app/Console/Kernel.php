@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
             //->everyTenMinutes()
             ->everyMinute()
             ->timezone('America/Caracas')
-            ->between('8:00', '17:00');
+            //->between('8:00', '17:00')
+        ;
     }
 
     /**
