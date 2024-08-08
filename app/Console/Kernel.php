@@ -13,6 +13,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('facturar:automatico')
+            //->everyTenMinutes()
+            ->everyMinute()
+            ->timezone('America/Caracas')
+            ->between('8:00', '17:00');
     }
 
     /**
