@@ -24,10 +24,16 @@ class ServiciosComponent extends Component
     public $cliente, $organizacionesID, $planes_id, $codigo;
     public $cedula, $nombre, $apellido, $email, $telefono, $pago, $organizacion, $plan;
     public $cerrarModal= true, $show = false;
+    public $facturarAutomatico = 0, $idParametro, $nameParametro = 'facturar_automatico';
 
     public function mount()
     {
         $this->setLimit();
+        $parametro = Parametro::where('nombre', '=', $this->nameParametro)->first();
+        if ($parametro){
+            $this->idParametro = $parametro->id;
+            $this->facturarAutomatico = $parametro->valor;
+        }
     }
 
     public function render()
@@ -267,6 +273,24 @@ class ServiciosComponent extends Component
     public function setPlan($plan)
     {
         //JS
+    }
+
+    public function btnFacturarAutomatico()
+    {
+        if (!$this->facturarAutomatico){
+            $this->facturarAutomatico = 1;
+        }else{
+            $this->facturarAutomatico = 0;
+        }
+        if ($this->idParametro){
+            $parametro = Parametro::find($this->idParametro);
+        }else{
+            $parametro = new Parametro();
+        }
+        $parametro->nombre = $this->nameParametro;
+        $parametro->valor = $this->facturarAutomatico;
+        $parametro->save();
+        $this->idParametro = $parametro->id;
     }
 
 }

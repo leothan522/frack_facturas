@@ -88,7 +88,15 @@
     </div>
 
     <div class="card-footer">
-        <small>Mostrando {{ $servicios->count() }}</small>
+        <div class="row justify-content-between">
+            <small>Mostrando {{ $servicios->count() }}</small>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" wire:click="btnFacturarAutomatico">
+                    <i class="fas fa-power-off @if($facturarAutomatico) text-success @endif"></i>
+                    Facturar Automático
+                </button>
+            </div>
+        </div>
     </div>
 
     {{--<div class="modal-footer justify-content-end">
