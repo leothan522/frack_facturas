@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('facturar:automatico')
-            //->everyTenMinutes()
-            ->everyMinute()
+            ->everyTenMinutes()
+            //->everyMinute()
             ->timezone('America/Caracas')
             //->between('8:00', '17:00')
         ;
