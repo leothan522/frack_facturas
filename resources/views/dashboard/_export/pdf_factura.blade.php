@@ -145,7 +145,7 @@
 
         <tr class="item">
             <td>
-                {{ mb_strtoupper($factura->plan_etiqueta) }}
+                {{ mb_strtoupper($factura->plan_etiqueta) }} ({{ mb_strtoupper(mesEspanol(verFecha($factura->factura_fecha, 'm'))) }})
             </td>
             <td>{{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
         </tr>
