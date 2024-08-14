@@ -38,9 +38,4 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/cerrar', function () {
-    Auth::logout();
-    return redirect()->route('web.index');
-})->name('cerrar');
-
 
