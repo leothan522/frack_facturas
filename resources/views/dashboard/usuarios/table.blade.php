@@ -2,17 +2,17 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-danger">{{ $keyword }}</b> }
-                <button class="btn btn-tool text-danger" wire:click="limpiar">
+                Busqueda { <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning">{{ $totalBusqueda }}</b> ]
+                <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Usuarios [ <b class="text-navy">{{ $rowsUsuarios }}</b> ]
+                Usuarios [ <b class="text-warning">{{ $rowsUsuarios }}</b> ]
             @endif
         </h3>
 
         <div class="card-tools">
-            <button type="button" class="btn btn-tool" wire:click="limpiar">
+            <button type="button" class="btn btn-tool" wire:click="actualizar">
                 <i class="fas fa-sync-alt"></i>
             </button>
             @if(comprobarPermisos('usuarios.excel'))
@@ -108,7 +108,7 @@
         <div class="row justify-content-between">
             <small>Mostrando {{ $listarUsers->count() }}</small>
             @if(comprobarPermisos())
-                <form class="d-md-none col-6 justify-content-end" id="sm_from_role_usuario">
+                <form class="col-6 col-md-2 justify-content-end" id="sm_from_role_usuario">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Nuevo Rol" id="sm_input_role_nombre" required>
                         <span class="input-group-append">

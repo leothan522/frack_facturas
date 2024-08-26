@@ -27,14 +27,6 @@ return new class extends Migration
                 "created_at" => \Carbon\Carbon::now(),
                 "updated_at" => \Carbon\Carbon::now(),
             ]);
-
-        DB::table("parametros")
-            ->insert([
-                "nombre" => "gestor",
-                "tabla_id" => -1,
-                "created_at" => \Carbon\Carbon::now(),
-                "updated_at" => \Carbon\Carbon::now(),
-            ]);
     }
 
     /**

@@ -86,9 +86,7 @@ class ParametrosComponent extends Component
             if (!empty($this->tabla_id)){
                 $parametro->tabla_id = $this->tabla_id;
             }
-            if (!empty($this->valor)){
-                $parametro->valor = $this->valor;
-            }
+            $parametro->valor = $this->valor;
             $parametro->save();
 
             $this->alert('success', $message);
@@ -99,6 +97,7 @@ class ParametrosComponent extends Component
 
     public function edit($id)
     {
+        $this->limpiar();
         $parametro = Parametro::find($id);
         if ($parametro){
             $this->parametro_id = $parametro->id;

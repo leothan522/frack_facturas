@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('plugins.Select2', true)
+
 @section('title', 'Usuarios')
 
 @section('content_header')
@@ -12,15 +14,17 @@
                 <ol class="breadcrumb float-sm-right" id="header_div_listar_roles">
                     {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
                     <li class="breadcrumb-item active">
-                        <span class="d-none d-md-inline">Usuarios Registrados</span>
-                        <span class="d-md-none">Roles [ <span id="header_span_roles_rows">{{ $smListarRoles->count() }}</span> ]</span>
+                        <span class="d-none">Usuarios Registrados</span>
+                        <span>Roles [ <span id="header_span_roles_rows">{{ $smListarRoles->count() }}</span> ]</span>
                     </li>
                     @if($smListarRoles->isNotEmpty())
                         @foreach($smListarRoles as $rol)
-                            <li class="breadcrumb-item d-md-none" data-toggle="modal" data-target="#modal-roles-usuarios"
-                                onclick="showRol({{ $rol->id }})" id="header_button_role_id_{{ $rol->id }}">
-                                <span class="btn-link" id="li_text_rol_{{ $rol->id }}">{{ ucfirst($rol->nombre) }}</span>
-                            </li>
+                            @if($rol->ver)
+                                <li class="breadcrumb-item" data-toggle="modal" data-target="#modal-roles-usuarios"
+                                    onclick="showRol({{ $rol->id }})" id="header_button_role_id_{{ $rol->id }}">
+                                    <span class="btn-link" id="li_text_rol_{{ $rol->id }}" style="cursor: pointer;">{{ ucfirst($rol->nombre) }}</span>
+                                </li>
+                            @endif
                         @endforeach
                     @endif
                 </ol>
@@ -120,6 +124,31 @@
         $('#button_permisos_modal_cerrar').click(function (e) {
             $('#div_ver_spinner_usuarios').removeClass('d-none');
         });
+
+        //acceso a empresas ******************************************************
+
+        function selectEmpresas(id, data)
+        {
+
+            $('#' + id).select2({
+                theme: 'bootstrap4',
+                data: data
+            });
+
+            $('#'  + id).val(null).trigger('change');
+        }
+
+        Livewire.on('selectEmpresas', ({ data }) => {
+            selectEmpresas('select_acceso_empresas', data);
+        });
+
+        $("#select_acceso_empresas").on('change', function() {
+            var val = $(this).val();
+            Livewire.dispatch('empresasSeleccionadas', { data: val });
+            // te muestra un array de todos los seleccionados
+            //console.log(val);
+        });
+
 
         function search(){
             let input = $("#navbarSearch");

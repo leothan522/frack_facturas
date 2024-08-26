@@ -3,10 +3,22 @@
     <div class="col-md-4 col-lg-3">
         <label>Parametros Manuales</label>
         <ul>
-            <li>numRowsPaginate[null|numero]</li>
-            <li>size_codigo[tamaño|null]</li>
-            <li>proximo_codigo_servicios[organizaciones_id|numero]</li>
-            <li>formato_codigo_servicios[organizaciones_id|text]</li>
+            <li class="text-wrap">
+                numRowsPaginate
+                [null|numero]
+            </li>
+            <li class="text-wrap">
+                size_codigo
+                [tamaño|null]
+            </li>
+            <li class="text-wrap">
+                proximo_codigo_servicios
+                [organizaciones_id|numero]
+            </li>
+            <li class="text-wrap">
+                formato_codigo_servicios
+                [organizaciones_id|text]
+            </li>
             {{--<li>iva</li>
             <li>telefono_soporte</li>
             <li>codigo_pedido</li>--}}
