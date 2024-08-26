@@ -13,12 +13,6 @@ class UsuariosController extends Controller
     public function index()
     {
         $parametros = Parametro::where('tabla_id', -1)->get();
-        $parametros->each(function ($rol) {
-            $rol->ver = false;
-            if (json_decode($rol->valor) || empty($rol->valor)){
-                $rol->ver = true;
-            }
-        });
         return view('dashboard.usuarios.index')
             ->with('smListarRoles', $parametros);
     }

@@ -28,6 +28,8 @@ class ParametrosComponent extends Component
             ->limit($this->rows)
             ->get();
 
+        $total = Parametro::buscar($this->keyword)->count();
+
         $rows = Parametro::count();
 
         if ($rows > $this->numero) {
@@ -36,7 +38,8 @@ class ParametrosComponent extends Component
 
         return view('livewire.dashboard.parametros-component')
             ->with('parametros', $parametros)
-            ->with('rowsParametros', $rows);
+            ->with('rowsParametros', $rows)
+            ->with('totalBusqueda', $total);
     }
 
     public function setLimit()
@@ -52,7 +55,7 @@ class ParametrosComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'parametro_id', 'nombre', 'tabla_id', 'valor', 'view', 'keyword'
+            'parametro_id', 'nombre', 'tabla_id', 'valor', 'view'
         ]);
         $this->resetErrorBag();
     }
@@ -74,11 +77,11 @@ class ParametrosComponent extends Component
         if (is_null($this->parametro_id)){
             //nuevo
             $parametro = new Parametro();
-            $message = "Parametro Creado";
+            $message = "Parametro Creado.";
         }else{
             //editar
             $parametro = Parametro::find($this->parametro_id);
-            $message = "Parametro Actualizado";
+            $message = "Parametro Actualizado.";
         }
 
         if ($parametro){
@@ -89,6 +92,9 @@ class ParametrosComponent extends Component
             $parametro->valor = $this->valor;
             $parametro->save();
 
+            if ($message == "Parametro Creado."){
+                $this->reset('keyword');
+            }
             $this->alert('success', $message);
         }
         $this->limpiar();
@@ -142,7 +148,13 @@ class ParametrosComponent extends Component
     #[On('cerrarModal')]
     public function cerrarModal()
     {
-        //JS
+        //JV
+    }
+
+    public function cerrarBusqueda()
+    {
+        $this->reset('keyword');
+        $this->limpiar();
     }
 
 }

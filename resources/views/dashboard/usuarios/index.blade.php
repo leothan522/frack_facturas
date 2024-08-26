@@ -19,12 +19,10 @@
                     </li>
                     @if($smListarRoles->isNotEmpty())
                         @foreach($smListarRoles as $rol)
-                            @if($rol->ver)
-                                <li class="breadcrumb-item" data-toggle="modal" data-target="#modal-roles-usuarios"
-                                    onclick="showRol({{ $rol->id }})" id="header_button_role_id_{{ $rol->id }}">
-                                    <span class="btn-link" id="li_text_rol_{{ $rol->id }}" style="cursor: pointer;">{{ ucfirst($rol->nombre) }}</span>
-                                </li>
-                            @endif
+                            <li class="breadcrumb-item" data-toggle="modal" data-target="#modal-roles-usuarios"
+                                onclick="showRol({{ $rol->id }})" id="header_button_role_id_{{ $rol->id }}">
+                                <span class="btn-link" id="li_text_rol_{{ $rol->id }}" style="cursor: pointer;">{{ ucfirst($rol->nombre) }}</span>
+                            </li>
                         @endforeach
                     @endif
                 </ol>
