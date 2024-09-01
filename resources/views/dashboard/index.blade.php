@@ -32,17 +32,9 @@
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
-
-        function search(){
-            let input = $("#navbarSearch");
-            let keyword  = input.val();
-            if (keyword.length > 0){
-                input.blur();
-                alert('Falta vincular con el componente Livewire');
-                //Livewire.emit('increment', keyword);
-            }
-            return false;
-        }
+        $(document).ready(function () {
+            $('#navbar_search_id').addClass('d-none');
+        });
 
         console.log('Hi!');
     </script>

@@ -344,7 +344,7 @@ return [
         [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
-            'can'       => ['usuarios', 'parametros', 'prueba'],
+            'can'       => ['usuarios', 'parametros', 'pruebas'],
             'submenu' => [
                 [
                     'text' => 'Usuarios',
@@ -362,11 +362,37 @@ return [
                 'text' => 'Pruebas',
                 'icon' => 'fas fa-fw fa-tools',
                 'route' => 'pagina.pruebas',
-                'can' => 'prueba',
+                'can' => 'pruebas',
             ]
             ],
         ],
-
+        [
+            'text'      => 'View Android',
+            'icon'      => 'fas fa-fw fa-mobile-alt',
+            'can'       => ['chat', 'fcm'],
+            'submenu' => [
+                [
+                    'text' => 'Cloud Messaging (FCM)',
+                    'icon' => 'fas fa-fw fa-bell',
+                    'route' => 'fcm.index',
+                    'can' => 'fcm',
+                ],
+                [
+                    'text' => 'Chat Directo',
+                    'icon' => 'fas fa-fw fa-comments',
+                    'route'  => 'chat.directo',
+                    'can'  => 'pruebas',
+                    'target' => '_blank',
+                ],
+                [
+                    'text' => 'Inicio',
+                    'icon' => 'fas fa-fw fa-house-user',
+                    'route'  => 'web.index',
+                    'can'  => 'pruebas',
+                    'target' => '_blank',
+                ],
+            ],
+        ],
 
     ],
 

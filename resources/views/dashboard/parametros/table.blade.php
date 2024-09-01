@@ -3,7 +3,8 @@
         <h3 class="card-title">
             @if($keyword)
                 Busqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalBusqueda }}</b> ]
-                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda"><i class="fas fa-times-circle"></i>
+                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times-circle"></i>
                 </button>
             @else
                 Registrados [ <b class="text-danger">{{ $rowsParametros }}</b> ]
@@ -17,7 +18,7 @@
             <button class="btn btn-tool" data-toggle="modal" data-target="#modal-default" wire:click="limpiar">
                 <i class="fas fa-file"></i> Nuevo
             </button>
-            <button type="button" class="btn btn-tool" wire:click="setLimit" @if(($rows >= $rowsParametros) || ($rows > $totalBusqueda)) disabled @endif >
+            <button type="button" class="btn btn-tool" wire:click="setLimit" @if(($rows >= $rowsParametros) || $rows > $totalBusqueda) disabled @endif >
                 <i class="fas fa-sort-amount-down-alt"></i> Ver más
             </button>
         </div>
@@ -59,11 +60,11 @@
                         </td>
                         <td class="justify-content-end">
                             <div class="btn-group">
-                                <button wire:click="edit({{ $parametro->id }})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
+                                <button wire:click="edit('{{ $parametro->rowquid }}')" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default">
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <button wire:click="destroy({{ $parametro->id }})" class="btn btn-primary btn-sm">
+                                <button wire:click="destroy('{{ $parametro->rowquid }}')" class="btn btn-primary btn-sm">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>

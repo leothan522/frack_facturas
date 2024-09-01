@@ -2,18 +2,14 @@
      xmlns:wire="http://www.w3.org/1999/xhtml">
 
     <div class="card-header">
-        @if(/*$tipos_id*/false)
+        @if($tipos_id)
             <h3 class="card-title">Editar</h3>
         @else
             <h3 class="card-title">Crear</h3>
         @endif
         <div class="card-tools">
             <button class="btn btn-tool" wire:click="limpiarTipos">
-                @if(/*$errors->all() || $tipos_id*/false)
-                    <i class="fas fa-ban"></i> Cancelar
-                @else
-                    <i class="fas fa-file"></i>
-                @endif
+                <i class="fas fa-ban"></i> Cancelar
             </button>
         </div>
     </div>
@@ -40,9 +36,9 @@
             </div>
 
             <div class="form-group mt-3">
-                <button type="submit" class="btn btn-block @if(/*$tipos_id*/false) btn-primary @else btn-success @endif"
-                @if(!comprobarPermisos('tipos.create') || (/*$tipos_id &&*/ !comprobarPermisos('tipos.edit'))) disabled @endif >
-                    <i class="fas fa-save"></i> Guardar @if(/*$tipos_id*/false) Cambios @endif
+                <button type="submit" class="btn btn-block @if($tipos_id) btn-primary @else btn-success @endif"
+                @if(!comprobarPermisos('tipos.create') || ($tipos_id && !comprobarPermisos('tipos.edit'))) disabled @endif >
+                    <i class="fas fa-save"></i> Guardar @if($tipos_id) Cambios @endif
                 </button>
             </div>
 

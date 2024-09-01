@@ -77,7 +77,7 @@
             Livewire.dispatch('cerrarModal');
         }
 
-        function search(){
+        function buscar(){
             let input = $("#navbarSearch");
             let keyword  = input.val();
             if (keyword.length > 0){
