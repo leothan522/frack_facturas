@@ -369,7 +369,7 @@ return [
         [
             'text'      => 'View Android',
             'icon'      => 'fas fa-fw fa-mobile-alt',
-            'can'       => ['chat', 'fcm'],
+            'can'       => ['fcm'],
             'submenu' => [
                 [
                     'text' => 'Cloud Messaging (FCM)',
@@ -385,9 +385,9 @@ return [
                     'target' => '_blank',
                 ],
                 [
-                    'text' => 'Inicio',
-                    'icon' => 'fas fa-fw fa-house-user',
-                    'route'  => 'web.index',
+                    'text' => 'API Android',
+                    'icon' => 'fas fa-fw fa-mobile-alt',
+                    'url' => env('APP_URL_ANDROID', '/android'),
                     'can'  => 'pruebas',
                     'target' => '_blank',
                 ],

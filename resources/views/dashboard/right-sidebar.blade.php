@@ -15,7 +15,7 @@
         </li>
         @if(auth()->user()->role == 100)
             <li class="nav-item">
-                <a href="{{ route('chat.directo') }}" class="nav-link" target="_blank">
+                <a href="{{ route('chat.directo', auth()->user()->rowquid) }}" class="nav-link" target="_blank">
                     <i class="fas fa-comments"></i> Chat Directo
                 </a>
             </li>
@@ -24,9 +24,12 @@
                     <i class="fas fa-bell"></i> Cloud Messaging (FCM)
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ env('APP_URL_ANDROID', '/android') }}" class="nav-link" target="_blank">
+                    <i class="fas fa-mobile-alt mr-2"></i> API Android
+                </a>
+            </li>
         @endif
-
-
     </ul>
 
 </div>
