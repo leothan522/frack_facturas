@@ -1,13 +1,13 @@
-<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div class="card card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalBusqueda }}</b> ]
-                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
+                Busqueda { <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning">{{ $totalBusqueda }}</b> ]
+                <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registrados [ <b class="text-danger">{{ $rowsUsuarios }}</b> ]
+                Registrados [ <b class="text-warning">{{ $rowsUsuarios }}</b> ]
             @endif
         </h3>
 
@@ -55,7 +55,7 @@
                     <tr>
                         <td class="text-center">
                             @if($user->plataforma)
-                                <i class="fas fa-mobile"></i>
+                                <i class="fas fa-mobile-alt"></i>
                             @else
                                 <i class="fas fa-desktop"></i>
                             @endif
@@ -81,10 +81,6 @@
                                         data-toggle="modal" data-target="#modal-user-permisos" @if(!comprobarPermisos() || ($user->role == 1 && auth()->user()->role != 100)) disabled @endif>
                                     <i class="fas fa-user-cog"></i>
                                 </button>
-                                {{--<button wire:click="destroy({{ $user->id }})" class="btn btn-primary btn-sm"
-                                        @if(!comprobarPermisos('usuarios.destroy') || !($user->role != 1 || ($user->role == 1 && comprobarPermisos())) || ($user->id == auth()->id())) disabled @endif >
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>--}}
                             </div>
                         </td>
                     </tr>
@@ -108,7 +104,7 @@
         <div class="row justify-content-between">
             <small>Mostrando {{ $listarUsers->count() }}</small>
             @if(comprobarPermisos())
-                <form class="col-6 col-md-2 justify-content-end" id="sm_from_role_usuario">
+                <form class="d-md-none col-6 justify-content-end" id="sm_from_role_usuario">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Nuevo Rol" id="sm_input_role_nombre" required>
                         <span class="input-group-append">

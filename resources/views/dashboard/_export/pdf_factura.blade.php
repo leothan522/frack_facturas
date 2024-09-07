@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>ViewPDF</title>
 
     <style>
@@ -107,12 +107,13 @@
                 <table>
                     <tr>
                         <td class="title">
-                            <img src="{{ asset('img/logo.png') }}" style="width: 100px;" />
+                            <img src="{{ asset('img/logo.png') }}" style="width: 100px;"/>
                         </td>
 
                         <td>
-                            Factura #: <strong style="font-weight: bold;color: red;">{{ mb_strtoupper($factura->factura_numero) }}</strong><br />
-                            Fecha: {{ verFecha($factura->factura_fecha) }}
+                            Factura #: <strong
+                                    style="font-weight: bold;color: red;">{{ mb_strtoupper($factura->factura_numero) }}</strong><br/>
+                            Fecha: {{ getFecha($factura->factura_fecha) }}
                         </td>
                     </tr>
                 </table>
@@ -124,14 +125,15 @@
                 <table>
                     <tr>
                         <td>
-                            Dirección:<br />
+                            Dirección:<br/>
                             {{ mb_strtoupper($factura->cliente_direccion) }}
                         </td>
                         <td>
-                            Cedula: {{ mb_strtoupper($factura->cliente_cedula) }}<br />
-                            Nombre: {{ mb_strtoupper($factura->cliente_nombre) }} {{ mb_strtoupper($factura->cliente_apellido) }}<br />
-                            Teléfono: {{ mb_strtoupper($factura->cliente_telefono) }}<br />
-                            Email: {{ mb_strtoupper($factura->cliente_email) }}<br />
+                            Cedula: {{ mb_strtoupper($factura->cliente_cedula) }}<br/>
+                            Nombre: {{ mb_strtoupper($factura->cliente_nombre) }} {{ mb_strtoupper($factura->cliente_apellido) }}
+                            <br/>
+                            Teléfono: {{ mb_strtoupper($factura->cliente_telefono) }}<br/>
+                            Email: {{ mb_strtoupper($factura->cliente_email) }}<br/>
                     </tr>
                 </table>
             </td>
@@ -145,22 +147,29 @@
 
         <tr class="item">
             <td>
-                {{ mb_strtoupper($factura->plan_etiqueta) }} ({{ mb_strtoupper(mesEspanol(verFecha($factura->factura_fecha, 'm'))) }})
+                {{ mb_strtoupper($factura->plan_etiqueta) }}
+                ({{ mb_strtoupper(mesEspanol(getFecha($factura->factura_fecha, 'm'))) }})
             </td>
             <td>{{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
         </tr>
 
         <tr class="total">
             <td></td>
-            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small style="float: left;">Subtotal:</small></small> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
+            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small
+                            style="float: left;">Subtotal:</small></small> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}
+            </td>
         </tr>
         <tr class="total">
             <td></td>
-            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small style="float: left;">I.V.A.:</small></small>-</td>
+            <td style="background: #eee; border-bottom: 1px solid #ddd;"><small><small
+                            style="float: left;">I.V.A.:</small></small>-
+            </td>
         </tr>
         <tr class="total">
             <td></td>
-            <td style="background: #eee; border-bottom: 1px solid #ddd; font-weight: bold;color: red;"><span style="float: left;">Total:</span> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}</td>
+            <td style="background: #eee; border-bottom: 1px solid #ddd; font-weight: bold;color: red;"><span
+                        style="float: left;">Total:</span> {{ mb_strtoupper($factura->organizacion_moneda) }} {{ formatoMillares($factura->plan_precio) }}
+            </td>
         </tr>
     </table>
 </div>

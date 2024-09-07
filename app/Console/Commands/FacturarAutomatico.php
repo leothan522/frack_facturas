@@ -145,8 +145,8 @@ class FacturarAutomatico extends Command
                     $pdf->save($filename, 'public');
 
                     //anexamos los datos extras en data para enviar email
-                    $month = mesEspanol(verFecha($factura->factura_fecha, 'm'));
-                    $year = verFecha($factura->factura_fecha, 'Y');
+                    $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));
+                    $year = getFecha($factura->factura_fecha, 'Y');
                     $data['from_email'] = $factura->organizacion_email;
                     $data['from_name'] = $factura->organizacion_nombre;
                     $data['subject'] = "Factura servicio de Internet $month $year";

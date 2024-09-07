@@ -17,7 +17,8 @@
             <button class="btn btn-tool" data-toggle="modal" data-target="#modal-default" wire:click="limpiar">
                 <i class="fas fa-file"></i> Nuevo
             </button>
-            <button type="button" class="btn btn-tool" wire:click="setLimit" @if($rows > $rowsServicios) disabled @endif >
+            <button type="button" class="btn btn-tool" wire:click="setLimit"
+                    @if($rows > $rowsServicios) disabled @endif >
                 <i class="fas fa-sort-amount-down-alt"></i> Ver más
             </button>
         </div>
@@ -40,28 +41,33 @@
                 @foreach($servicios as $servicio)
                     <tr>
                         <td class="text-uppercase text-center">{{ $servicio->codigo }}</td>
-                        <td class="text-uppercase d-table-cell text-truncate" style="max-width: 150px;">{{ $servicio->cliente->nombre }} {{ $servicio->cliente->apellido }}</td>
+                        <td class="text-uppercase d-table-cell text-truncate"
+                            style="max-width: 150px;">{{ $servicio->cliente->nombre }} {{ $servicio->cliente->apellido }}</td>
                         <td class="d-none d-lg-table-cell">{{ $servicio->cliente->email }}</td>
                         <td class="d-none d-lg-table-cell">{{ $servicio->plan->nombre }}</td>
                         <td class="d-none d-lg-table-cell">{{ $servicio->organizacion->nombre }}</td>
-                        <td class="d-none d-lg-table-cell text-center">{{ verFecha($servicio->cliente->fecha_pago) }}</td>
+                        <td class="d-none d-lg-table-cell text-center">{{ getFecha($servicio->cliente->fecha_pago) }}</td>
                         <td class="justify-content-end">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})" data-card-widget="remove">
+                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})"
+                                            data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="showServicio({{ $servicio->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="showServicio({{ $servicio->id }})">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})" data-card-widget="remove">
+                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})"
+                                            data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="edit({{ $servicio->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="edit({{ $servicio->id }})">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" wire:click="destroy({{ $servicio->id }})">

@@ -17,7 +17,8 @@
             <button class="btn btn-tool" data-toggle="modal" data-target="#modal-default" wire:click="limpiar">
                 <i class="fas fa-file"></i> Nuevo
             </button>
-            <button type="button" class="btn btn-tool" wire:click="setLimit" @if($rows > $rowsClientes) disabled @endif >
+            <button type="button" class="btn btn-tool" wire:click="setLimit"
+                    @if($rows > $rowsClientes) disabled @endif >
                 <i class="fas fa-sort-amount-down-alt"></i> Ver más
             </button>
         </div>
@@ -43,25 +44,28 @@
                 @foreach($clientes as $cliente)
                     <tr>
                         <td class="text-uppercase text-right">{{ is_numeric($cliente->cedula) ? formatoMillares($cliente->cedula,0) : $cliente->cedula }}</td>
-                        <td class="text-uppercase d-table-cell text-truncate" style="max-width: 150px;">{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
+                        <td class="text-uppercase d-table-cell text-truncate"
+                            style="max-width: 150px;">{{ $cliente->nombre }} {{ $cliente->apellido }}</td>
                         <td class="d-none d-lg-table-cell">{{ $cliente->telefono }}</td>
                         <td class="d-none d-lg-table-cell text-lowercase">{{ $cliente->email }}</td>
-                        <td class="d-none d-lg-table-cell text-center">{{ verFecha($cliente->fecha_instalacion) }}</td>
-                        <td class="d-none d-lg-table-cell text-center">{{ verFecha($cliente->fecha_pago) }}</td>
+                        <td class="d-none d-lg-table-cell text-center">{{ getFecha($cliente->fecha_instalacion) }}</td>
+                        <td class="d-none d-lg-table-cell text-center">{{ getFecha($cliente->fecha_pago) }}</td>
                         {{--<td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->latitud }}</small></td>
                         <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->longitud }}</small></td>
                         <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->gps }}</small></td>--}}
                         <td class="text-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="showCliente({{ $cliente->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="showCliente({{ $cliente->id }})">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="edit({{ $cliente->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="edit({{ $cliente->id }})">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" wire:click="destroy({{ $cliente->id }})">
