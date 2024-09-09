@@ -9,7 +9,7 @@
                 <select class="form-control"></select>
             </div>
         </div>
-        @error('cliente')
+        @error('clientes_id')
         <span class="col-sm-12 text-sm text-bold text-danger">
             <i class="icon fas fa-exclamation-triangle"></i>
             {{ $message }}
@@ -22,13 +22,13 @@
             <div class="input-group-prepend">
                 <span class="input-group-text text-bold">Organización</span>
             </div>
-            <select class="custom-select" wire:model.live="organizacionesID">
+            <select class="custom-select" wire:model.live="organizacionRowquid">
                 <option value="">Seleccione</option>
-                @foreach($organizaciones as $organizacion)
-                    <option value="{{ $organizacion->id }}">{{ mb_strtoupper($organizacion->nombre) }}</option>
+                @foreach($listarOrganizaciones as $organizacion)
+                    <option value="{{ $organizacion->rowquid }}">{{ mb_strtoupper($organizacion->nombre) }}</option>
                 @endforeach
             </select>
-            @error('organizacionesID')
+            @error('organizaciones_id')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
                 {{ $message }}
@@ -42,10 +42,10 @@
             <div class="input-group-prepend">
                 <span class="input-group-text text-bold">Plan de Servicio</span>
             </div>
-            <select class="custom-select" wire:model="planes_id" id="select_form_servicio_plan">
+            <select class="custom-select" wire:model.live="planRowquid" id="select_form_servicio_plan">
                 <option value="">Seleccione</option>
-                @foreach($planes as $plan)
-                    <option value="{{ $plan->id }}">{{ mb_strtoupper($plan->nombre) }}</option>
+                @foreach($listarPlanes as $plan)
+                    <option value="{{ $plan->rowquid }}">{{ mb_strtoupper($plan->nombre) }}</option>
                 @endforeach
             </select>
             @error('planes_id')

@@ -67,7 +67,7 @@
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" data-toggle="modal"
-                                            data-target="#modal-default" wire:click="edit({{ $servicio->id }})">
+                                            data-target="#modal-default" wire:click="edit('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" wire:click="destroy({{ $servicio->id }})">

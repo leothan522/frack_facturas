@@ -209,37 +209,40 @@ function nextCodigo($parametros_nombre, $parametros_tabla_id, $nombre_formato = 
 {
 
     $next = 1;
-    $codigo = null;
+    $formato = null;
 
     //buscamos algun formato para el codigo
     if (!is_null($nombre_formato)){
         $parametro = Parametro::where("nombre", $nombre_formato)->where('tabla_id', $parametros_tabla_id)->first();
         if ($parametro) {
-            $codigo = $parametro->valor;
+            $formato = $parametro->valor;
         }else{
-            $codigo = "N".$parametros_tabla_id.'-';
+            $formato = "N".$parametros_tabla_id.'-';
         }
     }
 
     //buscamos el proximo numero
     $parametro = Parametro::where("nombre", $parametros_nombre)->where('tabla_id', $parametros_tabla_id)->first();
     if ($parametro){
-        $next = $parametro->valor;
+        if (is_int(intval($parametro->valor))){
+            $next = $parametro->valor;
+        }
         $parametro->valor = $next + 1;
-        $parametro->save();
     }else{
         $parametro = new Parametro();
         $parametro->nombre = $parametros_nombre;
         $parametro->tabla_id = $parametros_tabla_id;
         $parametro->valor = 2;
-        $parametro->save();
     }
-
-    if (!is_int($next)){ $next = 1; }
+    do{
+        $rowquid = generarStringAleatorio(16);
+        $existe = Parametro::where('rowquid', $rowquid)->first();
+    }while($existe);
+    $parametro->save();
 
     $size = cerosIzquierda($next, numSizeCodigo());
 
-    return $codigo . $size;
+    return $formato . $size;
 
 }
 

@@ -47,7 +47,7 @@
             $('#'  + id).val(null).trigger('change');
             $('#'  + id).on('change', function() {
                 var val = $(this).val();
-                Livewire.dispatch('getCliente', { id: val });
+                Livewire.dispatch('getClienteRowquid', { rowquid: val });
             });
         }
 
@@ -55,14 +55,8 @@
             select_2('select_clientes', clientes);
         });
 
-        Livewire.on('setSelectClientes', ({ cliente }) => {
-            $('#select_clientes').val(cliente).trigger('change');
-        });
-
-        Livewire.on('setPlan', ({ plan }) => {
-            setTimeout(function () {
-                $('#select_form_servicio_plan').val(plan).trigger('change');
-            }, 300);
+        Livewire.on('setSelectClientes', ({ rowquid }) => {
+            $('#select_clientes').val(rowquid).trigger('change');
         });
 
         Livewire.on('cerrarModal', () => {

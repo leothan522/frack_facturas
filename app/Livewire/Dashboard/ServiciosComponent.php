@@ -9,8 +9,10 @@ use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -20,11 +22,16 @@ class ServiciosComponent extends Component
     use LivewireAlert;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
-    public $planes = array(), $nuevo = true, $editar = false, $servicios_id, $keyword;
-    public $cliente, $organizacionesID, $planes_id, $codigo;
-    public $cedula, $nombre, $apellido, $email, $telefono, $pago, $organizacion, $plan;
+    public $nuevo = true, $editar = false, $keyword;
     public $cerrarModal= true, $show = false;
     public $facturarAutomatico = 0, $idParametro, $nameParametro = 'facturar_automatico';
+
+    public $clienteRowquid, $organizacionRowquid, $planRowquid, $codigo;
+    public $clientes_id, $organizaciones_id, $planes_id, $listarPlanes = array();
+    public $cedula, $nombre, $apellido, $email, $telefono, $pago, $organizacion, $plan;
+
+    #[Locked]
+    public $servicios_id, $rowquid;
 
     public function mount()
     {
@@ -52,7 +59,7 @@ class ServiciosComponent extends Component
         }
 
         return view('livewire.dashboard.servicios-component')
-            ->with('organizaciones', $organizaciones)
+            ->with('listarOrganizaciones', $organizaciones)
             ->with('servicios', $servicios)
             ->with('rowsServicios', $rows);
     }
@@ -71,10 +78,12 @@ class ServiciosComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'cliente', 'organizacionesID', 'planes_id', 'codigo', 'servicios_id',
-            'nuevo', 'editar', 'keyword',
+            'servicios_id',
+            'nuevo', 'editar',
             'cedula', 'nombre', 'apellido', 'email', 'telefono', 'pago', 'organizacion', 'plan',
-            'show'
+            'show',
+            'clienteRowquid', 'organizacionRowquid', 'planRowquid', 'codigo',
+            'clientes_id', 'organizaciones_id', 'planes_id',
         ]);
         $this->resetErrorBag();
 
@@ -82,10 +91,10 @@ class ServiciosComponent extends Component
         $data = array();
         foreach ($clientes as $row){
             $option = [
-                'id' => $row->id,
+                'id' => $row->rowquid,
                 'text' => mb_strtoupper($row->cedula." | ".$row->nombre." ".$row->apellido)
             ];
-            array_push($data, $option);
+            $data[] = $option;
         }
         $this->dispatch('getSelectClientes', clientes: $data);
     }
@@ -93,15 +102,16 @@ class ServiciosComponent extends Component
     protected function rules()
     {
         return [
-            'cliente' => ['required', Rule::unique('servicios', 'clientes_id')->where(fn (Builder $query) => $query->where('deleted_at', null))->ignore($this->servicios_id)],
-            'organizacionesID' => 'required',
+            'clientes_id' => ['required', Rule::unique('servicios', 'clientes_id')->where(fn (Builder $query) => $query->where('deleted_at', null))->ignore($this->servicios_id)],
+            'organizaciones_id' => 'required',
             'planes_id' => 'required',
         ];
     }
 
     protected $messages = [
-        'cliente.unique' => 'El cliente ya tiene un servicio registrado.',
-        'organizacionesID.required' => 'El campo organización es obligatorio.',
+        'clientes_id.required' => ' El campo cliente es obligatorio.',
+        'clientes_id.unique' => 'El cliente ya tiene un servicio registrado.',
+        'organizaciones_id.required' => 'El campo organización es obligatorio.',
         'planes_id.required' => 'El campo plan de servicio es obligatorio.',
     ];
 
@@ -115,41 +125,56 @@ class ServiciosComponent extends Component
         }else{
             //nuevo
             $servicios = new Servicio();
-            $this->codigo = nextCodigo('proximo_codigo_servicios', $this->organizacionesID, 'formato_codigo_servicios');
+            $this->codigo = nextCodigo('proximo_codigo_servicios', $this->organizaciones_id, 'formato_codigo_servicios');
+            do{
+                $rowquid = generarStringAleatorio(16);
+                $existe = Servicio::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $servicios->rowquid = $rowquid;
         }
 
         if ($servicios){
 
             $servicios->codigo = $this->codigo;
-            $servicios->clientes_id = $this->cliente;
-            $servicios->organizaciones_id = $this->organizacionesID;
+            $servicios->clientes_id = $this->clientes_id;
+            $servicios->organizaciones_id = $this->organizaciones_id;
             $servicios->planes_id = $this->planes_id;
             $servicios->save();
 
             $this->alert('success', 'Datos Guardados.');
 
-        }
+            if ($this->servicios_id){
+                $this->reset('keyword');
+            }
 
-        if ($this->cerrarModal){
-            $this->limpiar();
-            $this->dispatch('cerrarModal');
+            if ($this->cerrarModal){
+                $this->limpiar();
+                $this->dispatch('cerrarModal');
+            }else{
+                $this->showServicio($servicios->rowquid);
+            }
+
         }else{
-            $this->showServicio($servicios->id);
+            $this->dispatch('cerrarModal');
         }
-
     }
 
-    public function edit($id, $cerrarModal = true)
+    public function edit($rowquid, $cerrarModal = true)
     {
         $this->limpiar();
-        $servicio = Servicio::find($id);
+        $servicio = $this->getServicio($rowquid);
         if ($servicio){
 
             $this->codigo = $servicio->codigo;
-            $this->cliente = $servicio->clientes_id;
-            $this->organizacionesID = $servicio->organizaciones_id;
-            $this->updatedOrganizacionesID();
-            $this->planes_id = $servicio->planes_id;
+            //$this->clientes_id = $servicio->clientes_id;
+            $this->clienteRowquid = $servicio->cliente->rowquid;
+            $this->organizacionRowquid = $servicio->organizacion->rowquid;
+            $this->updatedOrganizacionRowquid();
+            //$this->organizaciones_id = $servicio->organizaciones_id;
+            Sleep::for(500)->millisecond();
+            $this->planRowquid = $servicio->plan->rowquid;
+            $this->updatedPlanRowquid();
+            //$this->planes_id = $servicio->planes_id;
 
             $this->cedula = $servicio->cliente->cedula;
             $this->nombre = $servicio->cliente->nombre;
@@ -165,28 +190,29 @@ class ServiciosComponent extends Component
             $this->editar = true;
             $this->servicios_id = $servicio->id;
 
-            $this->dispatch('setSelectClientes', cliente: $this->cliente);
-            $this->dispatch('setPlan', plan: $servicio->planes_id);
+            $this->dispatch('setSelectClientes', rowquid: $this->clienteRowquid);
+            //$this->dispatch('setPlan', plan: $servicio->planes_id);
 
             if (!$cerrarModal){
                 $this->cerrarModal = false;
             }
 
         }else{
+            Sleep::for(500)->millisecond();
             $this->dispatch('cerrarModal');
         }
 
     }
 
-    public function showServicio($id)
+    public function showServicio($rowquid)
     {
-        $this->edit($id, false);
+        $this->edit($rowquid, false);
         $this->show = true;
     }
 
-    public function destroy($id)
+    public function destroy($rowquid)
     {
-        $this->servicios_id = $id;
+        $this->rowquid = $rowquid;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -201,11 +227,15 @@ class ServiciosComponent extends Component
     #[On('confirmed')]
     public function confirmed()
     {
-        $servicio  = Servicio::find($this->servicios_id);
+        $id = null;
+        $servicio  = $this->getServicio($this->rowquid);
+        if ($servicio){
+            $id = $servicio->id;
+        }
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
-        $factura = Factura::where('servicios_id', $this->servicios_id)->first();
+        $factura = Factura::where('servicios_id', $id)->first();
         if ($factura){
             $vinculado = true;
         }
@@ -239,28 +269,43 @@ class ServiciosComponent extends Component
         $this->keyword = $keyword;
     }
 
-    public function updatedOrganizacionesID()
-    {
-        $this->reset('planes_id');
-        $this->planes = Plan::where('organizaciones_id', $this->organizacionesID)->get();
-    }
-
-    #[On('getCliente')]
-    public function getCliente($id)
-    {
-        $this->cliente = $id;
-    }
-
     #[On('getSelectClientes')]
     public function getSelectClientes($clientes)
     {
         //JS
     }
 
+    #[On('getClienteRowquid')]
+    public function getClienteRowquid($rowquid)
+    {
+        $cliente = $this->getCliente($rowquid);
+        if ($cliente){
+            $this->clientes_id = $cliente->id;
+        }
+    }
+
     #[On('setSelectClientes')]
-    public function setSelectClientes($cliente)
+    public function setSelectClientes($rowquid)
     {
         //JS
+    }
+
+    public function updatedOrganizacionRowquid()
+    {
+        $organizacion = $this->getOrganizacion($this->organizacionRowquid);
+        if ($organizacion){
+            $this->organizaciones_id = $organizacion->id;
+            $this->reset('planes_id', 'planRowquid');
+            $this->listarPlanes = Plan::where('organizaciones_id', $organizacion->id)->get();
+        }
+    }
+
+    public function updatedPlanRowquid()
+    {
+        $plan = $this->getPlan($this->planRowquid);
+        if ($plan){
+            $this->planes_id = $plan->id;
+        }
     }
 
     #[On('cerrarModal')]
@@ -269,10 +314,10 @@ class ServiciosComponent extends Component
         //JS
     }
 
-    #[On('setPlan')]
-    public function setPlan($plan)
+    public function cerrarBusqueda()
     {
-        //JS
+        $this->reset('keyword');
+        $this->limpiar();
     }
 
     public function btnFacturarAutomatico()
@@ -291,6 +336,26 @@ class ServiciosComponent extends Component
         $parametro->valor = $this->facturarAutomatico;
         $parametro->save();
         $this->idParametro = $parametro->id;
+    }
+
+    protected function getCliente($rowquid): ?Cliente
+    {
+        return Cliente::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getOrganizacion($rowquid): ?Organizacion
+    {
+        return Organizacion::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getPlan($rowquid): ?Plan
+    {
+        return Plan::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getServicio($rowquid): ?Servicio
+    {
+        return Servicio::where('rowquid', $rowquid)->first();
     }
 
 }
