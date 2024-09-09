@@ -6,8 +6,10 @@ use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,9 +19,12 @@ class OrganizacionesComponent extends Component
     use LivewireAlert;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
-    public $nuevo = true, $editar = false, $organizaciones_id, $keyword;
+    public $nuevo = true, $editar = false, $keyword;
     public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion;
     public $cerrarModal= true, $show = false;
+
+    #[Locked]
+    public $organizaciones_id, $rowquid;
 
     public function mount()
     {
@@ -29,9 +34,11 @@ class OrganizacionesComponent extends Component
     public function render()
     {
         $organizaciones = Organizacion::buscar($this->keyword)
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->limit($this->rows)
             ->get();
+
+        $total = Organizacion::buscar($this->keyword)->count();
 
         $rows = Organizacion::count();
 
@@ -41,7 +48,8 @@ class OrganizacionesComponent extends Component
 
         return view('livewire.dashboard.organizaciones-component')
             ->with('organizaciones', $organizaciones)
-            ->with('rowsOrganizaciones', $rows);
+            ->with('rowsOrganizaciones', $rows)
+            ->with('totalRows', $total);
     }
 
     public function setLimit()
@@ -58,8 +66,8 @@ class OrganizacionesComponent extends Component
     {
         $this->reset([
             'nombre', 'email', 'telefono', 'web', 'moneda', 'dias', 'formato', 'proxima',
-            'direccion', 'organizaciones_id', 'nuevo', 'editar', 'keyword',
-            'show'
+            'direccion', 'organizaciones_id', 'nuevo', 'editar',
+            'show', 'rowquid'
         ]);
         $this->resetErrorBag();
     }
@@ -89,33 +97,46 @@ class OrganizacionesComponent extends Component
         }else{
             //nuevo
             $organizacion = new Organizacion();
+            do{
+                $rowquid = generarStringAleatorio(16);
+                $existe = Organizacion::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $organizacion->rowquid = $rowquid;
         }
-        $organizacion->nombre = $this->nombre;
-        $organizacion->email = $this->email;
-        $organizacion->telefono = $this->telefono;
-        $organizacion->web = $this->web;
-        $organizacion->moneda = $this->moneda;
-        $organizacion->dias_factura = $this->dias;
-        $organizacion->formato_factura = $this->formato;
-        $organizacion->proxima_factura = $this->proxima;
-        $organizacion->direccion = $this->direccion;
-        $organizacion->save();
 
-        $this->alert('success', 'Datos Guardados.');
+        if ($organizacion){
+            $organizacion->nombre = $this->nombre;
+            $organizacion->email = $this->email;
+            $organizacion->telefono = $this->telefono;
+            $organizacion->web = $this->web;
+            $organizacion->moneda = $this->moneda;
+            $organizacion->dias_factura = $this->dias;
+            $organizacion->formato_factura = $this->formato;
+            $organizacion->proxima_factura = $this->proxima;
+            $organizacion->direccion = $this->direccion;
+            $organizacion->save();
 
-        if ($this->cerrarModal){
-            $this->limpiar();
-            $this->dispatch('cerrarModal');
+            $this->alert('success', 'Datos Guardados.');
+
+            if (!$this->organizaciones_id){
+                $this->reset('keyword');
+            }
+
+            if ($this->cerrarModal){
+                $this->limpiar();
+                $this->dispatch('cerrarModal');
+            }else{
+                $this->showOrganizacion($organizacion->id);
+            }
         }else{
-            $this->showOrganizacion($organizacion->id);
+            dispatch('cerrarModal');
         }
-
     }
 
-    public function edit($id, $cerrarModal = true)
+    public function edit($rowquid, $cerrarModal = true)
     {
         $this->limpiar();
-        $organizacion = Organizacion::find($id);
+        $organizacion = $this->getOrganizaciones($rowquid);
         if ($organizacion){
 
             $this->nombre = $organizacion->nombre;
@@ -127,6 +148,7 @@ class OrganizacionesComponent extends Component
             $this->formato = $organizacion->formato_factura;
             $this->proxima = $organizacion->proxima_factura;
             $this->direccion = $organizacion->direccion;
+            $this->rowquid = $organizacion->rowquid;
 
             $this->nuevo = false;
             $this->editar = true;
@@ -137,19 +159,20 @@ class OrganizacionesComponent extends Component
             }
 
         }else{
+            Sleep::for(500)->millisecond();
             $this->dispatch('cerrarModal');
         }
     }
 
-    public function showOrganizacion($id)
+    public function showOrganizacion($rowquid)
     {
-        $this->edit($id, false);
+        $this->edit($rowquid, false);
         $this->show = true;
     }
 
-    public function destroy($id)
+    public function destroy($rowquid)
     {
-        $this->organizaciones_id = $id;
+        $this->rowquid = $rowquid;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -164,7 +187,7 @@ class OrganizacionesComponent extends Component
     #[On('confirmed')]
     public function confirmed()
     {
-        $organizacion = Organizacion::find($this->organizaciones_id);
+        $organizacion = $this->getOrganizaciones($this->rowquid);
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
@@ -219,5 +242,16 @@ class OrganizacionesComponent extends Component
     public function cerrarModal()
     {
         //JS
+    }
+
+    public function cerrarBusqueda()
+    {
+        $this->reset('keyword');
+        $this->limpiar();
+    }
+
+    protected function getOrganizaciones($rowquid): ?Organizacion
+    {
+        return Organizacion::where('rowquid', $rowquid)->first();
     }
 }

@@ -23,7 +23,8 @@ class Organizacion extends Model
         'dias_factura',
         'formato_factura',
         'proxima_factura',
-        'direccion'
+        'direccion',
+        'rowquid'
     ];
 
     public function planes(): HasMany

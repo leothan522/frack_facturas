@@ -2,11 +2,12 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-danger">{{ $keyword }}</b> }
-                <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
+                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
+                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registradas
+                Registradas [ <b class="text-danger">{{ $rowsOrganizaciones }}</b> ]
             @endif
         </h3>
 
@@ -17,12 +18,12 @@
             <button class="btn btn-tool" data-toggle="modal" data-target="#modal-default" wire:click="limpiar">
                 <i class="fas fa-file"></i> Nuevo
             </button>
-            <button type="button" class="btn btn-tool" wire:click="setLimit" @if($rows > $rowsOrganizaciones) disabled @endif >
+            <button type="button" class="btn btn-tool" wire:click="setLimit" @if($rows >= $rowsOrganizaciones) disabled @endif >
                 <i class="fas fa-sort-amount-down-alt"></i> Ver más
             </button>
         </div>
     </div>
-    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 72vh;" @endif >
+    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 67vh;" @endif >
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
@@ -50,17 +51,22 @@
                         <td class="text-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="showOrganizacion({{ $organizacion->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default"
+                                            wire:click="showOrganizacion('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-default" wire:click="edit({{ $organizacion->id }})">
+                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                            data-target="#modal-default"
+                                            wire:click="edit('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" wire:click="destroy({{ $organizacion->id }})">
+                                    <button class="btn btn-primary btn-xs"
+                                            wire:click="destroy('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
