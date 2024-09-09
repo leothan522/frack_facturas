@@ -21,6 +21,7 @@ class Plan extends Model
         'subida',
         'precio',
         'organizaciones_id',
+        'rowquid'
     ];
 
     public function organizacion(): BelongsTo

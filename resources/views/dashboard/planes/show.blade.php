@@ -15,12 +15,12 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Etiqueta - Factura <span class="float-right text-bold">{{ $etiqueta }}</span>
+                        Etiqueta - Factura <span class="float-right text-bold text-uppercase">{{ $etiqueta }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Velocidad de Bajada <span class="float-right text-bold text-lowercase">{{ $bajada }}</span>
+                        Velocidad de Bajada <span class="float-right text-bold">{{ $bajada }}</span>
                     </span>
                 </li>
                 <li class="nav-item">

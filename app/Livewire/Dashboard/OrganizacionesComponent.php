@@ -126,7 +126,7 @@ class OrganizacionesComponent extends Component
                 $this->limpiar();
                 $this->dispatch('cerrarModal');
             }else{
-                $this->showOrganizacion($organizacion->id);
+                $this->showOrganizacion($organizacion->rowquid);
             }
         }else{
             dispatch('cerrarModal');

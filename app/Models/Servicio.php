@@ -18,7 +18,8 @@ class Servicio extends Model
         'codigo',
         'clientes_id',
         'organizaciones_id',
-        'planes_id'
+        'planes_id',
+        'rowquid'
     ];
 
     public function cliente(): BelongsTo

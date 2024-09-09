@@ -8,7 +8,7 @@
             <select class="custom-select" wire:model="organizaciones_id">
                 <option value="">Seleccione</option>
                 @foreach($organizaciones as $organizacion)
-                    <option value="{{ $organizacion->id }}">{{ mb_strtoupper($organizacion->nombre) }}</option>
+                    <option value="{{ $organizacion->rowquid }}">{{ mb_strtoupper($organizacion->nombre) }}</option>
                 @endforeach
             </select>
             @error('organizaciones_id')

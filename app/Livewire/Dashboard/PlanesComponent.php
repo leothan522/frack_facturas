@@ -6,8 +6,10 @@ use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,9 +19,12 @@ class PlanesComponent extends Component
     use LivewireAlert;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
-    public $nuevo = true, $editar = false, $planes_id, $keyword;
+    public $nuevo = true, $editar = false, $keyword;
     public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta, $organizacion;
     public $cerrarModal= true, $show = false;
+
+    #[Locked]
+    public $planes_id, $rowquid;
 
     public function mount()
     {
@@ -29,9 +34,11 @@ class PlanesComponent extends Component
     public function render()
     {
         $planes = Plan::buscar($this->keyword)
-            ->orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->limit($this->rows)
             ->get();
+
+        $total = Plan::buscar($this->keyword)->count();
 
         $rows = Plan::count();
 
@@ -44,7 +51,8 @@ class PlanesComponent extends Component
         return view('livewire.dashboard.planes-component')
             ->with('planes', $planes)
             ->with('rowsPlanes', $rows)
-            ->with('organizaciones', $organizaciones);
+            ->with('organizaciones', $organizaciones)
+            ->with('totalRows', $total);
     }
 
     public function setLimit()
@@ -61,8 +69,8 @@ class PlanesComponent extends Component
     {
         $this->reset([
             'nombre', 'bajada', 'subida', 'precio', 'organizaciones_id', 'planes_id', 'etiqueta',
-            'nuevo', 'editar', 'keyword', 'organizacion',
-            'show'
+            'nuevo', 'editar', 'organizacion',
+            'show', 'rowquid'
         ]);
         $this->resetErrorBag();
     }
@@ -89,29 +97,44 @@ class PlanesComponent extends Component
         }else{
             //nuevo
             $plan = new Plan();
+            do{
+                $rowquid = generarStringAleatorio(16);
+                $existe = Plan::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $plan->rowquid = $rowquid;
         }
-        $plan->nombre = $this->nombre;
-        $plan->etiqueta_factura = $this->etiqueta;
-        $plan->bajada = $this->bajada;
-        $plan->subida = $this->subida;
-        $plan->precio = $this->precio;
-        $plan->organizaciones_id = $this->organizaciones_id;
-        $plan->save();
 
-        $this->alert('success', 'Datos Guardados.');
+        if ($plan){
+            $plan->nombre = $this->nombre;
+            $plan->etiqueta_factura = $this->etiqueta;
+            $plan->bajada = $this->bajada;
+            $plan->subida = $this->subida;
+            $plan->precio = $this->precio;
+            $organizacion = $this->getOrganizacion($this->organizaciones_id);
+            $plan->organizaciones_id = $organizacion->id;
+            $plan->save();
 
-        if ($this->cerrarModal){
-            $this->limpiar();
-            $this->dispatch('cerrarModal');
+            $this->alert('success', 'Datos Guardados.');
+
+            if (!$this->planes_id){
+                $this->reset('keyword');
+            }
+
+            if ($this->cerrarModal){
+                $this->limpiar();
+                $this->dispatch('cerrarModal');
+            }else{
+                $this->showPlan($plan->rowquid);
+            }
         }else{
-            $this->showPlan($plan->id);
+            $this->dispatch('cerrarModal');
         }
     }
 
-    public function edit($id, $cerrarModal = true)
+    public function edit($rowquid, $cerrarModal = true)
     {
         $this->limpiar();
-        $plan = Plan::find($id);
+        $plan = $this->getPlan($rowquid);
         if ($plan){
 
             $this->nombre = $plan->nombre;
@@ -119,8 +142,10 @@ class PlanesComponent extends Component
             $this->bajada = $plan->bajada;
             $this->subida = $plan->subida;
             $this->precio = $plan->precio;
-            $this->organizaciones_id = $plan->organizaciones_id;
+            $organizacion = Organizacion::find($plan->organizaciones_id);
+            $this->organizaciones_id = $organizacion->rowquid;
             $this->organizacion = $plan->organizacion->nombre;
+            $this->rowquid = $plan->rowquid;
 
             $this->nuevo = false;
             $this->editar = true;
@@ -131,19 +156,20 @@ class PlanesComponent extends Component
             }
 
         }else{
+            Sleep::for(500)->millisecond();
             $this->dispatch('cerrarModal');
         }
     }
 
-    public function showPlan($id)
+    public function showPlan($rowquid)
     {
-        $this->edit($id, false);
+        $this->edit($rowquid, false);
         $this->show = true;
     }
 
-    public function destroy($id)
+    public function destroy($rowquid)
     {
-        $this->planes_id = $id;
+        $this->rowquid = $rowquid;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -158,17 +184,21 @@ class PlanesComponent extends Component
     #[On('confirmed')]
     public function confirmed()
     {
-        $plan = Plan::find($this->planes_id);
+        $id = null;
+        $plan = $this->getPlan($this->rowquid);
+        if ($plan){
+            $id = $plan->id;
+        }
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
 
-        $servicios = Servicio::where('planes_id', $this->planes_id)->first();
+        $servicios = Servicio::where('planes_id', $id)->first();
         if ($servicios){
             $vinculado = true;
         }
 
-        $facturas = Factura::where('planes_id', $this->planes_id)->first();
+        $facturas = Factura::where('planes_id', $id)->first();
         if ($facturas){
             $vinculado = true;
         }
@@ -203,6 +233,22 @@ class PlanesComponent extends Component
     public function cerrarModal()
     {
         //JS
+    }
+
+    public function cerrarBusqueda()
+    {
+        $this->reset('keyword');
+        $this->limpiar();
+    }
+
+    protected function getPlan($rowquid): ?Plan
+    {
+        return Plan::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getOrganizacion($rowquid): ?Organizacion
+    {
+        return Organizacion::where('rowquid', $rowquid)->first();
     }
 
 }
