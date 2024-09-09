@@ -80,7 +80,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text text-bold">Dirección</span>
             </div>
-            <input type="text" class="form-control" wire:model="direccion"  placeholder="[string]">
+            <input type="text" class="form-control" wire:model="direccion" placeholder="[string]">
             @error('direccion')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>

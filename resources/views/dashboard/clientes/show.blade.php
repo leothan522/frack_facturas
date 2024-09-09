@@ -5,8 +5,7 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <span class="nav-link">
-                        Cedula <span
-                                class="float-right text-bold text-uppercase">{{ is_numeric($cedula) ? formatoMillares($cedula,0) : $cedula }}</span>
+                        Cedula <span class="float-right text-bold text-uppercase">{{ formatoMillares($cedula, 0) }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -21,7 +20,7 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Teléfono <span class="float-right text-bold">{{ $telefono }}</span>
+                        Teléfono <span class="float-right text-bold text-uppercase">{{ $telefono }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -46,17 +45,17 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Latitud <span class="float-right text-bold">{{ $latitud }}</span>
+                        Latitud <span class="float-right text-bold text-uppercase">{{ $latitud }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Longitud <span class="float-right text-bold">{{ $longitud }}</span>
+                        Longitud <span class="float-right text-bold text-uppercase">{{ $longitud }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        GPS <span class="float-right text-bold">{{ $gps }}</span>
+                        GPS <span class="float-right text-bold text-uppercase">{{ $gps }}</span>
                     </span>
                 </li>
             </ul>

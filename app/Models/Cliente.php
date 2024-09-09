@@ -25,6 +25,7 @@ class Cliente extends Model
         'fecha_instalacion',
         'fecha_pago',
         'direccion',
+        'rowquid'
     ];
 
     public function servicios(): HasMany

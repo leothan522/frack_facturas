@@ -28,7 +28,7 @@
     <script>
 
         Livewire.on('cerrarModal', () => {
-            $('#btn_modal_cerrar').click();
+            $("#btn_modal_cerrar").click();
         });
 
         console.log('Hi!');
