@@ -50,8 +50,7 @@
                         <td class="justify-content-end">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})"
-                                            data-card-widget="remove">
+                                    <button class="btn btn-primary btn-xs" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" data-toggle="modal"
@@ -62,8 +61,7 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas({{ $servicio->id }})"
-                                            data-card-widget="remove">
+                                    <button class="btn btn-primary btn-xs" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" data-toggle="modal"

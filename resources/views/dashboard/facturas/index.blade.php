@@ -64,7 +64,7 @@
         });
 
         function getFacturas(id) {
-            Livewire.dispatch('getFacturas', { id: id });
+            Livewire.dispatch('getFacturas', { rowquid: id });
         }
 
         function getServicios() {
@@ -82,6 +82,10 @@
             }
             return false;
         }
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
 
         console.log('Hi!');
 

@@ -14,13 +14,17 @@ class FacturasController extends Controller
         return view('dashboard.facturas.index');
     }
 
-    public function exportFactura($id)
+    public function exportFactura($rowquid)
     {
-        $factura = Factura::find($id);
-        $data = [
-            'factura' => $factura
-        ];
-        $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-        return $pdf->stream('factura.pdf');
+        $factura = Factura::where('rowquid', $rowquid)->first();
+        if ($factura){
+            $data = [
+                'factura' => $factura
+            ];
+            $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
+            return $pdf->stream('factura.pdf');
+        }else{
+            return redirect()->route('facturas.index');
+        }
     }
 }

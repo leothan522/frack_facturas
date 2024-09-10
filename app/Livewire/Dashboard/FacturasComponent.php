@@ -13,19 +13,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class FacturasComponent extends Component
 {
     use LivewireAlert;
-    use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
+    public $viewFactura = false, $limit = 12, $botonMasFacturas = false;
+    public $codigo, $cliente, $plan, $organizacion, $fecha_pago, $listarFacturas;
 
-    public $viewFactura = false, $limit = 12, $servicios_id, $botonMasFacturas = false;
-    public $codigo, $cliente, $plan, $organizacion, $fecha_pago, $listarFacturas, $facturas_id;
+    #[Locked]
+    public $servicios_id, $servicioRowquid, $facturas_id, $facturaRowquid;
 
     public function render()
     {
@@ -41,38 +41,42 @@ class FacturasComponent extends Component
     }
 
     #[On('getFacturas')]
-    public function getFacturas($id)
+    public function getFacturas($rowquid)
     {
-        if ($this->servicios_id != $id){
-            $this->servicios_id = $id;
+        if ($this->servicioRowquid != $rowquid) {
+            $this->servicioRowquid = $rowquid;
             $this->limpiarFacturas();
         }
 
-        $servicio = Servicio::find($this->servicios_id);
+        $servicio = $this->getServicio($this->servicioRowquid);
 
-        if ($servicio){
+        if ($servicio) {
 
+            $this->servicios_id = $servicio->id;
             $this->codigo = $servicio->codigo;
-            $this->cliente = $servicio->cliente->nombre." ".$servicio->cliente->apellido;
+            $this->cliente = $servicio->cliente->nombre . " " . $servicio->cliente->apellido;
             $this->plan = $servicio->plan->nombre;
             $this->organizacion = $servicio->organizacion->nombre;
             $this->fecha_pago = $servicio->cliente->fecha_pago;
 
             $this->listarFacturas = Factura::where('servicios_id', $this->servicios_id)
-                ->orderBy('factura_fecha', 'DESC')->limit($this->limit)->get();
+                ->orderBy('factura_fecha', 'DESC')
+                ->limit($this->limit)
+                ->get();
 
             $facturas = Factura::where('servicios_id', $this->servicios_id)->count();
+
             $actual = $this->listarFacturas->count();
-            if ($facturas > 12 && $facturas > $actual){
+            if ($facturas > 12 && $facturas > $actual) {
                 $this->botonMasFacturas = true;
-            }else{
+            } else {
                 $this->botonMasFacturas = false;
             }
 
             $this->viewFactura = true;
 
-        }else{
-            $this->reset(['servicios_id']);
+        } else {
+            $this->reset(['servicios_id', 'servicioRowquid']);
         }
 
     }
@@ -81,7 +85,7 @@ class FacturasComponent extends Component
     {
         $servicio = Servicio::find($this->servicios_id);
 
-        if ($servicio){
+        if ($servicio) {
 
             $organizacion = Organizacion::find($servicio->organizaciones_id);
             $cliente = Cliente::find($servicio->clientes_id);
@@ -104,12 +108,12 @@ class FacturasComponent extends Component
             $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
             if ($ultima) {
                 $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
-            }else{
+            } else {
                 $ultima_fecha = Carbon::parse($cliente->fecha_pago);
             }
             $factura_fecha = Carbon::parse($ultima_fecha);
 
-            if ($factura_fecha->gt($hoy)){
+            if ($factura_fecha->gt($hoy)) {
                 //no
                 $this->alert('warning', '¡No se puede Generar la Factura!', [
                     'position' => 'center',
@@ -121,10 +125,10 @@ class FacturasComponent extends Component
                     'confirmButtonText' => 'OK',
                 ]);
 
-            }else{
+            } else {
 
-                if (!$ultima){
-                    $factura_fecha = $hoy->format('Y')."-".$hoy->format('m')."-".Carbon::parse($cliente->fecha_pago)->format('d');
+                if (!$ultima) {
+                    $factura_fecha = $hoy->format('Y') . "-" . $hoy->format('m') . "-" . Carbon::parse($cliente->fecha_pago)->format('d');
                 }
 
                 //montos factura
@@ -165,9 +169,14 @@ class FacturasComponent extends Component
                 $factura->clientes_id = $cliente->id;
                 $factura->organizaciones_id = $organizacion->id;
                 $factura->planes_id = $plan->id;
+                do{
+                    $rowquid = generarStringAleatorio(16);
+                    $existe = Factura::where('rowquid', $rowquid)->first();
+                }while($existe);
+                $factura->rowquid = $rowquid;
                 $factura->save();
 
-                $this->getFacturas($this->servicios_id);
+                $this->getFacturas($this->servicioRowquid);
 
                 $organizacion->proxima_factura = ++$next;
                 $organizacion->save();
@@ -182,12 +191,12 @@ class FacturasComponent extends Component
     public function verMasFacturas($limit)
     {
         $this->limit = $limit + 12;
-        $this->getFacturas($this->servicios_id);
+        $this->getFacturas($this->servicioRowquid);
     }
 
-    public function destroyFactura($id)
+    public function destroyFactura($rowquid)
     {
-        $this->facturas_id = $id;
+        $this->facturaRowquid = $rowquid;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -202,7 +211,7 @@ class FacturasComponent extends Component
     #[On('confirmedFactura')]
     public function confirmedFactura()
     {
-        $row  = Factura::find($this->facturas_id);
+        $row = $this->getFactura($this->facturaRowquid);
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
@@ -222,51 +231,52 @@ class FacturasComponent extends Component
                 $row->delete();
                 $this->alert('success', 'Factura Eliminada.');
             }
-            $this->reset('facturas_id');
-            $this->getFacturas($this->servicios_id);
+            $this->reset('facturas_id', 'facturaRowquid');
+            $this->getFacturas($this->servicioRowquid);
         }
     }
 
-    public function sendFactura($id)
+    public function sendFactura($rowquid)
     {
-        $factura = Factura::find($id);
+        $factura = $this->getFactura($rowquid);
+        if ($factura){
+            $data = [
+                'factura' => $factura
+            ];
+            //creamos el PDF y lo guardamos en Storage => public
+            $filename = "sendFacturaID_$factura->rowquid.pdf";
+            $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
+            $pdf->save($filename, 'public');
 
-        $data = [
-            'factura' => $factura
-        ];
-        //creamos el PDF y lo guardamos en Storage => public
-        $filename = "sendFacturaID_$factura->id.pdf";
-        $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-        $pdf->save($filename, 'public');
+            //anexamos los datos extras en data para enviar email
+            $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));
+            $year = getFecha($factura->factura_fecha, 'Y');
+            $data['from_email'] = $factura->organizacion_email;
+            $data['from_name'] = $factura->organizacion_nombre;
+            $data['subject'] = "Factura servicio de Internet $month $year";
+            $data['path'] = "public/$filename";
+            $data['filename'] = "Factura $month $year.pdf";
 
-        //anexamos los datos extras en data para enviar email
-        $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));
-        $year = getFecha($factura->factura_fecha, 'Y');
-        $data['from_email'] = $factura->organizacion_email;
-        $data['from_name'] = $factura->organizacion_nombre;
-        $data['subject'] = "Factura servicio de Internet $month $year";
-        $data['path'] = "public/$filename";
-        $data['filename'] = "Factura $month $year.pdf";
+            //enviamos el correo
+            $to = $factura->cliente_email;
+            Mail::to($to)->send(new FacturasMail($data));
 
-        //enviamos el correo
-        $to = $factura->cliente_email;
-        Mail::to($to)->send(new FacturasMail($data));
+            $path = Storage::exists($data['path']);
+            if ($path) {
+                Storage::delete($data['path']);
+            }
 
-        $path = Storage::exists($data['path']);
-        if ($path){
-            Storage::delete($data['path']);
+            $factura->send = true;
+            $factura->save();
+            $this->getFacturas($this->servicioRowquid);
+
+            $this->alert("success", 'Factura Enviada.');
         }
-
-        $factura->send = true;
-        $factura->save();
-        $this->getFacturas($this->servicios_id);
-
-        $this->alert("success", 'Factura Enviada.');
     }
 
-    public function reSendFactura($id)
+    public function reSendFactura($rowquid)
     {
-        $this->facturas_id = $id;
+        $this->facturaRowquid = $rowquid;
         $this->confirm('¿Estas seguro?', [
             'toast' => false,
             'position' => 'center',
@@ -281,8 +291,18 @@ class FacturasComponent extends Component
     #[On('confirmedEnviar')]
     public function confirmedEnviar()
     {
-        $this->sendFactura($this->facturas_id);
-        $this->reset('facturas_id');
+        $this->sendFactura($this->facturaRowquid);
+        $this->reset('facturas_id', 'facturaRowquid');
+    }
+
+    protected function getServicio($rowquid): ?Servicio
+    {
+        return Servicio::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getFactura($rowquid): ?Factura
+    {
+        return Factura::where('rowquid', $rowquid)->first();
     }
 
 }

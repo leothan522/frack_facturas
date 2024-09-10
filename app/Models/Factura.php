@@ -42,6 +42,7 @@ class Factura extends Model
         'plan_subida',
         'plan_precio',
         'send',
+        'rowquid'
     ];
 
     public function servicio(): BelongsTo
