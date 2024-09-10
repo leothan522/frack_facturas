@@ -2,11 +2,12 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-danger">{{ $keyword }}</b> }
-                <button class="btn btn-tool text-danger" wire:click="limpiar"><i class="fas fa-times-circle"></i>
+                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
+                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Servicios <span class="d-none d-lg-inline-block">Registrados</span>
+                Servicios [ <b class="text-danger">{{ $rowsServicios }}</b> ]
             @endif
         </h3>
 
@@ -17,13 +18,12 @@
             <button class="btn btn-tool" data-toggle="modal" data-target="#modal-default" wire:click="limpiar">
                 <i class="fas fa-file"></i> Nuevo
             </button>
-            <button type="button" class="btn btn-tool" wire:click="setLimit"
-                    @if($rows > $rowsServicios) disabled @endif >
+            <button type="button" class="btn btn-tool" wire:click="setLimit" @if($rows >= $rowsServicios) disabled @endif >
                 <i class="fas fa-sort-amount-down-alt"></i> Ver más
             </button>
         </div>
     </div>
-    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 72vh;" @endif >
+    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 67vh;" @endif >
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
@@ -55,7 +55,7 @@
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
                                     <button class="btn btn-primary btn-xs" data-toggle="modal"
-                                            data-target="#modal-default" wire:click="showServicio({{ $servicio->id }})">
+                                            data-target="#modal-default" wire:click="showServicio('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                 </div>
@@ -70,7 +70,7 @@
                                             data-target="#modal-default" wire:click="edit('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" wire:click="destroy({{ $servicio->id }})">
+                                    <button class="btn btn-primary btn-xs" wire:click="destroy('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
@@ -105,12 +105,6 @@
         </div>
     </div>
 
-    {{--<div class="modal-footer justify-content-end">
-        <div class="card-tools">
-            <button class="btn btn-sm btn-tool" wire:click="limpiar" data-toggle="modal" data-target="#modal-servicios">
-                <i class="fas fa-file"></i> Nuevo Servicio
-            </button>
-        </div>
-    </div>--}}
     {!!  verSpinner() !!}
+
 </div>

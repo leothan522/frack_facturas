@@ -52,6 +52,8 @@ class ServiciosComponent extends Component
             ->limit($this->rows)
             ->get();
 
+        $total = Servicio::buscar($this->keyword)->count();
+
         $rows = Servicio::count();
 
         if ($rows > $this->numero) {
@@ -61,7 +63,8 @@ class ServiciosComponent extends Component
         return view('livewire.dashboard.servicios-component')
             ->with('listarOrganizaciones', $organizaciones)
             ->with('servicios', $servicios)
-            ->with('rowsServicios', $rows);
+            ->with('rowsServicios', $rows)
+            ->with('totalRows', $total);
     }
 
     public function setLimit()
@@ -166,8 +169,8 @@ class ServiciosComponent extends Component
         if ($servicio){
 
             $this->codigo = $servicio->codigo;
-            //$this->clientes_id = $servicio->clientes_id;
             $this->clienteRowquid = $servicio->cliente->rowquid;
+            //$this->clientes_id = $servicio->clientes_id;
             $this->organizacionRowquid = $servicio->organizacion->rowquid;
             $this->updatedOrganizacionRowquid();
             //$this->organizaciones_id = $servicio->organizaciones_id;
@@ -175,6 +178,8 @@ class ServiciosComponent extends Component
             $this->planRowquid = $servicio->plan->rowquid;
             $this->updatedPlanRowquid();
             //$this->planes_id = $servicio->planes_id;
+            $this->rowquid = $servicio->rowquid;
+
 
             $this->cedula = $servicio->cliente->cedula;
             $this->nombre = $servicio->cliente->nombre;
