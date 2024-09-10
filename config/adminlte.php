@@ -328,7 +328,7 @@ return [
                     'can'  => 'clientes',
                 ],
                 [
-                    'text' => 'Planes de servicio',
+                    'text' => 'Planes',
                     'icon' => 'fas fa-fw fa-list-ol',
                     'route'  => 'planes.index',
                     'can'  => 'planes',

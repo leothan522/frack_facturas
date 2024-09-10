@@ -1,13 +1,13 @@
-<div class="card card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning">{{ $totalBusqueda }}</b> ]
-                <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                Busqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalBusqueda }}</b> ]
+                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registrados [ <b class="text-warning">{{ $rowsUsuarios }}</b> ]
+                Registrados [ <b class="text-danger">{{ $rowsUsuarios }}</b> ]
             @endif
         </h3>
 
@@ -104,7 +104,7 @@
         <div class="row justify-content-between">
             <small>Mostrando {{ $listarUsers->count() }}</small>
             @if(comprobarPermisos())
-                <form class="d-md-none col-6 justify-content-end" id="sm_from_role_usuario">
+                <form class="col-6 col-md-2 justify-content-end" id="sm_from_role_usuario">
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" placeholder="Nuevo Rol" id="sm_input_role_nombre" required>
                         <span class="input-group-append">

@@ -7,20 +7,20 @@
 @section('content_header')
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <h1 class="m-0 text-dark"><i class="fas fa-users-cog"></i> Usuarios</h1>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-8">
                 <ol class="breadcrumb float-sm-right" id="header_div_listar_roles">
                     {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
                     <li class="breadcrumb-item active">
-                        <span class="d-none d-md-inline">Usuarios Registrados</span>
-                        <span class="d-md-none">Roles [ <span id="header_span_roles_rows">{{ $smListarRoles->count() }}</span> ]</span>
+                        <span>Roles [ <span id="header_span_roles_rows">{{ $smListarRoles->count() }}</span> ]</span>
                     </li>
                     @if($smListarRoles->isNotEmpty())
                         @foreach($smListarRoles as $rol)
-                            <li class="breadcrumb-item d-md-none" data-toggle="modal" data-target="#modal-roles-usuarios"
-                                onclick="showRol('{{ $rol->rowquid }}')" id="header_button_role_id_{{ $rol->rowquid }}">
+                            <li class="breadcrumb-item" data-toggle="modal" data-target="#modal-roles-usuarios"
+                                onclick="showRol('{{ $rol->rowquid }}')" style="cursor: pointer"
+                                id="header_button_role_id_{{ $rol->rowquid }}">
                                 <span class="btn-link" id="li_text_rol_{{ $rol->rowquid }}">{{ ucfirst($rol->nombre) }}</span>
                             </li>
                         @endforeach
@@ -77,7 +77,7 @@
             boton += '</button>';
 
             let li = '';
-            li += '<li class="breadcrumb-item d-md-none" data-toggle="modal" data-target="#modal-roles-usuarios"';
+            li += '<li class="breadcrumb-item" data-toggle="modal" data-target="#modal-roles-usuarios"';
             li += 'onclick="showRol(\'' + id + '\')" id="header_button_role_id_' + id + '">';
             li += '<span class="btn-link" id="li_text_rol_' + id + '">' + nombre + '</span>';
             li += '</li>';

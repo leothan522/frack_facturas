@@ -1,12 +1,13 @@
-<div class="card card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning">{{ $totalBusqueda }}</b> ]
-                <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda"><i class="fas fa-times-circle"></i>
+                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalBusqueda }}</b> ]
+                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registrados [ <b class="text-warning">{{ $rowsParametros }}</b> ]
+                Registrados [ <b class="text-danger">{{ $rowsParametros }}</b> ]
             @endif
         </h3>
 
@@ -22,7 +23,7 @@
             </button>
         </div>
     </div>
-    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 68vh;" @endif >
+    <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 67vh;" @endif >
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
