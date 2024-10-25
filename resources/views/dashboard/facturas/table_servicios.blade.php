@@ -43,7 +43,7 @@
                         <td class="text-uppercase text-center">{{ $servicio->codigo }}</td>
                         <td class="text-uppercase d-table-cell text-truncate"
                             style="max-width: 150px;">{{ $servicio->cliente->nombre }} {{ $servicio->cliente->apellido }}</td>
-                        <td class="d-none d-lg-table-cell">{{ $servicio->cliente->email }}</td>
+                        <td class="d-none d-lg-table-cell text-lowercase">{{ $servicio->cliente->email }}</td>
                         <td class="d-none d-lg-table-cell">{{ $servicio->plan->nombre }}</td>
                         <td class="d-none d-lg-table-cell">{{ $servicio->organizacion->nombre }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ getFecha($servicio->cliente->fecha_pago) }}</td>

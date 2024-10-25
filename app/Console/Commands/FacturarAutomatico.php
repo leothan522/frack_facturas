@@ -131,6 +131,11 @@ class FacturarAutomatico extends Command
                     $factura->clientes_id = $cliente->id;
                     $factura->organizaciones_id = $organizacion->id;
                     $factura->planes_id = $plan->id;
+                    do{
+                        $rowquid = generarStringAleatorio(16);
+                        $existe = Factura::where('rowquid', $rowquid)->first();
+                    }while($existe);
+                    $factura->rowquid = $rowquid;
                     $factura->save();
 
                     $organizacion->proxima_factura = ++$next;
