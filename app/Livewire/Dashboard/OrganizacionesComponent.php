@@ -81,8 +81,8 @@ class OrganizacionesComponent extends Component
             'web' => 'required',
             'moneda' => 'required',
             'dias' => 'required|integer|gt:0',
-            'formato' => 'required',
-            'proxima' => 'required|integer|gt:0',
+            //'formato' => 'required',
+            'proxima' => 'nullable|integer|gt:0',
             'direccion' => 'required',
         ];
     }
@@ -112,7 +112,11 @@ class OrganizacionesComponent extends Component
             $organizacion->moneda = $this->moneda;
             $organizacion->dias_factura = $this->dias;
             $organizacion->formato_factura = $this->formato;
-            $organizacion->proxima_factura = $this->proxima;
+            if (!empty($this->proxima)){
+                $organizacion->proxima_factura = $this->proxima;
+            }else{
+                $organizacion->proxima_factura = null;
+            }
             $organizacion->direccion = $this->direccion;
             $organizacion->save();
 

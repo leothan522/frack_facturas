@@ -94,7 +94,10 @@ class FacturasComponent extends Component
             $hoy = Carbon::parse(date("Y-m-d"));
 
             //numero Factura
-            $next = $organizacion->proxima_factura;
+            $next = 1;
+            if (!empty($organizacion->proxima_factura)){
+                $next = $organizacion->proxima_factura;
+            }
             $formato = $organizacion->formato_factura;
             $i = 0;
             do{

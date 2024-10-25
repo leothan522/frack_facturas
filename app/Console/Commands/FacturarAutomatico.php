@@ -65,7 +65,10 @@ class FacturarAutomatico extends Command
                 $plan = Plan::find($servicio->planes_id);
 
                 //numero Factura
-                $next = $organizacion->proxima_factura;
+                $next = 1;
+                if (!empty($organizacion->proxima_factura)){
+                    $next = $organizacion->proxima_factura;
+                }
                 $formato = $organizacion->formato_factura;
                 $i = 0;
                 do{

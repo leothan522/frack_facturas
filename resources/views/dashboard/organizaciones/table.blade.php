@@ -47,7 +47,13 @@
                         <td class="d-none d-lg-table-cell text-center">{{ $organizacion->moneda }}</td>
                         <td class="d-none d-lg-table-cell text-right">{{ $organizacion->dias_factura }}</td>
                         <td class="d-none d-lg-table-cell text-right text-uppercase">{{ $organizacion->formato_factura }}</td>
-                        <td class="d-none d-lg-table-cell text-right">{{ $organizacion->proxima_factura }}</td>
+                        <td class="d-none d-lg-table-cell text-right">
+                            @if(!empty($organizacion->proxima_factura))
+                                {{ $organizacion->proxima_factura }}
+                            @else
+                                1
+                            @endif
+                        </td>
                         <td class="text-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
