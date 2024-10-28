@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\ClientesController;
 use App\Http\Controllers\Dashboard\FacturasController;
+use App\Http\Controllers\Dashboard\MetodosController;
 use App\Http\Controllers\Dashboard\OrganizacionesController;
 use App\Http\Controllers\Dashboard\PlanesController;
 use App\Http\Controllers\Dashboard\PruebasController;
@@ -37,13 +38,16 @@ Route::middleware([
     Route::get('usuarios', [UsuariosController::class, 'index'])->name('usuarios.index');
     Route::get('export/usuarios/{buscar?}', [UsuariosController::class, 'export'])->name('usuarios.excel');
 
+    Route::get('pruebas', [PruebasController::class, 'index'])->name('pagina.pruebas');
+
     Route::get('clientes', [ ClientesController::class, 'index'])->name('clientes.index');
     Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
     Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
+    Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
 
-    Route::get('pruebas', [PruebasController::class, 'index'])->name('pagina.pruebas');
+
 
 });
 

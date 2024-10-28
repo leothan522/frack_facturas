@@ -309,7 +309,25 @@ return [
         ],
 
         // Sidebar items:
-
+        [
+            'text'      => 'Gestionar Pagos',
+            'icon'      => 'fas fa-fw fa-money-check-alt',
+            'can'       => ['metodos'],
+            'submenu' => [
+                [
+                    'text' => 'Pagos',
+                    'icon' => 'fas fa-fw fa-file-invoice-dollar',
+                    'route'  => 'facturas.index',
+                    'can'  => 'facturas',
+                ],
+                [
+                    'text' => 'Metodos',
+                    'icon' => 'fas fa-fw fa-credit-card',
+                    'route' => 'metodos.index',
+                    'can' => 'metodos',
+                ]
+            ],
+        ],
         [
             'text'      => 'Gestionar Facturas',
             'icon'      => 'fas fa-fw fa-book',

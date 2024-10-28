@@ -54,5 +54,9 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role == 100;
         });
 
+        Gate::define('metodos', function ($user){
+            return comprobarPermisos('metodos.index');
+        });
+
     }
 }
