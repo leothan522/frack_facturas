@@ -15,12 +15,12 @@
     <div class="card-body">
 
 
-        <form wire:submit="">
+        <form wire:submit="saveZelle">
 
 
             @if($metodos_id)
                 <div class="float-right">
-                    <button type="button" class="btn btn-sm">
+                    <button type="button" class="btn btn-sm" wire:click="destroy">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </button>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                     </div>
-                    <input type="text" class="form-control" wire:model="email" placeholder="Correo Electrónico">
+                    <input type="email" class="form-control" wire:model="email" placeholder="Correo Electrónico">
                     @error('email')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>

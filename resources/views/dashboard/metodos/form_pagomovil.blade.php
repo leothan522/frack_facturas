@@ -15,12 +15,12 @@
     <div class="card-body">
 
 
-        <form wire:submit="">
+        <form wire:submit="savePagoMovil">
 
 
             @if($metodos_id)
                 <div class="float-right">
-                    <button type="button" class="btn btn-sm">
+                    <button type="button" class="btn btn-sm" wire:click="destroy">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </button>
                 </div>

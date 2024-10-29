@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Metodo extends Model
 {
@@ -17,4 +18,8 @@ class Metodo extends Model
         'email',
         'bancos_id'
     ];
+
+    public function banco(): BelongsTo{
+        return $this->belongsTo(Banco::class, 'bancos_id', 'id');
+    }
 }

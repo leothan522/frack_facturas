@@ -68,7 +68,7 @@
             select_2("transferencia_select_bancos", data, 'getBancoTransferencia');
         });
 
-        Livewire.on('setBancosTranferencia', ({ rowquid }) => {
+        Livewire.on('setBancoTransferencia', ({ rowquid }) => {
             $("#transferencia_select_bancos").val(rowquid).trigger('change');
         });
 

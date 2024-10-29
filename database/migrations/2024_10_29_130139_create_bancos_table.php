@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('bancos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
             $table->string('nombre');
+            $table->string('codigo');
             $table->timestamps();
         });
 
         foreach (dataBancos() as $banco) {
             DB::table("bancos")
                 ->insert([
-                    "codigo" => $banco["codigo"],
                     "nombre" => $banco["nombre"],
+                    "codigo" => $banco["codigo"],
                     "created_at" => \Carbon\Carbon::now(),
                     "updated_at" => \Carbon\Carbon::now(),
                 ]);
