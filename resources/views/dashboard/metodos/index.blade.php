@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('plugins.Select2', true)
+
 @section('title', 'Metodos')
 
 @section('content_header')
@@ -19,7 +21,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    @livewire('dashboard.metodos-component')
 @endsection
 
 @section('right-sidebar')
@@ -38,20 +40,55 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        /*function buscar(){
-            let input = $("#navbarSearch");
-            let keyword  = input.val();
-            if (keyword.length > 0){
-                input.blur();
-                alert('Falta vincular con el componente Livewire');
-                //Livewire.dispatch('buscar', { keyword: keyword });
-            }
-            return false;
-        }*/
+        function select_2(id, data, event) {
 
-        /*$(document).on('select2:open', () => {
+            let html = '<div class="input-group-prepend">' +
+                '<span class="input-group-text">' +
+                '<i class="far fa-bookmark"></i>' +
+                '</span>' +
+                '</div>' +
+                '<select class="custom-control custom-select" id="'+ id +'"></select>';
+
+            $("#div_" + id).html(html);
+
+            $("#" + id).select2({
+                theme: 'bootstrap4',
+                data: data,
+                placeholder: 'Seleccione'
+            })
+                .val(null)
+                .trigger('change')
+                .on('change', function () {
+                    let value = $(this).val();
+                    Livewire.dispatch(event, { rowquid: value });
+                });
+        }
+
+        Livewire.on('initBancoTranferencia', ({ data }) => {
+            select_2("transferencia_select_bancos", data, 'getBancoTransferencia');
+        });
+
+        Livewire.on('setBancosTranferencia', ({ rowquid }) => {
+            $("#transferencia_select_bancos").val(rowquid).trigger('change');
+        });
+
+        Livewire.on('initBancoPagoMovil', ({ data }) => {
+            select_2('pagomovil_select_bancos', data, 'getBancoPagoMovil');
+        });
+
+        Livewire.on('setBancoPagoMovil', ({ rowquid }) => {
+            $("#pagomovil_select_bancos").val(rowquid).trigger('change');
+        });
+
+
+
+        $(document).ready(function () {
+            $('#navbar_search_id').addClass('d-none');
+        });
+
+        $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
-        });*/
+        });
 
         console.log('Hi!');
     </script>

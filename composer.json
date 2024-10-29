@@ -37,7 +37,8 @@
         },
         "files": [
             "app/Http/Funciones/Funciones.php",
-            "app/Http/Funciones/Validar.php"
+            "app/Http/Funciones/Validar.php",
+            "app/Http/Funciones/Bancos.php"
         ]
     },
     "autoload-dev": {
