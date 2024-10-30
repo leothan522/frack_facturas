@@ -43,4 +43,14 @@ class WebController extends Controller
         $user->save();
         return redirect()->route('web.index');
     }
+
+    public function index()
+    {
+        return view('web.login.index');
+    }
+
+    public function consultar()
+    {
+        return view('web.consultar.index');
+    }
 }
