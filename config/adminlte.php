@@ -312,13 +312,13 @@ return [
         [
             'text'      => 'Gestionar Pagos',
             'icon'      => 'fas fa-fw fa-money-check-alt',
-            'can'       => ['metodos'],
+            'can'       => ['metodos', 'pagos'],
             'submenu' => [
                 [
                     'text' => 'Pagos',
                     'icon' => 'fas fa-fw fa-file-invoice-dollar',
-                    'route'  => 'facturas.index',
-                    'can'  => 'facturas',
+                    'route'  => 'pagos.index',
+                    'can'  => 'pagos',
                 ],
                 [
                     'text' => 'Metodos',
