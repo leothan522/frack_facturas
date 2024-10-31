@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Web;
 
+use App\Mail\CodigosMail;
 use App\Models\Cliente;
 use App\Models\Parametro;
+use Illuminate\Support\Facades\Mail;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -54,6 +56,19 @@ class LoginComponent extends Component
             }while ($existe);
             $parametro->rowquid = $rowquid;
             $parametro->save();
+            //anexamos los datos extras en data para enviar email
+            $data['from_email'] = $cliente->email;
+            $data['from_name'] = config('app.name');
+            $data['subject'] = "CÓDIGO DE SEGURIDAD";
+            $data['nombre'] = $cliente->nombre;
+            $data['apellido'] = $cliente->apellido;
+            $data['codigo'] = $codigo;
+
+            //enviamos el correo
+            $to = $cliente->email;
+            Mail::to($to)->send(new CodigosMail($data));
+
+            //guardamos las variables de sesion
             session()->put('guest', $cliente);
             session()->put('idParametro', $parametro->id);
             $this->user = true;
