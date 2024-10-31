@@ -1,4 +1,4 @@
-<h1>Hola {{ $nombre }} {{ $apellido }}</h1>
-<p>
-    Tu codigo de seguridad para el inicio se session es el siguente: <span class="text-primary text-bold">{{ $codigo }}</span>
-</p>
+<p>Hola {{ ucfirst($nombre) }} {{ ucfirst($apellido) }}.</p>
+<h1>
+    Tu codigo de seguridad para el inicio se session es el siguente: <b style="color: #1fc8e3">{{ $codigo }}</b>
+</h1>

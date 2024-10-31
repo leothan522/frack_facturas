@@ -18,7 +18,6 @@ class UserCliente
         if (session()->has('cliente')) {
             return $next($request);
         }else{
-            session()->flush();
             return redirect()->route('web.cliente');
         }
     }

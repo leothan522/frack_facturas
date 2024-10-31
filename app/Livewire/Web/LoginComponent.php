@@ -45,6 +45,7 @@ class LoginComponent extends Component
         $cliente = Cliente::where('cedula', $this->cedula)->first();
         if ($cliente) {
             $idCliente = $cliente->id;
+            $this->borrarCodigosViejos($idCliente);
             $codigo = generarStringAleatorio(6, true);
             $parametro = new Parametro();
             $parametro->nombre = "codigo_seguridad";
@@ -83,7 +84,9 @@ class LoginComponent extends Component
         ];
         $this->validate($rules);
 
-        $parametro = Parametro::where('nombre','codigo_seguridad')->where('tabla_id', $this->cliente['id'])->first();
+        $parametro = Parametro::where('nombre','codigo_seguridad')
+            ->where('tabla_id', $this->cliente['id'])
+            ->first();
         if ($parametro) {
             $codigo = $parametro->valor;
             if ($codigo == $this->codigo){
@@ -134,6 +137,17 @@ class LoginComponent extends Component
         session()->forget('guest');
         $this->limpiar();
         $this->reset(['user', 'cliente']);
+    }
+
+    protected function borrarCodigosViejos($id): void
+    {
+        $parametros =  Parametro::where('nombre', 'codigo_seguridad')
+            ->where('tabla_id', $id)
+            ->get();
+        foreach ($parametros as $parametro){
+            $borrar = Parametro::find($parametro->id);
+            $borrar->delete();
+        }
     }
 
 }
