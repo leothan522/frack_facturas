@@ -5,7 +5,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text text-bold">Cedula</span>
             </div>
-            <input type="text" class="form-control" wire:model="cedula" placeholder="[string]">
+            <input type="text" class="form-control" wire:model="cedula" placeholder="[integer]">
             @error('cedula')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>

@@ -38,8 +38,8 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('cliente', [WebController::class, 'index'])->name('web.facturas');
-Route::get('consultar', [WebController::class, 'consultar'])->name('web.consultar');
+Route::get('cliente', [WebController::class, 'index'])->name('web.cliente');
+Route::get('consultar', [WebController::class, 'consultar'])->middleware('user.cliente')->name('web.consultar');
 
 
 

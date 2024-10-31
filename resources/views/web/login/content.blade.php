@@ -11,33 +11,75 @@
 <div class="lockscreen-item">
     <!-- lockscreen image -->
     <div class="lockscreen-image">
-        <img src="{{ asset('img/user.png') }}" alt="User Image">
+        @if(!$user)
+            <img src="{{ asset('img/user.png') }}" alt="User Image">
+        @else
+            <img src="{{ asset('img/password_2721619.png') }}" alt="User Image">
+        @endif
     </div>
     <!-- /.lockscreen-image -->
 
     <!-- lockscreen credentials (contains the form) -->
-    <form class="lockscreen-credentials">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Ingrese su RIF o Cédula">
-            <div class="input-group-append">
-                <button type="button" class="btn">
-                    <i class="fas fa-arrow-right text-muted"></i>
-                </button>
+
+    @if(!$user)
+        <form class="lockscreen-credentials" wire:submit="validarCedula">
+            <div class="input-group">
+                <input type="number" wire:model="cedula" class="form-control" placeholder="Ingrese Cédula">
+                <div class="input-group-append">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-arrow-right text-muted"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    @else
+        <form class="lockscreen-credentials" wire:submit="validarCodigo">
+            <div class="input-group">
+                <input type="number" wire:model="codigo" class="form-control" placeholder="Ingrese Código">
+                <div class="input-group-append">
+                    <button type="submit" class="btn">
+                        <i class="fas fa-check text-muted"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    @endif
+
     <!-- /.lockscreen credentials -->
 
 </div>
 <!-- /.lockscreen-item -->
 
 <div style="height: 40vh;">
-    <div class="help-block text-center">
-        Ingresa tu RIF o Cédula sin guiones o espacio para iniciar tu sesión.
-    </div>
-    {{--<div class="text-center">
-        <a href="login.html">Or sign in as a different user</a>
-    </div>--}}
+    @if(!$user)
+        @error('cedula')
+        <div class="help-block text-center p-3">
+            <span class="text-sm text-bold text-danger">
+                <i class="icon fas fa-exclamation-triangle"></i>
+                {{ $message }}
+            </span>
+        </div>
+        @enderror
+        <div class="help-block text-center p-3">
+            Ingresa tu Cédula sin puntos o espacios.
+        </div>
+    @else
+        @error('codigo')
+        <div class="help-block text-center p-3">
+            <span class="text-sm text-bold text-danger">
+                <i class="icon fas fa-exclamation-triangle"></i>
+                {{ $message }}
+            </span>
+        </div>
+        @enderror
+        <div class="help-block text-justify p-3">
+            Hemos enviado un <b>código de seguridad</b> de seis (06) dígitos a su correo electrónico:
+            <span class="text-primary text-lowercase">{{ $cliente['email'] }}</span>, revise su bandeja de entrada y use ese código para iniciar sesión.
+        </div>
+        <div class="text-center">
+            <button class="btn btn-link" wire:click="deleteSession">O inicie sesión como un usuario diferente</button>
+        </div>
+    @endif
 </div>
 
 <div class="lockscreen-footer text-center">
@@ -45,3 +87,5 @@
     All rights reserved--}}
     <span>&copy; 2024 {{ mb_strtoupper(config('app.name')) }}</span>&nbsp;
 </div>
+
+{!! verSpinner() !!}

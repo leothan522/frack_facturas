@@ -46,11 +46,16 @@ class WebController extends Controller
 
     public function index()
     {
+        if (session()->has('cliente')){
+            return redirect()->route('web.consultar');
+        }
         return view('web.login.index');
     }
 
     public function consultar()
     {
-        return view('web.consultar.index');
+        $cliente = session('cliente');
+        return view('web.consultar.index')
+            ->with('cliente', $cliente);
     }
 }
