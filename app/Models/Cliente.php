@@ -28,6 +28,14 @@ class Cliente extends Model
         'rowquid'
     ];
 
+    public function scopeBuscar($query, $keyword)
+    {
+        return $query->where('cedula', 'LIKE', "%$keyword%")
+            ->orWhere('nombre', 'LIKE', "%$keyword%")
+            ->orWhere('apellido', 'LIKE', "%$keyword%")
+            ;
+    }
+
     public function servicios(): HasMany
     {
         return $this->hasMany(Servicio::class, 'clientes_id', 'id');
@@ -36,14 +44,6 @@ class Cliente extends Model
     public function facturas(): HasMany
     {
         return $this->hasMany(Factura::class, 'clientes_id', 'id');
-    }
-
-    public function scopeBuscar($query, $keyword)
-    {
-        return $query->where('cedula', 'LIKE', "%$keyword%")
-            ->orWhere('nombre', 'LIKE', "%$keyword%")
-            ->orWhere('apellido', 'LIKE', "%$keyword%")
-            ;
     }
 
 }

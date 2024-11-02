@@ -45,7 +45,7 @@ Route::middleware([
     Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
-    Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
+    //Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
     Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('pagos', [PagosController::class, 'index'])->name('pagos.index');
 
@@ -55,4 +55,4 @@ Route::middleware([
 
 Route::get('dashboard/perfil', [UsuariosController::class, 'perfil'])->middleware('auth')->name('usuarios.perfil');
 Route::get('chat-directo/{id?}', [ChatController::class, 'index'])->middleware(['user.android'])->name('chat.directo');
-
+Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');

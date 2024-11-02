@@ -7,13 +7,13 @@
     <div class="form-group">
         <small>Referencia:</small>
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Referencia">
+            <input type="number" wire:model="referencia" class="form-control" placeholder="Referencia">
             <div class="input-group-append">
                 <button type="button" class="input-group-text text-primary">
                     Pegar
                 </button>
             </div>
-            @error('titular')
+            @error('referencia')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
                 {{ $message }}
@@ -22,16 +22,16 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group @if($displayDetalles == "zelle") d-none @endif">
         <small>¿Qué banco utilizaste?</small>
         <div wire:ignore>
-            <div class="input-group mb-3" id="div_transferencia_select_bancos">
+            <div class="input-group mb-3" id="div_select_bancos">
                 <select class="custom-control custom-select">
                     <option>Seleccione</option>
                 </select>
             </div>
         </div>
-        @error('banco')
+        @error('idBanco')
         <span class="col-sm-12 text-sm text-bold text-danger">
             <i class="icon fas fa-exclamation-triangle"></i>
             {{ $message }}
@@ -41,15 +41,13 @@
 
     <div class="form-group">
         <small>Fecha de pago:</small>
-        <div class="input-group mb-3">
-            <input type="date" class="form-control" placeholder="Referencia">
-            @error('titular')
-            <span class="col-sm-12 text-sm text-bold text-danger">
-                <i class="icon fas fa-exclamation-triangle"></i>
-                {{ $message }}
-            </span>
-            @enderror
-        </div>
+        <input type="date" wire:model="fecha" class="form-control" placeholder="Fecha">
+        @error('fecha')
+        <span class="col-sm-12 text-sm text-bold text-danger">
+            <i class="icon fas fa-exclamation-triangle"></i>
+            {{ $message }}
+        </span>
+        @enderror
     </div>
 
 </div>

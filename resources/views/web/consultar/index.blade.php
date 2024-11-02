@@ -2,6 +2,29 @@
 
 @section('title', 'Consultar Cuenta')
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('vendor/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+    <style type="text/css">
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] { -moz-appearance:textfield; }
+
+
+        input[type=date]::-webkit-inner-spin-button,
+        input[type=date]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=date] { -moz-appearance:textfield; }
+
+    </style>
+@endsection
+
 @section('navbar')
 
     <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
@@ -45,7 +68,6 @@
 
 @endsection
 
-
 @section('content')
 
     @livewire('web.consultar-component')
@@ -53,11 +75,49 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('vendor/select2/js/select2.full.js') }}"></script>
+    <script src="{{ asset('vendor/select2/js/i18n/es.js') }}"></script>
     <script !src="">
 
         function salir() {
             Livewire.dispatch('cerrarSesion');
         }
+
+        function select_2(id, data, event) {
+
+            let html = '<select class="custom-control custom-select" id="'+ id +'"></select>';
+
+            $("#div_" + id).html(html);
+
+            $("#" + id).select2({
+                dropdownParent: $('#modal-default'),
+                theme: 'bootstrap4',
+                data: data,
+                placeholder: 'Seleccione'
+            })
+                .val(null)
+                .trigger('change')
+                .on('change', function () {
+                    let value = $(this).val();
+                    Livewire.dispatch(event, { rowquid: value });
+                });
+        }
+
+        Livewire.on('initBanco', ({ data }) => {
+            select_2("select_bancos", data, 'getBanco');
+        });
+
+        Livewire.on('setBanco', ({ rowquid }) => {
+            $("#select_bancos").val(rowquid).trigger('change');
+        });
+
+        Livewire.on('cerrarModal', () => {
+            $("#btn_modal_default").click();
+        });
+
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
 
         console.log('hi!')
     </script>

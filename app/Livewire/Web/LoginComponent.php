@@ -5,7 +5,9 @@ namespace App\Livewire\Web;
 use App\Mail\CodigosMail;
 use App\Models\Cliente;
 use App\Models\Parametro;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -33,7 +35,13 @@ class LoginComponent extends Component
     public function validarCedula()
     {
         $rules = [
-            'cedula' => 'required|integer|digits_between:6,10|exists:clientes,cedula',
+            //'cedula' => 'required|integer|digits_between:6,10|exists:clientes,cedula',
+            'cedula' => [
+                'required', 'integer', 'digits_between:6,10',
+                Rule::exists('clientes', 'cedula')->where(function (Builder $query) {
+                    return $query->where('deleted_at', null);
+                }),
+            ]
         ];
 
         $messages = [
