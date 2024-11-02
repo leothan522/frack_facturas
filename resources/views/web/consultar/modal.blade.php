@@ -26,12 +26,19 @@
                         @include('web.consultar.form')
                     </div>
 
+                    <div class="@if($display != "verPago") d-none @endif">
+                        @include('web.consultar.pago')
+                    </div>
+
                 </div>
 
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default">Cerrar</button>
-                    <button type="button" wire:click="btnRegistrar" class="btn btn-primary @if($display == "verForm") d-none @endif" @if($display != "verDetalles") disabled @endif>Registrar Pago</button>
+                    <button type="button" wire:click="btnRegistrar" class="btn btn-primary @if($display == "verForm" || $display == "verPago") d-none @endif" @if($display != "verDetalles") disabled @endif>Registrar Pago</button>
                     <button type="submit" class="btn btn-success @if($display != "verForm") d-none @endif">Guardar</button>
+                    <button type="button" wire:click="corregirPago" class="btn btn-primary @if($estatus != 2) d-none @endif">
+                        <i class="fas fa-file-invoice-dollar"></i> Pagar
+                    </button>
                 </div>
 
                 {!! verSpinner() !!}

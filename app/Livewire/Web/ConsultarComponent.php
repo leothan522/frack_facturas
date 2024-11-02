@@ -23,6 +23,7 @@ class ConsultarComponent extends Component
     public $datosTransferencia, $datosPagoMovil, $datosZelle;
     public $titular, $cuenta, $cedula, $tipo, $banco, $monto, $totalFactura, $telefono, $email;
     public $referencia, $idBanco, $fecha, $moneda = 'Bs';
+    public $verMetodo, $verEstatus, $estatus;
 
     #[Locked]
     public $cliente, $facturas_id, $rowquid, $pagos_id, $metodos_id;
@@ -58,7 +59,7 @@ class ConsultarComponent extends Component
             'titular', 'cuenta', 'cedula', 'tipo', 'banco', 'monto',
             'telefono', 'email',
             'facturas_id', 'rowquid', 'pagos_id', 'metodos_id',
-            'referencia', 'idBanco', 'fecha', 'moneda',
+            'referencia', 'idBanco', 'fecha', 'moneda', 'verMetodo', 'verEstatus', 'estatus'
         ]);
         $this->resetErrorBag();
     }
@@ -81,6 +82,34 @@ class ConsultarComponent extends Component
             $this->totalFactura = $factura->factura_total;
             if ($factura->pagos_id){
                 //consulto los datos del pago
+                $pago = Pago::find($factura->pagos_id);
+                $this->pagos_id = $pago->id;
+                if ($pago->metodo == "transferencia"){
+                    $this->verMetodo = "Transferencia";
+                }
+                if ($pago->metodo == "movil"){
+                    $this->verMetodo = "Pago Móvil";
+                }
+                if ($pago->metodo == "zelle"){
+                    $this->verMetodo = "Zelle";
+                }
+                $this->referencia = $pago->referencia;
+                $this->banco = $pago->nombre;
+                $this->fecha = getFecha($pago->fecha);
+                if ($pago->estatus == 0){
+                    $this->estatus = 0;
+                    $this->verEstatus = "Esperando Validación";
+                }
+                if ($pago->estatus == 1){
+                    $this->estatus = 1;
+                    $this->verEstatus = "Validado";
+                }
+                if ($pago->estatus == 2){
+                    $this->estatus = 2;
+                    $this->verEstatus = "NO Validado (Revisar)";
+                }
+                $this->titleModal = "Ver Pago";
+                $this->display = "verPago";
             }else {
                 $this->datosTransferencia = Metodo::where('metodo', 'transferencia')->first();
                 $this->datosPagoMovil = Metodo::where('metodo', 'movil')->first();
@@ -150,7 +179,7 @@ class ConsultarComponent extends Component
     public function save()
     {
         $rules = [
-            'referencia' => ['required', 'numeric', 'min_digits:8', Rule::unique('pagos', 'referencia')->ignore($this->pagos_id)],
+            'referencia' => ['required', 'numeric', 'min_digits:8', 'max_digits:15', Rule::unique('pagos', 'referencia')->ignore($this->pagos_id)],
             //'idBanco' => "required",
             'idBanco' => Rule::requiredIf($this->displayDetalles != "zelle"),
             'fecha' => 'required'
@@ -238,6 +267,13 @@ class ConsultarComponent extends Component
     public function cerrarModal()
     {
         //JS
+    }
+
+    public function corregirPago()
+    {
+        $pago = Pago::find($this->pagos_id);
+        $pago->delete();
+        $this->initModal($this->rowquid);
     }
 
 }

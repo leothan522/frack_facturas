@@ -6,6 +6,7 @@ use App\Mail\FacturasMail;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Organizacion;
+use App\Models\Pago;
 use App\Models\Plan;
 use App\Models\Servicio;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -214,10 +215,19 @@ class FacturasComponent extends Component
     #[On('confirmedFactura')]
     public function confirmedFactura()
     {
+        $id = null;
         $row = $this->getFactura($this->facturaRowquid);
+        if ($row){
+            $id = $row->id;
+        }
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
+
+        $pagos = Pago::where('facturas_id', $id)->first();
+        if ($pagos){
+            $vinculado = true;
+        }
 
         if ($vinculado) {
             $this->alert('warning', '¡No se puede Borrar!', [
