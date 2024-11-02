@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Factura extends Model
@@ -41,9 +42,21 @@ class Factura extends Model
         'plan_bajada',
         'plan_subida',
         'plan_precio',
+        'servicios_id',
+        'clientes_id',
+        'organizaciones_id',
+        'planes_id',
+        'pagos_id',
         'send',
         'rowquid'
     ];
+
+    public function scopeBuscar($query, $keyword)
+    {
+        return $query->where('factura_numero', 'LIKE', "%$keyword%")
+            /*->orWhere('nombre', 'LIKE', "%$keyword%")*/
+            ;
+    }
 
     public function servicio(): BelongsTo
     {
@@ -65,10 +78,10 @@ class Factura extends Model
         return $this->belongsTo(Plan::class, 'planes_id', 'id');
     }
 
-    public function scopeBuscar($query, $keyword)
+    public function pago(): HasOne
     {
-        return $query->where('factura_numero', 'LIKE', "%$keyword%")
-            /*->orWhere('nombre', 'LIKE', "%$keyword%")*/
-            ;
+        return $this->hasOne(Pago::class, 'facturas_id', 'id');
     }
+
+
 }
