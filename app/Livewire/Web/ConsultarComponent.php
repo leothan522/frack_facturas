@@ -22,7 +22,7 @@ class ConsultarComponent extends Component
     public $display = "verMetodos", $displayDetalles, $titleModal = "¿Cómo vas a pagar?";
     public $datosTransferencia, $datosPagoMovil, $datosZelle;
     public $titular, $cuenta, $cedula, $tipo, $banco, $monto, $totalFactura, $telefono, $email;
-    public $referencia, $idBanco, $fecha, $moneda = 'Bs';
+    public $referencia, $idBanco, $fecha, $moneda = 'Bs', $codigoBanco;
     public $verMetodo, $verEstatus, $estatus;
 
     #[Locked]
@@ -56,7 +56,7 @@ class ConsultarComponent extends Component
         $this->reset([
             'display', 'displayDetalles', 'titleModal',
             'datosTransferencia', 'datosPagoMovil', 'datosZelle',
-            'titular', 'cuenta', 'cedula', 'tipo', 'banco', 'monto',
+            'titular', 'cuenta', 'cedula', 'tipo', 'banco', 'monto', 'codigoBanco',
             'telefono', 'email',
             'facturas_id', 'rowquid', 'pagos_id', 'metodos_id',
             'referencia', 'idBanco', 'fecha', 'moneda', 'verMetodo', 'verEstatus', 'estatus'
@@ -130,6 +130,7 @@ class ConsultarComponent extends Component
                 $explode = explode('-', $this->datosPagoMovil->cedula);
                 $this->cedula = $explode[0] . $explode[1];
                 $this->banco = $this->datosPagoMovil->banco->nombre;
+                $this->codigoBanco = $this->datosPagoMovil->banco->codigo;
                 $this->metodos_id = $this->datosPagoMovil->id;
                 $this->displayDetalles = "movil";
                 break;
@@ -274,6 +275,14 @@ class ConsultarComponent extends Component
         $pago = Pago::find($this->pagos_id);
         $pago->delete();
         $this->initModal($this->rowquid);
+    }
+
+    #[On('pegarReferencia')]
+    public function pegarReferencia($referencia)
+    {
+        if (is_numeric($referencia)){
+            $this->referencia = $referencia;
+        }
     }
 
 }

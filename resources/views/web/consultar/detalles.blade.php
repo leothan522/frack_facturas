@@ -17,7 +17,7 @@
                 Bs {{ formatoMillares($monto) }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ number_format($monto, 2, ',', '') }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -31,7 +31,7 @@
                 {{ $titular }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($titular) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -45,7 +45,7 @@
                 {{ $cuenta }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ $cuenta }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -59,7 +59,7 @@
                 {{ $cedula }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($cedula) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -73,7 +73,7 @@
                 {{ $tipo }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($tipo) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -87,7 +87,7 @@
                 {{ $banco }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($banco) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -111,7 +111,7 @@
                 Bs {{ formatoMillares($monto) }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ number_format($monto, 2, ',', '') }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -125,7 +125,7 @@
                 {{ $telefono }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ $telefono }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -139,7 +139,7 @@
                 {{ $cedula }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($cedula) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -153,7 +153,7 @@
                 {{ $banco }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ $codigoBanco }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -176,7 +176,7 @@
             <label class="form-control text-uppercase">
                 USD {{ formatoMillares($totalFactura) }}
             </label>
-            <div class="input-group-append">
+            <div class="input-group-append" onclick="copiarPortapapeles('{{ number_format($totalFactura, 2, '.', '') }}')">
                 <button type="button" class="input-group-text">
                     <i class="far fa-copy"></i>
                 </button>
@@ -191,7 +191,7 @@
                 {{ $titular }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtoupper($titular) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -205,7 +205,7 @@
                 {{ $email }}
             </label>
             <div class="input-group-append">
-                <button type="button" class="input-group-text">
+                <button type="button" class="input-group-text" onclick="copiarPortapapeles('{{ mb_strtolower($email) }}')">
                     <i class="far fa-copy"></i>
                 </button>
             </div>

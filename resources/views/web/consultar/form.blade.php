@@ -7,9 +7,9 @@
     <div class="form-group">
         <small>Referencia:</small>
         <div class="input-group mb-3">
-            <input type="number" wire:model="referencia" class="form-control" placeholder="Referencia">
+            <input type="number" wire:model="referencia" class="form-control" placeholder="Referencia" id="input_referencia">
             <div class="input-group-append">
-                <button type="button" class="input-group-text text-primary">
+                <button type="button" class="input-group-text text-primary" onclick="pegarPortapapeles()">
                     Pegar
                 </button>
             </div>
