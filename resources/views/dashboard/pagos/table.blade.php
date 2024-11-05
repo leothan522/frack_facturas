@@ -53,12 +53,12 @@
                         <tr>
                             <td class="mailbox-name text-nowrap">
                                 <a class="link-dark" wire:click="show('{{ $pago->rowquid }}')" style="cursor: pointer;">
-                                    24545454
+                                    123654789654
                                 </a>
                             </td>
                             <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 150px;">
 
-                                <b>Dirigido a</b> Con Copia a
+                                <b>Dirigido a</b>
 
                             </td>
                             <td>
@@ -66,11 +66,11 @@
                                     <i class="far fa-copy"></i>
                                 </small>
                             </td>
-                            <td class="mailbox-attachment">
+                            <td class="mailbox-attachment d-none d-md-table-cell">
                                 <i class="fas fa-paperclip"></i>
                             </td>
-                            <td class="mailbox-date text-center">
-                                02-2-1989
+                            <td class="mailbox-date text-center text-nowrap d-none d-md-table-cell">
+                                02-02-2024
                             </td>
                         </tr>
                     @endforeach
