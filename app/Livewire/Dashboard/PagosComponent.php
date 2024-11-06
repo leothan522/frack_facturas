@@ -14,20 +14,21 @@ class PagosComponent extends Component
     use WithPagination, WithoutUrlPagination;
 
     public $view = 'table',$order = 'DESC', $keyword;
+    public $rows;
+    public array $filtro = [
+        'transferencia' => 'Tranferencias',
+        'movil' => 'Pago Móvil',
+        'zelle' => 'Zelle',
+        'all'   => 'Todos'
+    ];
+    public $tipo = 'all';
 
     public function render()
     {
-        $pagos = Pago::buscar($this->keyword)
-            ->orderBy('fecha', $this->order)
-            //->orderBy('numero', $this->order)
-            //->orderBy('created_at', 'DESC')
-            ->paginate(50);
-
-        $rows = Pago::buscar($this->keyword)->count();
+        $pagos = $this->getPagos();
 
         return view('livewire.dashboard.pagos-component')
-            ->with('pagos', $pagos)
-            ->with('rows', $rows);
+            ->with('pagos', $pagos);
     }
 
     public function limpiar()
@@ -48,12 +49,13 @@ class PagosComponent extends Component
 
     public function buscar()
     {
+        $this->reset(['tipo']);
         $this->resetPage();
     }
 
     public function cerrarBusqueda()
     {
-        $this->reset(['keyword']);
+        $this->reset(['keyword', 'tipo']);
         $this->resetPage();
     }
 
@@ -61,6 +63,67 @@ class PagosComponent extends Component
     {
         $this->resetPage();
         $this->limpiar();
+    }
+
+    protected function getPagos()
+    {
+        switch ($this->tipo) {
+            case 'transferencia':
+
+                $this->rows = Pago::buscar($this->keyword)
+                    ->where('metodo', 'transferencia')
+                    ->count();
+
+                $pago = Pago::buscar($this->keyword)
+                    ->where('metodo', 'transferencia')
+                    ->orderBy('fecha', $this->order)
+                    ->paginate(50);
+
+                break;
+                case 'movil':
+
+                    $this->rows = Pago::buscar($this->keyword)
+                        ->where('metodo', 'movil')
+                        ->count();
+
+                    $pago = Pago::buscar($this->keyword)
+                        ->where('tipo', 'movil')
+                        ->orderBy('fecha', $this->order)
+                        ->paginate(50);
+
+                    break;
+                case 'zelle':
+
+                    $this->rows = Pago::buscar($this->keyword)
+                        ->where('metodo', 'zelle')
+                        ->count();
+
+                    $pago = Pago::buscar($this->keyword)
+                        ->where('metodo', 'zelle')
+                        ->orderBy('fecha', $this->order)
+                        ->paginate(50);
+
+                    break;
+            default:
+
+                $this->tipo = 'all';
+
+                $this->rows = Pago::buscar($this->keyword)
+                    ->count();
+
+                $pago = Pago::buscar($this->keyword)
+                    ->orderBy('fecha', $this->order)
+                    ->paginate(50);
+
+                break;
+        }
+
+        return $pago;
+    }
+
+    public function btnFiltro($filtro)
+    {
+        $this->tipo = $filtro;
     }
 
 }

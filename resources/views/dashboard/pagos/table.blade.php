@@ -2,12 +2,12 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Búsqueda { <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning">{{ $rows }}</b> ]
+                Búsqueda {{--{ <b class="text-warning">{{ $keyword }}</b> }--}} [ <b class="text-warning mb-3">{{ $rows }}</b> ]
                 <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Total [ <b class="text-warning">{{ $rows }}</b> ]
+                {{ $filtro[$tipo] }} [ <b class="text-warning">{{ $rows }}</b> ]
             @endif
         </h3>
 
@@ -28,6 +28,21 @@
     <!-- /.card-header -->
     <div class="card-body p-0">
         <div class="mailbox-controls">
+
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ $filtro[$tipo] }}</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                    @foreach($filtro as $key => $value)
+                        @if($key != $tipo)
+                            <button type="button" wire:click="btnFiltro('{{ $key }}')" class="dropdown-item">{{ $value }}</button>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+
             @if($order == 'DESC')
                 <button type="button" class="btn btn-default btn-sm" wire:click="orderAscending">
                     <i class="fas fa-sort-amount-down"></i>
@@ -45,15 +60,15 @@
             </div>
             <!-- /.float-right -->
         </div>
-        <div class="table-responsive mailbox-messages" style="height: 64vh;">
+        <div class="table-responsive mailbox-messages" style="height: 68vh;">
             <table class="table table-hover table-striped">
                 <tbody>
                 @if($pagos->isNotEmpty())
                     @foreach($pagos as $pago)
                         <tr>
                             <td class="mailbox-name text-nowrap">
-                                <a class="link-dark" wire:click="show('{{ $pago->rowquid }}')" style="cursor: pointer;">
-                                    123654789654
+                                <a class="link-dark" {{--wire:click="show('{{ $pago->rowquid }}')"--}} style="cursor: pointer;">
+                                    {{ $pago->referencia }}
                                 </a>
                             </td>
                             <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 150px;">
@@ -98,6 +113,21 @@
     <!-- /.card-body -->
     <div class="card-footer p-0">
         <div class="mailbox-controls">
+
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ $filtro[$tipo] }}</button>
+                <button type="button" class="btn btn-default dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu">
+                    @foreach($filtro as $key => $value)
+                        @if($key != $tipo)
+                            <button type="button" wire:click="btnFiltro('{{ $key }}')" class="dropdown-item">{{ $value }}</button>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+
             @if($order == 'DESC')
                 <button type="button" class="btn btn-default btn-sm" wire:click="orderAscending">
                     <i class="fas fa-sort-amount-down"></i>
