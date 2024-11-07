@@ -53,8 +53,8 @@
     <div class="form-group">
         <small>Monto:</small>
         <div class="input-group mb-3">
-            <input type="number" wire:model="monto" class="form-control" placeholder="{{ number_format($monto, 2, '.', '') }}" id="input_referencia">
-            @error('monto')
+            <input type="number" wire:model="montoPago" step="0.01" class="form-control" placeholder="{{ number_format($monto, 2, '.', '') }}" id="input_referencia">
+            @error('montoPago')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
                 {{ $message }}

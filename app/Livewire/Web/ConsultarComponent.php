@@ -23,7 +23,7 @@ class ConsultarComponent extends Component
     public $datosTransferencia, $datosPagoMovil, $datosZelle;
     public $titular, $cuenta, $cedula, $tipo, $banco, $monto, $totalFactura, $telefono, $email;
     public $referencia, $idBanco, $fecha, $moneda = 'Bs', $codigoBanco;
-    public $verMetodo, $verEstatus, $estatus;
+    public $verMetodo, $verEstatus, $estatus, $montoPago;
 
     #[Locked]
     public $cliente, $facturas_id, $rowquid, $pagos_id, $metodos_id;
@@ -59,7 +59,7 @@ class ConsultarComponent extends Component
             'titular', 'cuenta', 'cedula', 'tipo', 'banco', 'monto', 'codigoBanco',
             'telefono', 'email',
             'facturas_id', 'rowquid', 'pagos_id', 'metodos_id',
-            'referencia', 'idBanco', 'fecha', 'moneda', 'verMetodo', 'verEstatus', 'estatus'
+            'referencia', 'idBanco', 'fecha', 'moneda', 'verMetodo', 'verEstatus', 'estatus', 'montoPago'
         ]);
         $this->resetErrorBag();
     }
@@ -84,6 +84,8 @@ class ConsultarComponent extends Component
                 //consulto los datos del pago
                 $pago = Pago::find($factura->pagos_id);
                 $this->pagos_id = $pago->id;
+                $this->monto = $pago->monto;
+                $this->moneda = $pago->moneda;
                 if ($pago->metodo == "transferencia"){
                     $this->verMetodo = "Transferencia";
                 }
@@ -165,7 +167,7 @@ class ConsultarComponent extends Component
 
     protected function getMontoBs(): float
     {
-        return $this->totalFactura * 50.85;
+        return $this->totalFactura * 50.33;
     }
 
     public function btnRegistrar()
@@ -183,7 +185,8 @@ class ConsultarComponent extends Component
             'referencia' => ['required', 'numeric', 'min_digits:8', 'max_digits:15', Rule::unique('pagos', 'referencia')->ignore($this->pagos_id)],
             //'idBanco' => "required",
             'idBanco' => Rule::requiredIf($this->displayDetalles != "zelle"),
-            'fecha' => 'required'
+            'fecha' => 'required',
+            'montoPago' => 'required|numeric'
         ];
         $messages = [
             'idBanco.required' => 'El campo banco es obligatorio.',
@@ -205,7 +208,7 @@ class ConsultarComponent extends Component
                 $metodo = Metodo::find($this->metodos_id);
                 $pago->referencia = $this->referencia;
                 $pago->fecha = $this->fecha;
-                $pago->monto = $this->monto;
+                $pago->monto = $this->montoPago;
                 $pago->moneda = $this->moneda;
                 $pago->metodo = $metodo->metodo;
                 $pago->titular = $metodo->titular;
@@ -221,6 +224,12 @@ class ConsultarComponent extends Component
                 }
                 $pago->clientes_id = $this->cliente['id'];
                 $pago->facturas_id = $this->facturas_id;
+
+                do{
+                    $rowquid = generarStringAleatorio(16);
+                    $existe = Pago::where('rowquid', $rowquid)->first();
+                }while($existe);
+                $pago->rowquid = $rowquid;
                 $pago->save();
 
 

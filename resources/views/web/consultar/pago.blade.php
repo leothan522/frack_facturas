@@ -13,9 +13,16 @@
                         Referencia <span class="float-right text-bold text-uppercase">{{ $referencia }}</span>
                     </span>
                 </li>
-                <li class="nav-item">
+                @if($banco)
+                    <li class="nav-item">
                     <span class="nav-link">
                         Banco <span class="float-right text-bold">{{ $banco }}</span>
+                    </span>
+                    </li>
+                @endif
+                <li class="nav-item">
+                    <span class="nav-link">
+                        Monto <span class="float-right text-bold">{{ $moneda }} {{ formatoMillares($monto) }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
