@@ -2,7 +2,7 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Búsqueda {{--{ <b class="text-warning">{{ $keyword }}</b> }--}} [ <b class="text-warning mb-3">{{ $rows }}</b> ]
+                Búsqueda <span class="d-none d-md-inline-block">{ <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning mb-3">{{ $rows }}</b> ] </span>
                 <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
@@ -67,25 +67,26 @@
                     @foreach($pagos as $pago)
                         <tr>
                             <td class="mailbox-name text-nowrap">
-                                <a class="link-dark" {{--wire:click="show('{{ $pago->rowquid }}')"--}} style="cursor: pointer;">
+                                <a class="link-dark" wire:click="show('{{ $pago->rowquid }}')" data-toggle="modal" data-target="#modal-default" style="cursor: pointer;">
                                     {{ $pago->referencia }}
                                 </a>
                             </td>
-                            <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 150px;">
+                            <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 200px;">
 
-                                <b>Dirigido a</b>
+                                <b>{{ $pago->moneda }} {{ formatoMillares($pago->monto) }}</b> - {{ $filtro[$pago->metodo] }}
 
                             </td>
-                            <td>
-                                <small class="float-right text-nowrap">
-                                    <i class="far fa-copy"></i>
-                                </small>
+                            <td class="d-none d-md-table-cell text-nowrap text-uppercase text-truncate" style="max-width: 150px;">
+                                {{ $pago->factura->cliente_nombre }} {{ $pago->factura->cliente_apellido }}
                             </td>
-                            <td class="mailbox-attachment d-none d-md-table-cell">
-                                <i class="fas fa-paperclip"></i>
+                            <td class="d-none d-md-table-cell text-nowrap">
+                                Factura #: <a href="{{ route('facturas.pdf', $pago->factura->rowquid) }}" target="_blank" class="text-truncate">{{ $pago->factura->factura_numero }}</a>
+                            </td>
+                            <td class="mailbox-attachment">
+                                {!! $icono[$pago->estatus] !!}
                             </td>
                             <td class="mailbox-date text-center text-nowrap d-none d-md-table-cell">
-                                02-02-2024
+                                {{ getFecha($pago->fecha) }}
                             </td>
                         </tr>
                     @endforeach

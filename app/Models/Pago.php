@@ -24,6 +24,8 @@ class Pago extends Model
         'codigo',
         'clientes_id',
         'facturas_id',
+        'estatus',
+        'rowquid'
     ];
 
     public function scopeBuscar($query, $keyword)

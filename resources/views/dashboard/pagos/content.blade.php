@@ -5,3 +5,7 @@
         </div>
     </div>
 </div>
+
+<div>
+    @include('dashboard.pagos.modal')
+</div>
