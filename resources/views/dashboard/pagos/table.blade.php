@@ -66,6 +66,9 @@
                 @if($pagos->isNotEmpty())
                     @foreach($pagos as $pago)
                         <tr>
+                            <td class="mailbox-attachment">
+                                {!! $icono[$pago->estatus] !!}
+                            </td>
                             <td class="mailbox-name text-nowrap">
                                 <a class="link-dark" wire:click="show('{{ $pago->rowquid }}')" data-toggle="modal" data-target="#modal-default" style="cursor: pointer;">
                                     {{ $pago->referencia }}
@@ -81,9 +84,6 @@
                             </td>
                             <td class="d-none d-md-table-cell text-nowrap">
                                 Factura #: <a href="{{ route('facturas.pdf', $pago->factura->rowquid) }}" target="_blank" class="text-truncate">{{ $pago->factura->factura_numero }}</a>
-                            </td>
-                            <td class="mailbox-attachment">
-                                {!! $icono[$pago->estatus] !!}
                             </td>
                             <td class="mailbox-date text-center text-nowrap d-none d-md-table-cell">
                                 {{ getFecha($pago->fecha) }}

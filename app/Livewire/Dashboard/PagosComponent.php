@@ -15,7 +15,7 @@ class PagosComponent extends Component
     use LivewireAlert;
     use WithPagination, WithoutUrlPagination;
 
-    public $view = 'table',$order = 'DESC', $keyword;
+    public $view = 'show',$order = 'DESC', $keyword;
     public $rows;
     public $titleModal = "Ver Pago", $display = "verPago";
     public $verMetodo, $referencia, $banco, $fecha, $estatus = 0, $verEstatus, $moneda, $monto;
@@ -63,6 +63,7 @@ class PagosComponent extends Component
         $pago = $this->getPago($rowquid);
         if ($pago) {
 
+            $this->pagos_id = $pago->id;
             $this->verMetodo = $this->filtro[$pago->metodo];
             $this->referencia = $pago->referencia;
 
@@ -97,6 +98,57 @@ class PagosComponent extends Component
         }else{
             $this->dispatch('cerrarModal');
         }
+    }
+
+    public function btnProcesar()
+    {
+        $this->view = "procesar";
+    }
+
+    public function btnMasTarde()
+    {
+        $this->view = "show";
+    }
+
+    public function btnSI()
+    {
+        $pago = Pago::find($this->pagos_id);
+        $pago->estatus = 1;
+        $pago->save();
+        $this->show($pago->rowquid);
+        $this->alert('success', 'Datos Guardados.');
+    }
+
+    public function btnNO()
+    {
+        $pago = Pago::find($this->pagos_id);
+        $pago->estatus = 2;
+        $pago->save();
+        $this->show($pago->rowquid);
+        $this->alert('success', 'Datos Guardados.');
+    }
+
+    public function btnReset()
+    {
+        $this->confirm('¿Estas seguro?', [
+            'toast' => false,
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'confirmButtonText' => '¡Sí, restablacer!',
+            'text' => '¡Si restableces el pago, su estatus cambiara a Esperando Validación!',
+            'cancelButtonText' => 'No',
+            'onConfirmed' => 'resetPago',
+        ]);
+    }
+
+    #[On('resetPago')]
+    public function resetPago()
+    {
+        $pago = Pago::find($this->pagos_id);
+        $pago->estatus = 0;
+        $pago->save();
+        $this->show($pago->rowquid);
+        $this->alert('info', 'Pago Reestablecido.');
     }
 
     protected function getPago($rowquid): ?Pago

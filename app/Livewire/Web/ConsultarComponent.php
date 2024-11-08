@@ -67,7 +67,7 @@ class ConsultarComponent extends Component
     #[On('cerrarSesion')]
     public function cerrarSesion()
     {
-        session()->flush();
+        session()->forget('cliente');
         $this->redirect('cliente');
     }
 

@@ -22,9 +22,20 @@
 
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default">Cerrar</button>
-                    @if($estatus == 0)
-                        <button type="button" {{--wire:click="corregirPago"--}} class="btn btn-primary">
-                            <i class="fas fa-donate"></i> Procesar
+                    @if($view == "show")
+                        @if($estatus)
+                            <button type="button" wire:click="btnReset" class="btn btn-default">
+                                <i class="fas fa-eraser"></i> Reset
+                            </button>
+                        @else
+                            <button type="button" wire:click="btnProcesar" class="btn btn-primary">
+                                <i class="fas fa-donate"></i> Procesar
+                            </button>
+                        @endif
+                    @endif
+                    @if($view == "procesar")
+                        <button type="button" wire:click="btnMasTarde" class="btn btn-default">
+                            Procesarlo mas tarde
                         </button>
                     @endif
                 </div>
