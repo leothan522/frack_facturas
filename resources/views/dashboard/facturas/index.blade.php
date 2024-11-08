@@ -10,6 +10,7 @@
 
 @section('content')
     @include('dashboard.facturas.content')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -85,6 +86,10 @@
 
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

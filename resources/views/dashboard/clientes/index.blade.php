@@ -8,6 +8,7 @@
 
 @section('content')
     @livewire('dashboard.clientes-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -20,7 +21,6 @@
 
 @section('css')
     {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
-
 @stop
 
 @section('js')
@@ -29,6 +29,10 @@
 
         Livewire.on('cerrarModal', () => {
             $("#btn_modal_cerrar").click();
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

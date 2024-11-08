@@ -6,6 +6,7 @@ use App\Models\Banco;
 use App\Models\Factura;
 use App\Models\Metodo;
 use App\Models\Pago;
+use App\Models\Parametro;
 use App\Models\Servicio;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -167,7 +168,12 @@ class ConsultarComponent extends Component
 
     protected function getMontoBs(): float
     {
-        return $this->totalFactura * 50.33;
+        $dolar = 1;
+        $parametro = Parametro::where('nombre', 'precio_dolar')->first();
+        if ($parametro){
+            $dolar = floatval($parametro->valor);
+        }
+        return $this->totalFactura * $dolar;
     }
 
     public function btnRegistrar()

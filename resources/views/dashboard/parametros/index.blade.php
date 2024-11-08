@@ -20,6 +20,7 @@
 
 @section('content')
     @livewire('dashboard.parametros-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -41,6 +42,11 @@
         Livewire.on('cerrarModal', () => {
             $("#btn_modal_default").click();
         });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
+        });
+
         console.log('Hi!');
     </script>
 @endsection

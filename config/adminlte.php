@@ -310,6 +310,16 @@ return [
 
         // Sidebar items:
         [
+            'text' => 'Precio Dólar',
+            'icon'      => 'fas fa-fw fa-dollar-sign',
+            'url' => '#',
+            'data'  => [
+                'toggle' => 'modal',
+                'target' => '#modal-default-dollar',
+            ],
+            'id' => 'button_dolar_dispath'
+        ],
+        [
             'text'      => 'Gestionar Pagos',
             'icon'      => 'fas fa-fw fa-money-check-alt',
             'can'       => ['metodos', 'pagos'],

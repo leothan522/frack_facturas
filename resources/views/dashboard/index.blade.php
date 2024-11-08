@@ -8,6 +8,7 @@
 
 @section('content')
     <p>Bienvenido al panel de administración.</p>
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -27,6 +28,10 @@
     <script>
         $(document).ready(function () {
             $('#navbar_search_id').addClass('d-none');
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

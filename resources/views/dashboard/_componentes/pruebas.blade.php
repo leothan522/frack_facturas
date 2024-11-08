@@ -20,6 +20,7 @@
 
 @section('content')
     @livewire('dashboard.pruebas-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -48,6 +49,10 @@
             }
             return false;
         }
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
+        });
 
         console.log('Hi!');
     </script>

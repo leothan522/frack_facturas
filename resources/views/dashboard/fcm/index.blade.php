@@ -10,6 +10,7 @@
 
 @section('content')
     @livewire('f-c-m.fcm-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -48,6 +49,10 @@
                 .removeClass('checked')
                 .prop('checked', false);
         }
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
+        });
 
         console.log('Hi!');
     </script>

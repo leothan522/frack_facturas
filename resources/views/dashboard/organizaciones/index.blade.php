@@ -8,6 +8,7 @@
 
 @section('content')
     @livewire('dashboard.organizaciones-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -28,6 +29,10 @@
 
         Livewire.on('cerrarModal', () => {
             $("#btn_modal_cerrar").click();
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

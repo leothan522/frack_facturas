@@ -20,6 +20,7 @@
 
 @section('content')
     @livewire('dashboard.pagos-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')
@@ -44,6 +45,10 @@
 
         $(document).ready(function () {
             $('#navbar_search_id').addClass('d-none');
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

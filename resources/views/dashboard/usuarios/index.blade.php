@@ -34,6 +34,7 @@
 @section('content')
     @livewire('dashboard.usuarios-component')
     @livewire('dashboard.roles-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('footer')
@@ -145,6 +146,10 @@
             Livewire.dispatch('empresasSeleccionadas', { data: val });
             // te muestra un array de todos los seleccionados
             //console.log(val);
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');

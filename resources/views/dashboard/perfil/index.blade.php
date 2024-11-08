@@ -45,6 +45,8 @@
         </div>
     {{--</x-app-layout>--}}
 
+    @livewire('dashboard.dolar-component')
+
 @endsection
 
 @section('right-sidebar')
@@ -63,9 +65,14 @@
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
+
         $(document).ready(function () {
             $('#navbar_usuario_activo').removeClass('d-md-inline');
             $('#navbar_search_id').addClass('d-none');
+        });
+
+        $("#button_dolar_dispath").click(function (e) {
+            Livewire.dispatch('initDollar');
         });
 
         console.log('Hi!');
