@@ -18,7 +18,7 @@ class PagosComponent extends Component
     public $view = 'show',$order = 'DESC', $keyword;
     public $rows;
     public $titleModal = "Ver Pago", $display = "verPago";
-    public $verMetodo, $referencia, $banco, $fecha, $estatus = 0, $verEstatus, $moneda, $monto;
+    public $verMetodo, $referencia, $banco, $fecha, $estatus = 0, $verEstatus, $moneda, $monto, $dollar;
     public $factura_numero, $factura_cliente, $factura_etiqueta, $factura_fecha, $factura_total, $factura_rowquid = 'null';
     public array $filtro = [
         'transferencia' => 'Tranferencias',
@@ -49,7 +49,7 @@ class PagosComponent extends Component
         $this->reset([
             'view',
             'titleModal', 'display',
-            'verMetodo', 'referencia', 'banco', 'fecha', 'estatus', 'verEstatus', 'moneda', 'monto',
+            'verMetodo', 'referencia', 'banco', 'fecha', 'estatus', 'verEstatus', 'moneda', 'monto', 'dollar',
             'factura_numero', 'factura_cliente', 'factura_etiqueta', 'factura_fecha', 'factura_total', 'factura_rowquid',
             'pagos_id', 'rowquid'
         ]);
@@ -94,6 +94,9 @@ class PagosComponent extends Component
             $this->factura_fecha = $pago->factura->factura_fecha;
             $this->factura_total = $pago->factura->factura_total;
             $this->factura_rowquid = $pago->factura->rowquid;
+            if ($pago->metodo != "zelle"){
+                $this->dollar = $pago->dollar * $this->factura_total;
+            }
 
         }else{
             $this->dispatch('cerrarModal');

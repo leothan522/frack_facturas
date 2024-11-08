@@ -168,12 +168,18 @@ class ConsultarComponent extends Component
 
     protected function getMontoBs(): float
     {
-        $dolar = 1;
+        $dolar = $this->getDollar();
+        return $this->totalFactura * $dolar;
+    }
+
+    protected function getDollar(): float
+    {
+        $dolar = 1.00;
         $parametro = Parametro::where('nombre', 'precio_dolar')->first();
         if ($parametro){
             $dolar = floatval($parametro->valor);
         }
-        return $this->totalFactura * $dolar;
+        return $dolar;
     }
 
     public function btnRegistrar()
@@ -228,6 +234,7 @@ class ConsultarComponent extends Component
                     $pago->nombre = $banco->nombre;
                     $pago->codigo = $banco->codigo;
                 }
+                $pago->dollar = $this->getDollar();
                 $pago->clientes_id = $this->cliente['id'];
                 $pago->facturas_id = $this->facturas_id;
 

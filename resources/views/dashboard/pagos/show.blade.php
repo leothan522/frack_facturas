@@ -55,6 +55,10 @@
                     <br>
                     Fecha Factura: <span class="text-bold text-uppercase">{{ getFecha($factura_fecha) }}</span>
                     <span class="float-right">USD <span class="text-bold text-danger">{{ formatoMillares($factura_total) }}</span></span>
+                    @if($banco)
+                        <br>
+                        <span class="float-right">Bs <span class="text-bold text-danger">{{ formatoMillares($dollar) }}</span></span>
+                    @endif
                 </p>
                 <a href="{{ route('facturas.pdf', [$factura_rowquid]) }}" class="btn card-link text-primary" target="_blank">Ver Factura</a>
             </div>

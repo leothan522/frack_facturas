@@ -22,6 +22,7 @@ class Pago extends Model
         'email',
         'nombre',
         'codigo',
+        'dollar',
         'clientes_id',
         'facturas_id',
         'estatus',

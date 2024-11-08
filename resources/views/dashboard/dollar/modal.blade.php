@@ -14,7 +14,7 @@
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="form-group">
-                                <small>Monto:</small>
+                                <small>Monto Bs:</small>
                                 <div class="input-group mb-3">
                                     <input type="number" wire:model="monto" step="0.01" min="1" class="form-control" placeholder="Monto en Bs.">
                                     @error('monto')

@@ -37,6 +37,7 @@ class DolarComponent extends Component
             $parametro->nombre = "precio_dolar";
             $parametro->valor = $this->monto;
             $parametro->save();
+            $this->dispatch('printDollar', dollar: formatoMillares($this->monto));
             $this->alert('success', "Dolar Actualizado.");
         }
     }
@@ -53,6 +54,18 @@ class DolarComponent extends Component
 
     #[On('initDollar')]
     public function initDollar()
+    {
+        //JS
+    }
+
+    #[On('verDollar')]
+    public function verDollar()
+    {
+        $this->dispatch('printDollar', dollar: formatoMillares($this->monto));
+    }
+
+    #[On('printDollar')]
+    public function printDollar($dollar)
     {
         //JS
     }
