@@ -194,7 +194,7 @@ class ConsultarComponent extends Component
     public function save()
     {
         $rules = [
-            'referencia' => ['required', 'numeric', 'min_digits:8', 'max_digits:15', Rule::unique('pagos', 'referencia')->ignore($this->pagos_id)],
+            'referencia' => ['required', 'alpha_num', 'min:8', 'max:15', Rule::unique('pagos', 'referencia')->ignore($this->pagos_id)],
             //'idBanco' => "required",
             'idBanco' => Rule::requiredIf($this->displayDetalles != "zelle"),
             'fecha' => 'required',
