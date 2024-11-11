@@ -2,7 +2,13 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Models\Banco;
+use App\Models\Cliente;
+use App\Models\Factura;
+use App\Models\Metodo;
 use App\Models\Pago;
+use App\Models\Parametro;
+use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -20,6 +26,8 @@ class PagosComponent extends Component
     public $titleModal = "Ver Pago", $display = "verPago";
     public $verMetodo, $referencia, $banco, $fecha, $estatus = 0, $verEstatus, $moneda, $monto, $dollar;
     public $factura_numero, $factura_cliente, $factura_etiqueta, $factura_fecha, $factura_total, $factura_rowquid = 'null';
+
+
     public array $filtro = [
         'transferencia' => 'Tranferencias',
         'movil' => 'Pago Móvil',
@@ -51,7 +59,7 @@ class PagosComponent extends Component
             'titleModal', 'display',
             'verMetodo', 'referencia', 'banco', 'fecha', 'estatus', 'verEstatus', 'moneda', 'monto', 'dollar',
             'factura_numero', 'factura_cliente', 'factura_etiqueta', 'factura_fecha', 'factura_total', 'factura_rowquid',
-            'pagos_id', 'rowquid'
+            'pagos_id', 'rowquid',
         ]);
 
         $this->resetErrorBag();
@@ -179,6 +187,7 @@ class PagosComponent extends Component
         $this->resetPage();
     }
 
+    #[On('actualizar')]
     public function actualizar()
     {
         $this->resetPage();

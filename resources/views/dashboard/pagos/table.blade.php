@@ -69,7 +69,7 @@
                             <td class="mailbox-attachment">
                                 {!! $icono[$pago->estatus] !!}
                             </td>
-                            <td class="mailbox-name text-nowrap">
+                            <td class="mailbox-name text-nowrap text-uppercase">
                                 <a class="link-dark" wire:click="show('{{ $pago->rowquid }}')" data-toggle="modal" data-target="#modal-default" style="cursor: pointer;">
                                     {{ $pago->referencia }}
                                 </a>
@@ -82,7 +82,7 @@
                             <td class="d-none d-md-table-cell text-nowrap text-uppercase text-truncate" style="max-width: 150px;">
                                 {{ $pago->factura->cliente_nombre }} {{ $pago->factura->cliente_apellido }}
                             </td>
-                            <td class="d-none d-md-table-cell text-nowrap">
+                            <td class="d-none d-md-table-cell text-nowrap text-uppercase">
                                 Factura #: <a href="{{ route('facturas.pdf', $pago->factura->rowquid) }}" target="_blank" class="text-truncate">{{ $pago->factura->factura_numero }}</a>
                             </td>
                             <td class="mailbox-date text-center text-nowrap d-none d-md-table-cell">
