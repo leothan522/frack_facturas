@@ -30,12 +30,8 @@
     <script>
 
         function select_2(id, data) {
-            let html = '<div class="input-group-prepend">' +
-                '<span class="input-group-text text-bold">' +
-                'Cliente' +
-                '</span>' +
-                '</div> ' +
-                '<select id="'+ id +'"></select>';
+
+            let html = '<select id="'+ id +'"></select>';
             $('#div_' + id).html(html);
 
             $('#'  + id).select2({

@@ -111,7 +111,7 @@ function getFecha($fecha, $format = null): string
         }
     }else{
         if (is_null($format)){
-            $date = Carbon::parse($fecha)->format("j/m/Y");
+            $date = Carbon::parse($fecha)->format("d/m/Y");
         }else{
             $date = Carbon::parse($fecha)->format($format);
         }

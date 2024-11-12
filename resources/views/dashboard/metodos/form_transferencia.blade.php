@@ -28,7 +28,7 @@
 
             <div class="form-group">
                 <label for="name">Titular:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                     </div>
@@ -44,11 +44,11 @@
 
             <div class="form-group">
                 <label for="name">Cuenta:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                     </div>
-                    <input type="text" class="form-control" wire:model="cuenta" placeholder="Número de cuenta">
+                    <input type="number" step="1" class="form-control" wire:model="cuenta" placeholder="Número de cuenta">
                     @error('cuenta')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -60,7 +60,7 @@
 
             <div class="form-group">
                 <label for="name">Rif / Cedula:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend mr-2">
                         {{--<span class="input-group-text"><i class="far fa-bookmark"></i></span>--}}
                         <select class="custom-control custom-select" wire:model="prefijo">
@@ -69,7 +69,7 @@
                             <option value="J-">J-</option>
                         </select>
                     </div>
-                    <input type="text" class="form-control" wire:model="numero" placeholder="numero">
+                    <input type="number" step="1" class="form-control" wire:model="numero" placeholder="numero">
                     @error('numero')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -87,7 +87,7 @@
 
             <div class="form-group">
                 <label for="name">Tipo:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                     </div>
@@ -108,7 +108,7 @@
             <div class="form-group">
                 <label for="name">Banco:</label>
                 <div wire:ignore>
-                    <div class="input-group mb-3" id="div_transferencia_select_bancos">
+                    <div class="input-group" id="div_transferencia_select_bancos">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                         </div>

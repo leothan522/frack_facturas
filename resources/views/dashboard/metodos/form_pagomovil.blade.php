@@ -28,11 +28,11 @@
 
             <div class="form-group">
                 <label for="name">Número de teléfono:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                     </div>
-                    <input type="text" class="form-control" wire:model="telefono" placeholder="Número de teléfono">
+                    <input type="number" step="2" class="form-control" wire:model="telefono" placeholder="Número de teléfono">
                     @error('telefono')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <label for="name">Rif / Cedula:</label>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend mr-2">
                         {{--<span class="input-group-text"><i class="far fa-bookmark"></i></span>--}}
                         <select class="custom-control custom-select" wire:model="prefijo">
@@ -53,7 +53,7 @@
                             <option value="J-">J-</option>
                         </select>
                     </div>
-                    <input type="text" class="form-control" wire:model="numero" placeholder="numero">
+                    <input type="number" step="1" class="form-control" wire:model="numero" placeholder="numero">
                     @error('numero')
                     <span class="col-sm-12 text-sm text-bold text-danger">
                         <i class="icon fas fa-exclamation-triangle"></i>
@@ -72,7 +72,7 @@
             <div class="form-group">
                 <label for="name">Banco:</label>
                 <div wire:ignore>
-                    <div class="input-group mb-3" id="div_pagomovil_select_bancos">
+                    <div class="input-group" id="div_pagomovil_select_bancos">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-bookmark"></i></span>
                         </div>

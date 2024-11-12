@@ -7,7 +7,7 @@
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registrados [ <b class="text-danger">{{ $rowsPlanes }}</b> ]
+                Total [ <b class="text-danger">{{ $rowsPlanes }}</b> ]
             @endif
         </h3>
 
@@ -34,7 +34,7 @@
                 <th class="d-none d-lg-table-cell text-right">Bajada</th>
                 <th class="d-none d-lg-table-cell text-right">Precio</th>
                 <th class="d-none d-lg-table-cell" style="width: 5%;">Moneda</th>
-                <th style="width: 5%;">&nbsp;</th>
+                <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $planes->count() }}</small></th>
             </tr>
             </thead>
             <tbody>
@@ -48,10 +48,10 @@
                         <td class="d-none d-lg-table-cell text-right">{{ $plan->subida }} Mbps.</td>
                         <td class="d-none d-lg-table-cell text-right">{{ formatoMillares($plan->precio, 2) }}</td>
                         <td class="d-none d-lg-table-cell">{{ $plan->organizacion->moneda }} </td>
-                        <td class="text-center">
+                        <td class="text-center justify-content-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="showPlan('{{ $plan->rowquid }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -59,11 +59,11 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="edit('{{ $plan->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" wire:click="destroy('{{ $plan->rowquid }}')">
+                                    <button class="btn btn-primary btn-sm" wire:click="destroy('{{ $plan->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>

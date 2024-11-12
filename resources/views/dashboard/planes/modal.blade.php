@@ -44,10 +44,10 @@
                             @endif
                         </button>
                     @else
-                        <button type="button" class="btn btn-danger btn-sm" wire:click="destroy('{{ $rowquid }}')">
+                        <button type="button" class="btn btn-danger" wire:click="destroy('{{ $rowquid }}')">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-                        <button type="button" class="btn btn-primary btn-sm" wire:click="edit('{{ $rowquid }}')">
+                        <button type="button" class="btn btn-primary" wire:click="edit('{{ $rowquid }}')">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                     @endif

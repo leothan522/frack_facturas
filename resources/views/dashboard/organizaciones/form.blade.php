@@ -1,11 +1,9 @@
 <div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Nombre</span>
-            </div>
-            <input type="text" class="form-control" wire:model="nombre" placeholder="[string]">
+        <small>Nombre:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="nombre" placeholder="Nombre">
             @error('nombre')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -16,11 +14,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Email</span>
-            </div>
-            <input type="email" class="form-control" wire:model="email" placeholder="[string]">
+        <small>Email:</small>
+        <div class="input-group">
+            <input type="email" class="form-control" wire:model="email" placeholder="Email">
             @error('email')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -31,11 +27,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Teléfono</span>
-            </div>
-            <input type="text" class="form-control" wire:model="telefono" placeholder="[string]">
+        <small>Teléfono:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="telefono" placeholder="Teléfono">
             @error('telefono')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -46,11 +40,9 @@
     </div>
 
     <div class="form-group">
+        <small>Web:</small>
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Web</span>
-            </div>
-            <input type="text" class="form-control" wire:model="web" placeholder="[string]">
+            <input type="text" class="form-control" wire:model="web" placeholder="Web">
             @error('web')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -61,10 +53,8 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Moneda</span>
-            </div>
+        <small>Moneda:</small>
+        <div class="input-group">
             <select wire:model="moneda" class="custom-select">
                 <option value="">Seleccione</option>
                 <option value="Bs.">Bs.</option>
@@ -80,11 +70,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Dias Factura</span>
-            </div>
-            <input type="text" class="form-control" wire:model="dias" placeholder="[integer]">
+        <small>Dias Factura:</small>
+        <div class="input-group">
+            <input type="number" step="1" class="form-control" wire:model="dias" placeholder="Dias Factura">
             @error('dias')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -95,11 +83,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Formato Factura</span>
-            </div>
-            <input type="text" class="form-control" wire:model="formato" placeholder="[string]">
+        <small>Formato Factura:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="formato" placeholder="Formato Factura">
             @error('formato')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -110,11 +96,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Proxima Factura</span>
-            </div>
-            <input type="text" class="form-control" wire:model="proxima" placeholder="[integer]">
+        <small>Proxima Factura:</small>
+        <div class="input-group">
+            <input type="number" step="1" class="form-control" wire:model="proxima" placeholder="Proxima Factura">
             @error('proxima')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -125,11 +109,9 @@
     </div>
 
     <div class="form-group">
+        <small>Dirección</small>
         <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Dirección</span>
-            </div>
-            <input type="text" class="form-control" wire:model="direccion" placeholder="[String]">
+            <input type="text" class="form-control" wire:model="direccion" placeholder="Dirección">
             @error('direccion')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>

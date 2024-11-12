@@ -7,7 +7,7 @@
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registradas [ <b class="text-danger">{{ $rowsOrganizaciones }}</b> ]
+                Total [ <b class="text-danger">{{ $rowsOrganizaciones }}</b> ]
             @endif
         </h3>
 
@@ -34,7 +34,7 @@
                 <th class="d-none d-lg-table-cell text-right">Dias Factura</th>
                 <th class="d-none d-lg-table-cell text-right">Formato Factura</th>
                 <th class="d-none d-lg-table-cell text-right">Proxima Factura</th>
-                <th style="width: 5%;">&nbsp;</th>
+                <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $organizaciones->count() }}</small></th>
             </tr>
             </thead>
             <tbody>
@@ -54,10 +54,10 @@
                                 1
                             @endif
                         </td>
-                        <td class="text-center">
+                        <td class="text-center justify-content-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default"
                                             wire:click="showOrganizacion('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-eye"></i>
@@ -66,12 +66,12 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default"
                                             wire:click="edit('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs"
+                                    <button class="btn btn-primary btn-sm"
                                             wire:click="destroy('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>

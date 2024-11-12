@@ -1,11 +1,9 @@
 <div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Cedula</span>
-            </div>
-            <input type="text" class="form-control" wire:model="cedula" placeholder="[integer]">
+        <small>Cédula:</small>
+        <div class="input-group">
+            <input type="number" class="form-control" wire:model="cedula" placeholder="Cédula">
             @error('cedula')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -16,11 +14,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Nombre</span>
-            </div>
-            <input type="text" class="form-control" wire:model="nombre" placeholder="[string]">
+        <small>Nombre:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="nombre" placeholder="Nombre">
             @error('nombre')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -31,11 +27,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Apellido</span>
-            </div>
-            <input type="text" class="form-control" wire:model="apellido" placeholder="[string]">
+        <small>Apellido:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="apellido" placeholder="Apellido">
             @error('apellido')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -46,11 +40,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Teléfono</span>
-            </div>
-            <input type="text" class="form-control" wire:model="telefono" placeholder="[string]">
+        <small>Teléfono:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="telefono" placeholder="Teléfono">
             @error('telefono')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -61,11 +53,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Email</span>
-            </div>
-            <input type="email" class="form-control" wire:model="email" placeholder="[string]">
+        <small>Email:</small>
+        <div class="input-group">
+            <input type="email" class="form-control" wire:model="email" placeholder="Email">
             @error('email')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -76,11 +66,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Dirección</span>
-            </div>
-            <input type="text" class="form-control" wire:model="direccion" placeholder="[string]">
+        <small>Dirección:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="direccion" placeholder="Dirección">
             @error('direccion')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -92,11 +80,9 @@
 
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Instalación</span>
-            </div>
-            <input type="date" class="form-control" wire:model="instalacion" placeholder="[string]">
+        <small>Instalación:</small>
+        <div class="input-group">
+            <input type="date" class="form-control" wire:model="instalacion" placeholder="Instalación">
             @error('instalacion')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -107,11 +93,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Fecha Pago</span>
-            </div>
-            <input type="date" class="form-control" wire:model="pago" placeholder="[string]">
+        <small>Fecha Pago:</small>
+        <div class="input-group">
+            <input type="date" class="form-control" wire:model="pago" placeholder="Fecha Pago">
             @error('pago')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -122,11 +106,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Latitud</span>
-            </div>
-            <input type="text" class="form-control" wire:model="latitud" placeholder="[string]">
+        <small>Latitud:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="latitud" placeholder="Latitud">
             @error('latitud')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -137,11 +119,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Longitud</span>
-            </div>
-            <input type="text" class="form-control" wire:model="longitud" placeholder="[string]">
+        <small>Longitud:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="longitud" placeholder="Longitud">
             @error('longitud')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -152,11 +132,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">GPS</span>
-            </div>
-            <input type="text" class="form-control" wire:model="gps" placeholder="[string]">
+        <small>GPS:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="gps" placeholder="GPS">
             @error('gps')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>

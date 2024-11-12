@@ -5,13 +5,12 @@
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <span class="nav-link">
-                        Codigo <span class="float-right text-bold text-uppercase">{{ $codigo }}</span>
+                        Código <span class="float-right text-bold text-uppercase">{{ $codigo }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Cedula <span
-                                class="float-right text-bold text-uppercase">{{ is_numeric($cedula) ? formatoMillares($cedula,0) : $cedula }}</span>
+                        Cédula <span class="float-right text-bold text-uppercase">{{ is_numeric($cedula) ? formatoMillares($cedula,0) : $cedula }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -26,7 +25,7 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Teléfono <span class="float-right text-bold">{{ $telefono }}</span>
+                        Teléfono <span class="float-right text-bold text-uppercase">{{ $telefono }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -36,12 +35,12 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Plan <span class="float-right text-bold text-lowercase">{{ $plan }}</span>
+                        Plan <span class="float-right text-bold text-uppercase">{{ $plan }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Organización <span class="float-right text-bold">{{ $organizacion }}</span>
+                        Organización <span class="float-right text-bold text-uppercase">{{ $organizacion }}</span>
                     </span>
                 </li>
                 <li class="nav-item">

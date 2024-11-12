@@ -29,7 +29,7 @@
                         <li class="breadcrumb-item active d-inline-block text-truncate" style="max-width: 200px;">{{ $cliente }}</li>
                         <li class="breadcrumb-item active">{{ $plan }}</li>
                         <li class="breadcrumb-item active d-none d-lg-inline-block">{{ $organizacion }}</li>
-                        <li class="breadcrumb-item active">{{ getFecha($fecha_pago, "j-m-Y") }}</li>
+                        <li class="breadcrumb-item active">{{ getFecha($fecha_pago, "d-m-Y") }}</li>
                     </ol>
                 </div>
             </div>
@@ -37,11 +37,10 @@
                 <table class="table table-sm table-head-fixed table-hover text-nowrap">
                     <thead>
                     <tr class="text-navy">
-                        <th>Factura</th>
+                        <th class="d-none d-md-table-cell">Factura</th>
                         <th class="d-none d-lg-table-cell">Plan</th>
                         <th class="text-center">Fecha</th>
                         <th class="text-right">Total</th>
-                        <th class="d-none d-lg-table-cell" style="width: 5%;">Moneda</th>
                         <th style="width: 5%;">&nbsp;</th>
                     </tr>
                     </thead>
@@ -50,25 +49,24 @@
                         @php($borrar = true)
                         @foreach($listarFacturas as $factura)
                             <tr>
-                                <td class="text-uppercase">{{ $factura->factura_numero }}</td>
+                                <td class="d-none d-md-table-cell text-uppercase">{{ $factura->factura_numero }}</td>
                                 <td class="d-none d-lg-table-cell text-uppercase">{{ $factura->plan_nombre }}</td>
                                 <td class="text-center">{{ getFecha($factura->factura_fecha) }}</td>
-                                <td class="text-right">{{ formatoMillares($factura->factura_total) }}</td>
-                                <td class="d-none d-lg-table-cell"><span>{{ $factura->organizacion_moneda }}</span></td>
+                                <td class="text-right"><span>{{ $factura->organizacion_moneda }}</span> {{ formatoMillares($factura->factura_total) }}</td>
                                 <td class="justify-content-end">
                                     <div class="btn-group">
-                                        <button wire:click="destroyFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-xs" @if(!$borrar) disabled @endif >
+                                        <button wire:click="destroyFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-sm" @if(!$borrar) disabled @endif >
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-                                        <a href="{{ route('facturas.pdf', $factura->rowquid) }}" target="_blank" class="btn btn-primary btn-xs">
+                                        <a href="{{ route('facturas.pdf', $factura->rowquid) }}" target="_blank" class="btn btn-primary btn-sm">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         @if($factura->send)
-                                            <button wire:click="reSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-xs">
+                                            <button wire:click="reSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-sm">
                                                 <i class="fas fa-envelope-open"></i>
                                             </button>
                                         @else
-                                            <button wire:click="sendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-xs">
+                                            <button wire:click="sendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-sm">
                                                 <i class="fas fa-paper-plane"></i>
                                             </button>
                                         @endif

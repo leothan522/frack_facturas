@@ -7,7 +7,7 @@
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Registrados [ <b class="text-danger">{{ $rowsClientes }}</b> ]
+                Total [ <b class="text-danger">{{ $rowsClientes }}</b> ]
             @endif
         </h3>
 
@@ -36,7 +36,7 @@
                 {{--<th class="d-none d-lg-table-cell">Latitud</th>
                 <th class="d-none d-lg-table-cell">Longitud</th>
                 <th class="d-none d-lg-table-cell">GPS</th>--}}
-                <th style="width: 5%;">&nbsp;</th>
+                <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $clientes->count() }}</small></th>
             </tr>
             </thead>
             <tbody>
@@ -52,10 +52,10 @@
                         {{--<td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->latitud }}</small></td>
                         <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->longitud }}</small></td>
                         <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->gps }}</small></td>--}}
-                        <td class="text-center">
+                        <td class="text-center justify-content-center">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="showCliente('{{ $cliente->rowquid }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -63,11 +63,11 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="edit('{{ $cliente->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" wire:click="destroy('{{ $cliente->rowquid }}')">
+                                    <button class="btn btn-primary btn-sm" wire:click="destroy('{{ $cliente->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>

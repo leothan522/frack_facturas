@@ -27,13 +27,13 @@
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-navy">
-                <th class="text-center" style="width: 10%">Codigo</th>
+                <th class="text-center" style="width: 10%">Código</th>
                 <th>Cliente</th>
                 <th class="d-none d-lg-table-cell">Email</th>
                 <th class="d-none d-lg-table-cell">Plan</th>
                 <th class="d-none d-lg-table-cell">Organización</th>
                 <th class="d-none d-lg-table-cell text-center">Fecha Pago</th>
-                <th style="width: 5%;">&nbsp;</th>
+                <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $servicios->count() }}</small></th>
             </tr>
             </thead>
             <tbody>
@@ -50,10 +50,10 @@
                         <td class="justify-content-end">
                             <div class="d-md-none">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
+                                    <button class="btn btn-primary btn-sm" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="showServicio('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -61,14 +61,13 @@
                             </div>
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
-                                    <button class="btn btn-primary btn-xs" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
+                                    <button class="btn btn-primary btn-sm" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" data-toggle="modal"
-                                            data-target="#modal-default" wire:click="edit('{{ $servicio->rowquid }}')">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default" wire:click="edit('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-xs" wire:click="destroy('{{ $servicio->rowquid }}')">
+                                    <button class="btn btn-primary btn-sm" wire:click="destroy('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>

@@ -45,6 +45,16 @@
 
     <div class="@if($view != "show") d-none @endif" >
 
+        @if($estatus)
+            <div class="row">
+                <div class="col-12">
+                    <button type="button" wire:click="btnReset" class="btn btn-default btn-xs mb-3 float-right">
+                        <i class="fas fa-eraser"></i> Reset
+                    </button>
+                </div>
+            </div>
+        @endif
+
         <div class="card @if($estatus == 0) card-primary @endif @if($estatus == 1) card-success @endif @if($estatus == 2) card-danger @endif card-outline">
             <div class="card-body">
                 <h5 class="card-title">Factura #: <span class="text-danger text-bold text-uppercase">{{ $factura_numero }}</span></h5>

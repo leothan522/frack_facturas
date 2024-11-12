@@ -1,10 +1,8 @@
 <div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Organización</span>
-            </div>
+        <small>Organización:</small>
+        <div class="input-group">
             <select class="custom-select" wire:model="organizaciones_id">
                 <option value="">Seleccione</option>
                 @foreach($organizaciones as $organizacion)
@@ -21,11 +19,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Nombre</span>
-            </div>
-            <input type="text" class="form-control" wire:model="nombre" placeholder="[string]">
+        <small>Nombre:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="nombre" placeholder="Nombre">
             @error('nombre')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -36,11 +32,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Etiqueta - Factura</span>
-            </div>
-            <input type="text" class="form-control" wire:model="etiqueta" placeholder="[string]">
+        <small>Etiqueta - Factura:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="etiqueta" placeholder="Etiqueta - Factura">
             @error('etiqueta')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -51,11 +45,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Velocidad de Bajada</span>
-            </div>
-            <input type="text" class="form-control" wire:model="bajada" placeholder="[integer]">
+        <small>Velocidad de Bajada:</small>
+        <div class="input-group">
+            <input type="number" step="1" class="form-control" wire:model="bajada" placeholder="Velocidad de Bajada">
             @error('bajada')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -66,11 +58,9 @@
     </div>
 
     <div class="form-group">
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Velocidad de Subida</span>
-            </div>
-            <input type="text" class="form-control" wire:model="subida" placeholder="[integer]">
+        <small>Velocidad de Subida:</small>
+        <div class="input-group">
+            <input type="number" step="1" class="form-control" wire:model="subida" placeholder="Velocidad de Subida">
             @error('subida')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
@@ -81,11 +71,9 @@
     </div>
 
     <div class="form-group">
+        <small>Precio Mensual:</small>
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text text-bold">Precio Mensual</span>
-            </div>
-            <input type="text" class="form-control" wire:model="precio" placeholder="[decimal]">
+            <input type="number" step="0.01" class="form-control" wire:model="precio" placeholder="Precio Mensual">
             @error('precio')
             <span class="col-sm-12 text-sm text-bold text-danger">
                 <i class="icon fas fa-exclamation-triangle"></i>
