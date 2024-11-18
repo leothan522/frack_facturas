@@ -111,6 +111,10 @@
             Livewire.dispatch('initDollar');
         });
 
+        $("#button_email_dispath_sistema").click(function (e) {
+            Livewire.dispatch('initEmail');
+        });
+
         console.log('Hi!');
     </script>
 @endsection

@@ -371,6 +371,16 @@ return [
                     'can'  => 'usuarios',
                 ],
                 [
+                    'text' => 'Correo Electrónico',
+                    'icon'      => 'fas fa-fw fa-mail-bulk',
+                    'url' => '#',
+                    'data'  => [
+                        'toggle' => 'modal',
+                        'target' => '#modal-corro-email-sistema',
+                    ],
+                    'id' => 'button_email_dispath_sistema'
+                ],
+                [
                     'text' => 'Parametros',
                     'icon' => 'fas fa-fw fa-list',
                     'route' => 'parametros.index',

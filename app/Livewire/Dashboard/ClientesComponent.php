@@ -83,9 +83,9 @@ class ClientesComponent extends Component
             'direccion' => 'required',
             'instalacion' => 'required',
             'pago' => 'required',
-            'latitud' => 'required',
-            'longitud' => 'required',
-            'gps' => 'required',
+            'latitud' => 'nullable',
+            'longitud' => 'nullable',
+            'gps' => 'nullable',
         ];
     }
 

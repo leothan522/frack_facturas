@@ -9,6 +9,7 @@
 @section('content')
     <p>Bienvenido al panel de administración.</p>
     <p>Precio Dólar: <b class="text-danger" id="ver_print_dollar"></b></p>
+    <p>Correo Electrónico: <b class="text-danger" id="ver_print_email"></b></p>
     @livewire('dashboard.dolar-component')
 @endsection
 
@@ -30,14 +31,23 @@
         $(document).ready(function () {
             $('#navbar_search_id').addClass('d-none');
             Livewire.dispatch('verDollar');
+            Livewire.dispatch('verEmail');
         });
 
         $("#button_dolar_dispath").click(function (e) {
             Livewire.dispatch('initDollar');
         });
 
+        $("#button_email_dispath_sistema").click(function (e) {
+            Livewire.dispatch('initEmail');
+        });
+
         Livewire.on('printDollar', ({ dollar }) => {
             $("#ver_print_dollar").text(dollar);
+        });
+
+        Livewire.on('printEmail', ({ email }) => {
+            $("#ver_print_email").text(email);
         });
 
         console.log('Hi!');
