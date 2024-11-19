@@ -12,10 +12,15 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">
+                        <span>Opciones</span>
+                    </li>
                     <li class="breadcrumb-item" onclick="initRegistro()" data-toggle="modal" data-target="#modal-default-registrar-pago" style="cursor: pointer;">
                         <span class="btn-link">Registrar Pago</span>
                     </li>
-                    {{--<li class="breadcrumb-item active">Pagina en Blanco</li>--}}
+                    <li class="breadcrumb-item" onclick="initReporte()" data-toggle="modal" data-target="#modal-default-generar-reporte" style="cursor: pointer;">
+                        <span class="btn-link">Generar Reporte</span>
+                    </li>
                 </ol>
             </div>
         </div>
@@ -26,6 +31,7 @@
     @livewire('dashboard.pagos-component')
     @livewire('dashboard.dolar-component')
     @livewire('dashboard.pagos-registro-component')
+    @livewire('dashboard.reportes-component')
 @endsection
 
 @section('right-sidebar')
@@ -134,6 +140,10 @@
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
         });
+
+        function initReporte() {
+            Livewire.dispatch('limpiar');
+        }
 
         console.log('Hi!');
     </script>

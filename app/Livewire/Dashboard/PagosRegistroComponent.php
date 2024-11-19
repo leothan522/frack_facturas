@@ -89,6 +89,7 @@ class PagosRegistroComponent extends Component
                 $this->titlePago = "Zelle";
                 $this->metodos_id = $this->datosZelle->id;
                 $this->moneda = 'USD';
+                $this->monedaPago = 'USD';
                 $this->displayDetalles = "zelle";
                 break;
             default:

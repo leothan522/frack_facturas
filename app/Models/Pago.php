@@ -41,4 +41,9 @@ class Pago extends Model
         return $this->belongsTo(Factura::class, 'facturas_id', 'id');
     }
 
+    public function cliente(): BelongsTo
+    {
+        return $this->belongsTo(Cliente::class, 'clientes_id', 'id');
+    }
+
 }

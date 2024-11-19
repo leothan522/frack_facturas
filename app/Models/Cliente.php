@@ -46,4 +46,9 @@ class Cliente extends Model
         return $this->hasMany(Factura::class, 'clientes_id', 'id');
     }
 
+    public function pagos(): HasMany
+    {
+        return $this->hasMany(Pago::class, 'clientes_id', 'id');
+    }
+
 }
