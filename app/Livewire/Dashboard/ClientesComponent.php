@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\BienvenidaMail;
 use App\Models\Cliente;
 use App\Models\Factura;
+use App\Models\Parametro;
 use App\Models\Servicio;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -96,6 +99,7 @@ class ClientesComponent extends Component
         if ($this->clientes_id){
             //editar
             $cliente = Cliente::find($this->clientes_id);
+            $mail = false;
         }else{
             //nuevo
             $cliente = new Cliente();
@@ -104,6 +108,7 @@ class ClientesComponent extends Component
                 $existe = Cliente::where('rowquid', $rowquid)->first();
             }while($existe);
             $cliente->rowquid = $rowquid;
+            $mail = true;
         }
 
         if ($cliente){
@@ -119,6 +124,21 @@ class ClientesComponent extends Component
             $cliente->longitud = $this->longitud;
             $cliente->gps = $this->gps;
             $cliente->save();
+
+
+            if ($mail){
+                //anexamos los datos extras en data para enviar email
+                $data['from_email'] = $cliente->email;
+                $data['from_name'] = config('app.name');
+                $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
+                $data['nombre'] = $cliente->nombre;
+                $data['apellido'] = $cliente->apellido;
+                $data['email'] = $this->getCorreoSistema();
+                $data['telefono'] = $this->getTelefonoSistema();
+                //enviamos el correo
+                $to = $cliente->email;
+                Mail::to($to)->send(new BienvenidaMail($data));
+            }
 
             $this->alert('success', 'Datos Guardados.');
 
@@ -256,6 +276,45 @@ class ClientesComponent extends Component
     protected function getCliente($rowquid): ?Cliente
     {
         return Cliente::where('rowquid', $rowquid)->first();
+    }
+
+    protected function getCorreoSistema(): string
+    {
+        $email = '';
+        $parametro = Parametro::where('nombre', 'email_sistema')->first();
+        if ($parametro){
+            $email = strtolower($parametro->valor);
+        }
+        return $email;
+    }
+
+    protected function getTelefonoSistema(): string
+    {
+        $telefono = '';
+        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
+        if ($parametro){
+            $telefono = strtolower($parametro->valor);
+        }
+        return $telefono;
+    }
+
+    public function btnReenviar()
+    {
+        $cliente = Cliente::find($this->clientes_id);
+        if ($cliente){
+            //anexamos los datos extras en data para enviar email
+            $data['from_email'] = $cliente->email;
+            $data['from_name'] = config('app.name');
+            $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
+            $data['nombre'] = $cliente->nombre;
+            $data['apellido'] = $cliente->apellido;
+            $data['email'] = $this->getCorreoSistema();
+            $data['telefono'] = $this->getTelefonoSistema();
+            //enviamos el correo
+            $to = $cliente->email;
+            Mail::to($to)->send(new BienvenidaMail($data));
+            $this->alert('success', 'Email enviado.');
+        }
     }
 
 }
