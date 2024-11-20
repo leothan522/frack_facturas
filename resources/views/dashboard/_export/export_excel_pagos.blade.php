@@ -36,7 +36,7 @@
     @foreach($pagos as $pago)
         <tr>
             <td style="border: 1px solid #000000; text-align: center">{{ ++$i }}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ getFecha($pago->fecha)  }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ $pago->fecha  }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pago->referencia) }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ $pago->moneda }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ $pago->monto }}</td>

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -26,6 +27,8 @@ class PagosExport implements FromView, WithTitle, WithProperties, WithColumnForm
     {
         // TODO: Implement view() method.
         foreach ($this->pagos as $pago) {
+            $fecha = Carbon::create($pago->fecha);
+            $pago->fecha = Date::dateTimeToExcel($fecha);
             $pago->referencia = "#".$pago->referencia;
         }
         return view('dashboard._export.export_excel_pagos')
@@ -42,10 +45,10 @@ class PagosExport implements FromView, WithTitle, WithProperties, WithColumnForm
     {
         // TODO: Implement properties() method.
         return [
-            'creator'        => 'Sistema Proyecto',
+            'creator'        => config('app.name'),
             'lastModifiedBy' => Auth::user()->name,
-            'title'          => 'Usuarios Registrados',
-            'company'        => 'Proyecto',
+            'title'          => 'Pagos Registrados',
+            'company'        => "Morros Devops",
         ];
     }
 
@@ -56,7 +59,7 @@ class PagosExport implements FromView, WithTitle, WithProperties, WithColumnForm
             'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
             'C' => NumberFormat::FORMAT_TEXT,
             'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
-            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'G' => NumberFormat::FORMAT_NUMBER,
             'I' => NumberFormat::FORMAT_TEXT
         ];
     }

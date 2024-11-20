@@ -42,10 +42,10 @@ class UsersExport implements FromView, WithTitle, WithProperties, ShouldAutoSize
     {
         // TODO: Implement properties() method.
         return [
-            'creator'        => 'Sistema Proyecto',
+            'creator'        => config('app.name'),
             'lastModifiedBy' => Auth::user()->name,
             'title'          => 'Usuarios Registrados',
-            'company'        => 'Proyecto',
+            'company'        => 'MOrros Devops',
         ];
     }
 
