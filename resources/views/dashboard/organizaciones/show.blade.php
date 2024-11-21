@@ -10,6 +10,11 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
+                        Representante <span class="float-right text-bold text-uppercase">{{ $representante }}</span>
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link">
                         Email <span class="float-right text-bold text-lowercase">{{ $email }}</span>
                     </span>
                 </li>
@@ -30,7 +35,7 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Dias Factura <span class="float-right text-bold">{{ $dias }}</span>
+                        Días Factura <span class="float-right text-bold">{{ $dias }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
@@ -40,12 +45,12 @@
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Proxima Factura <span class="float-right text-bold">{{ $proxima }}</span>
+                        Próxima Factura <span class="float-right text-bold">{{ $proxima }}</span>
                     </span>
                 </li>
                 <li class="nav-item">
                     <span class="nav-link">
-                        Direccón <span class="float-right text-bold">{{ $direccion }}</span>
+                        Dirección <span class="float-right text-bold">{{ $direccion }}</span>
                     </span>
                 </li>
             </ul>

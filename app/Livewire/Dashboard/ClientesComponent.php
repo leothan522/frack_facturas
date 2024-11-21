@@ -291,7 +291,7 @@ class ClientesComponent extends Component
     public function btnReenviar()
     {
         $this->sendBienvenida($this->clientes_id);
-        $this->alert('success', 'Email enviado.');
+        $this->alert('success', "Email Enviado.");
     }
 
     protected function sendBienvenida($id)

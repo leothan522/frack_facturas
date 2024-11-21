@@ -20,7 +20,7 @@ class OrganizacionesComponent extends Component
 
     public $rows = 0, $numero = 14, $tableStyle = false;
     public $nuevo = true, $editar = false, $keyword;
-    public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion;
+    public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion, $representante;
     public $cerrarModal= true, $show = false;
 
     #[Locked]
@@ -66,7 +66,7 @@ class OrganizacionesComponent extends Component
     {
         $this->reset([
             'nombre', 'email', 'telefono', 'web', 'moneda', 'dias', 'formato', 'proxima',
-            'direccion', 'organizaciones_id', 'nuevo', 'editar',
+            'direccion', 'organizaciones_id', 'nuevo', 'editar', 'representante',
             'show', 'rowquid'
         ]);
         $this->resetErrorBag();
@@ -84,6 +84,7 @@ class OrganizacionesComponent extends Component
             //'formato' => 'required',
             'proxima' => 'nullable|integer|gt:0',
             'direccion' => 'required',
+            'representante' => 'required'
         ];
     }
 
@@ -118,6 +119,7 @@ class OrganizacionesComponent extends Component
                 $organizacion->proxima_factura = null;
             }
             $organizacion->direccion = $this->direccion;
+            $organizacion->representante = $this->representante;
             $organizacion->save();
 
             $this->alert('success', 'Datos Guardados.');
@@ -152,6 +154,7 @@ class OrganizacionesComponent extends Component
             $this->formato = $organizacion->formato_factura;
             $this->proxima = $organizacion->proxima_factura;
             $this->direccion = $organizacion->direccion;
+            $this->representante = $organizacion->representante;
             $this->rowquid = $organizacion->rowquid;
 
             $this->nuevo = false;

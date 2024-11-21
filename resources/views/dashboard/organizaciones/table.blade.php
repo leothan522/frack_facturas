@@ -68,6 +68,11 @@
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default"
+                                            wire:click="showOrganizacion('{{ $organizacion->rowquid }}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#modal-default"
                                             wire:click="edit('{{ $organizacion->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>

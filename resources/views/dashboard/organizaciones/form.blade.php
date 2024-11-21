@@ -14,6 +14,19 @@
     </div>
 
     <div class="form-group">
+        <small>Representante:</small>
+        <div class="input-group">
+            <input type="text" class="form-control" wire:model="representante" placeholder="Representante">
+            @error('representante')
+            <span class="col-sm-12 text-sm text-bold text-danger">
+                <i class="icon fas fa-exclamation-triangle"></i>
+                {{ $message }}
+            </span>
+            @enderror
+        </div>
+    </div>
+
+    <div class="form-group">
         <small>Email:</small>
         <div class="input-group">
             <input type="email" class="form-control" wire:model="email" placeholder="Email">
