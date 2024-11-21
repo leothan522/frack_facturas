@@ -14,11 +14,13 @@ class DolarComponent extends Component
 
     public $monto = 1, $dolar_id;
     public $email, $email_id;
+    public $telefono, $telefono_id;
 
     public function render()
     {
         $this->getDollar();
         $this->getEmail();
+        $this->getTelefono();
         return view('livewire.dashboard.dolar-component');
     }
 
@@ -33,6 +35,11 @@ class DolarComponent extends Component
             $parametro = Parametro::find($this->dolar_id);
         }else{
             $parametro = new Parametro();
+            do {
+                $rowquid = generarStringAleatorio(16);
+                $existe = Parametro::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $parametro->rowquid = $rowquid;
         }
 
         if ($parametro){
@@ -104,6 +111,11 @@ class DolarComponent extends Component
             $parametro = Parametro::find($this->email_id);
         }else{
             $parametro = new Parametro();
+            do {
+                $rowquid = generarStringAleatorio(16);
+                $existe = Parametro::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $parametro->rowquid = $rowquid;
         }
 
         if ($parametro){
@@ -119,6 +131,60 @@ class DolarComponent extends Component
     public function verEmail()
     {
         $this->dispatch('printEmail', email: strtolower($this->email));
+    }
+
+    #[On('initTelefono')]
+    public function initTelefono()
+    {
+        //JS
+    }
+
+    protected function getTelefono()
+    {
+        $this->reset(['telefono', 'telefono_id']);
+        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
+        if ($parametro){
+            $this->telefono = $parametro->valor;
+            $this->telefono_id = $parametro->id;
+        }
+    }
+
+    public function printTelefono($telefono)
+    {
+        //JS
+    }
+
+    public function saveTelefono()
+    {
+        $rules = [
+            'telefono' => 'required'
+        ];
+        $this->validate($rules);
+
+        if ($this->telefono_id){
+            $parametro = Parametro::find($this->telefono_id);
+        }else{
+            $parametro = new Parametro();
+            do {
+                $rowquid = generarStringAleatorio(16);
+                $existe = Parametro::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $parametro->rowquid = $rowquid;
+        }
+
+        if ($parametro){
+            $parametro->nombre = "telefono_sistema";
+            $parametro->valor = $this->telefono;
+            $parametro->save();
+            $this->dispatch('printTelefono', telefono: $this->telefono);
+            $this->alert('success', "Teléfono Actualizado.");
+        }
+    }
+
+    #[On('verTelefono')]
+    public function verTelefono()
+    {
+        $this->dispatch('printTelefono', telefono: $this->telefono);
     }
 
 }

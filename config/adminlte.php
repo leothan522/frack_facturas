@@ -381,6 +381,16 @@ return [
                     'id' => 'button_email_dispath_sistema'
                 ],
                 [
+                    'text' => 'Teléfono Soporte',
+                    'icon'      => 'fas fa-fw fa-phone-alt',
+                    'url' => '#',
+                    'data'  => [
+                        'toggle' => 'modal',
+                        'target' => '#modal-telefono-soporte-sistema',
+                    ],
+                    'id' => 'button_telefono_soporte_sistema'
+                ],
+                [
                     'text' => 'Parametros',
                     'icon' => 'fas fa-fw fa-list',
                     'route' => 'parametros.index',

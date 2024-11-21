@@ -86,6 +86,10 @@
             Livewire.dispatch('initEmail');
         });
 
+        $("#button_telefono_soporte_sistema").click(function (e) {
+            Livewire.dispatch('initTelefono');
+        });
+
         function select_2(id, data, event) {
 
             let html = '<select class="custom-control custom-select" id="'+ id +'"></select>';

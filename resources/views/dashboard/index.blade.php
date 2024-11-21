@@ -10,6 +10,7 @@
     <p>Bienvenido al panel de administración.</p>
     <p>Precio Dólar: <b class="text-danger" id="ver_print_dollar"></b></p>
     <p>Correo Electrónico: <b class="text-danger" id="ver_print_email"></b></p>
+    <p>Teléfono Soporte: <b class="text-danger" id="ver_print_telefono"></b></p>
     @livewire('dashboard.dolar-component')
 @endsection
 
@@ -32,6 +33,7 @@
             $('#navbar_search_id').addClass('d-none');
             Livewire.dispatch('verDollar');
             Livewire.dispatch('verEmail');
+            Livewire.dispatch('verTelefono');
         });
 
         $("#button_dolar_dispath").click(function (e) {
@@ -42,12 +44,20 @@
             Livewire.dispatch('initEmail');
         });
 
+        $("#button_telefono_soporte_sistema").click(function (e) {
+            Livewire.dispatch('initTelefono');
+        });
+
         Livewire.on('printDollar', ({ dollar }) => {
             $("#ver_print_dollar").text(dollar);
         });
 
         Livewire.on('printEmail', ({ email }) => {
             $("#ver_print_email").text(email);
+        });
+
+        Livewire.on('printTelefono', ({ telefono }) => {
+            $("#ver_print_telefono").text(telefono);
         });
 
         console.log('Hi!');

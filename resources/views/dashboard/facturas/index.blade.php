@@ -92,6 +92,10 @@
             Livewire.dispatch('initEmail');
         });
 
+        $("#button_telefono_soporte_sistema").click(function (e) {
+            Livewire.dispatch('initTelefono');
+        });
+
         console.log('Hi!');
 
     </script>
