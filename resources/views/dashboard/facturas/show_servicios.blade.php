@@ -52,4 +52,11 @@
         </div>
     </div>
     <!-- /.widget-user -->
+    <div class="row">
+        <div class="col-12">
+            <button type="button" wire:click="btnReenviar" class="btn btn-default btn-xs mb-3 float-right">
+                <i class="fas fa-paper-plane"></i> Reenviar Contrato
+            </button>
+        </div>
+    </div>
 </div>

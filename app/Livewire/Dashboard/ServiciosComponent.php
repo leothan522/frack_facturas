@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\ContratoMail;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Organizacion;
@@ -9,6 +10,7 @@ use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -125,6 +127,7 @@ class ServiciosComponent extends Component
         if ($this->servicios_id){
             //editar
             $servicios = Servicio::find($this->servicios_id);
+            $mail = false;
         }else{
             //nuevo
             $servicios = new Servicio();
@@ -134,6 +137,7 @@ class ServiciosComponent extends Component
                 $existe = Servicio::where('rowquid', $rowquid)->first();
             }while($existe);
             $servicios->rowquid = $rowquid;
+            $mail = true;
         }
 
         if ($servicios){
@@ -143,6 +147,10 @@ class ServiciosComponent extends Component
             $servicios->organizaciones_id = $this->organizaciones_id;
             $servicios->planes_id = $this->planes_id;
             $servicios->save();
+
+            if ($mail){
+                $this->sendContrato($servicios->id);
+            }
 
             $this->alert('success', 'Datos Guardados.');
 
@@ -361,6 +369,37 @@ class ServiciosComponent extends Component
     protected function getServicio($rowquid): ?Servicio
     {
         return Servicio::where('rowquid', $rowquid)->first();
+    }
+
+    public function btnReenviar()
+    {
+        $this->sendContrato($this->servicios_id);
+        $this->alert('success', 'Contrato enviado.');
+    }
+
+    protected function sendContrato($id)
+    {
+        $servicios = Servicio::find($id);
+        $data = [
+            'from_email' => strtolower($servicios->cliente->email),
+            'from_name' => config('app.name'),
+            'subject' => "CONTRATO DE SERVICIO",
+            'organizacion_nombre' => strtoupper($servicios->organizacion->nombre),
+            'organizacion_direccion' => strtoupper($servicios->organizacion->direccion),
+            'organizacion_moneda' => $servicios->organizacion->moneda,
+            'organizacion_representante' => strtoupper($servicios->organizacion->representante),
+            'cliente_nombre' => strtoupper($servicios->cliente->nombre),
+            'cliente_direccion' => strtoupper($servicios->cliente->direccion),
+            'cliente_fecha_pago' => $servicios->cliente->fecha_pago,
+            'plan_bajada' => cerosIzquierda($servicios->plan->bajada, 2),
+            'plan_subida' => cerosIzquierda($servicios->plan->subida, 2),
+            'plan_precio' => formatoMillares($servicios->plan->precio),
+            'limite_datos' => "Sin Límite de Datos",
+            'metodos' => "los establecidos en el territorio nacional",
+            'terminacion_contrato' => 10,
+        ];
+        $to = $servicios->cliente->email;
+        Mail::to($to)->send(new ContratoMail($data));
     }
 
 }

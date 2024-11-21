@@ -6,17 +6,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class FacturasMail extends Mailable
+class ContratoMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     private array $data;
-
 
     /**
      * Create a new message instance.
@@ -33,9 +31,6 @@ class FacturasMail extends Mailable
     {
         return new Envelope(
             from: new Address($this->data['from_email'], $this->data['from_name']),
-            replyTo: [
-              new Address($this->data['reply_email'], $this->data['reply_name'])
-            ],
             subject: $this->data['subject'],
         );
     }
@@ -46,14 +41,21 @@ class FacturasMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.factura',
+            view: 'emails.contrato',
             with: [
-                'factura' => $this->data['factura'],
-                'nombre' => $this->data['nombre'],
-                'apellido' => $this->data['apellido'],
-                'mes' => $this->data['mes'],
-                'telefono' => $this->data['telefono'],
-                'email' => $this->data['email'],
+                'organizacion_nombre' => $this->data['organizacion_nombre'],
+                'organizacion_direccion' => $this->data['organizacion_direccion'],
+                'organizacion_moneda' => $this->data['organizacion_moneda'],
+                'organizacion_representante' => $this->data['organizacion_representante'],
+                'cliente_nombre' => $this->data['cliente_nombre'],
+                'cliente_direccion' => $this->data['cliente_direccion'],
+                'cliente_fecha_pago' => $this->data['cliente_fecha_pago'],
+                'plan_bajada' => $this->data['plan_bajada'],
+                'plan_subida' => $this->data['plan_subida'],
+                'plan_precio' => $this->data['plan_precio'],
+                'limite_datos' => $this->data['limite_datos'],
+                'metodos' => $this->data['metodos'],
+                'terminacion_contrato' => $this->data['terminacion_contrato'],
             ]
         );
     }
@@ -65,10 +67,6 @@ class FacturasMail extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            Attachment::fromStorage($this->data['path'])
-                ->as($this->data['filename'])
-                ->withMime('application/pdf'),
-        ];
+        return [];
     }
 }

@@ -118,7 +118,7 @@
                                     <table cellpadding="0" cellspacing="0" border="0" width="90%" em="atom">
                                         <tr>
                                             <td style="padding-bottom: 15px; padding-top: 20px;" align="justify">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 24px; color: #004449;" class="em-font-Montserrat-Regular" align="justify">Estimado/a <strong>{{ strtoupper($nombre.' '.$apellido) }}</strong>, Nos complace darte la bienvenida a nuestra familia de clientes. A partir de ahora, podrás disfrutar de una conexión a Internet rápida y confiable con nuestro servicio de WiFi.<br></div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 24px; color: #004449;" class="em-font-Montserrat-Regular" align="justify">Estimado/a <strong>{{ $nombre }} {{ $apellido }}</strong>, Nos complace darte la bienvenida a nuestra familia de clientes. A partir de ahora, podrás disfrutar de una conexión a Internet rápida y confiable con nuestro servicio de WiFi.<br></div>
                                             </td>
                                         </tr>
                                     </table>

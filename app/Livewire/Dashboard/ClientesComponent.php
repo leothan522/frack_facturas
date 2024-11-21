@@ -127,17 +127,7 @@ class ClientesComponent extends Component
 
 
             if ($mail){
-                //anexamos los datos extras en data para enviar email
-                $data['from_email'] = $cliente->email;
-                $data['from_name'] = config('app.name');
-                $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
-                $data['nombre'] = $cliente->nombre;
-                $data['apellido'] = $cliente->apellido;
-                $data['email'] = $this->getCorreoSistema();
-                $data['telefono'] = $this->getTelefonoSistema();
-                //enviamos el correo
-                $to = $cliente->email;
-                Mail::to($to)->send(new BienvenidaMail($data));
+                $this->sendBienvenida($cliente->id);
             }
 
             $this->alert('success', 'Datos Guardados.');
@@ -300,20 +290,25 @@ class ClientesComponent extends Component
 
     public function btnReenviar()
     {
-        $cliente = Cliente::find($this->clientes_id);
+        $this->sendBienvenida($this->clientes_id);
+        $this->alert('success', 'Email enviado.');
+    }
+
+    protected function sendBienvenida($id)
+    {
+        $cliente = Cliente::find($id);
         if ($cliente){
             //anexamos los datos extras en data para enviar email
-            $data['from_email'] = $cliente->email;
+            $data['from_email'] = $this->getCorreoSistema();
             $data['from_name'] = config('app.name');
             $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
-            $data['nombre'] = $cliente->nombre;
-            $data['apellido'] = $cliente->apellido;
+            $data['nombre'] = strtoupper($cliente->nombre);
+            $data['apellido'] = strtoupper($cliente->apellido);
             $data['email'] = $this->getCorreoSistema();
             $data['telefono'] = $this->getTelefonoSistema();
             //enviamos el correo
-            $to = $cliente->email;
+            $to = strtolower($cliente->email);
             Mail::to($to)->send(new BienvenidaMail($data));
-            $this->alert('success', 'Email enviado.');
         }
     }
 

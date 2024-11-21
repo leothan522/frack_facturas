@@ -155,11 +155,18 @@ class FacturarAutomatico extends Command
                     //anexamos los datos extras en data para enviar email
                     $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));
                     $year = getFecha($factura->factura_fecha, 'Y');
-                    $data['from_email'] = $factura->organizacion_email;
-                    $data['from_name'] = $factura->organizacion_nombre;
+                    $data['from_email'] = $this->getCorreoSistema();
+                    $data['from_name'] = config('app.name');
+                    $data['reply_email'] = strtolower($factura->organizacion_email);
+                    $data['reply_name'] = strtoupper($factura->organizacion_nombre);
                     $data['subject'] = "Factura servicio de Internet $month $year";
                     $data['path'] = "public/$filename";
                     $data['filename'] = "Factura $month $year.pdf";
+                    $data['nombre'] = strtoupper($factura->cliente_nombre);
+                    $data['apellido'] = strtoupper($factura->cliente_apellido);
+                    $data['mes'] = strtoupper($month);
+                    $data['telefono'] = $this->getTelefonoSistema();
+                    $data['email'] = $this->getCorreoSistema();
 
                     //enviamos el correo
                     $to = $factura->cliente_email;
@@ -180,6 +187,26 @@ class FacturarAutomatico extends Command
         //dd($servicio);
 
         //$this->alert('success', 'Factura Generada.');
+    }
+
+    protected function getCorreoSistema(): string
+    {
+        $email = '';
+        $parametro = Parametro::where('nombre', 'email_sistema')->first();
+        if ($parametro){
+            $email = strtolower($parametro->valor);
+        }
+        return $email;
+    }
+
+    protected function getTelefonoSistema(): string
+    {
+        $telefono = '';
+        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
+        if ($parametro){
+            $telefono = strtolower($parametro->valor);
+        }
+        return $telefono;
     }
 
 }

@@ -60,6 +60,10 @@
                             <div class="d-none d-md-block">
                                 <div class="btn-group">
                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="showPlan('{{ $plan->rowquid }}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#modal-default" wire:click="edit('{{ $plan->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>

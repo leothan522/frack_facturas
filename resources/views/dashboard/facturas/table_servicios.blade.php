@@ -64,6 +64,10 @@
                                     <button class="btn btn-primary btn-sm" onclick="getFacturas('{{ $servicio->rowquid }}')" data-card-widget="remove">
                                         <i class="fas fa-file-invoice"></i>
                                     </button>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                            data-target="#modal-default" wire:click="showServicio('{{ $servicio->rowquid }}')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-default" wire:click="edit('{{ $servicio->rowquid }}')">
                                         <i class="fas fa-edit"></i>
                                     </button>

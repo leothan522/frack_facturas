@@ -2,10 +2,10 @@
 
 @section('plugins.Select2', true)
 
-@section('title', 'Facturas')
+@section('title', 'Servicios & Facturas')
 
 @section('content_header')
-    <h1><i class="fas fa-file-invoice"></i> Facturas</h1>
+    <h1><i class="fas fa-file-invoice"></i> Servicios & Facturas</h1>
 @endsection
 
 @section('content')
