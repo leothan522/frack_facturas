@@ -46,6 +46,8 @@ class CodigosMail extends Mailable
                 'nombre' => $this->data['nombre'],
                 'apellido' => $this->data['apellido'],
                 'codigo' => $this->data['codigo'],
+                'telefono' => $this->data['telefono'],
+                'email' => $this->data['email'],
             ]
         );
     }
