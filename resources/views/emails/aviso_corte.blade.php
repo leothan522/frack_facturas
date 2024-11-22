@@ -174,7 +174,7 @@
                                                 <table cellpadding="0" cellspacing="0" border="0" width="200" class="em-mob-width-100perc">
                                                     <tr>
                                                         <td valign="middle" height="41" style="background-color: #1890ff; border-radius: 6px; height: 41px;" align="center">
-                                                            <a href="https://frank.test/facturas/public/cliente" target="_blank" style="display: block; height: 41px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px; line-height: 41px; text-decoration: none; white-space: nowrap;" class="em-font-Mulish-Medium">Consultar tu cuenta </a>
+                                                            <a href="{{ route('web.cliente') }}" target="_blank" style="display: block; height: 41px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px; line-height: 41px; text-decoration: none; white-space: nowrap;" class="em-font-Mulish-Medium">Consultar tu cuenta </a>
                                                         </td>
                                                     </tr></table>
                                             </td></tr></table>
