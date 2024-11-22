@@ -442,3 +442,33 @@ function mesEspanol($numMes = null){
         return $meses;
     }
 }
+
+function getCorreoSistema(): string
+{
+    $email = '';
+    $parametro = Parametro::where('nombre', 'email_sistema')->first();
+    if ($parametro){
+        $email = strtolower($parametro->valor);
+    }
+    return $email;
+}
+
+function getTelefonoSistema(): string
+{
+    $telefono = '';
+    $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
+    if ($parametro){
+        $telefono = strtolower($parametro->valor);
+    }
+    return $telefono;
+}
+
+function getDollar(): float
+{
+    $dolar = 1.00;
+    $parametro = Parametro::where('nombre', 'precio_dolar')->first();
+    if ($parametro){
+        $dolar = floatval($parametro->valor);
+    }
+    return $dolar;
+}

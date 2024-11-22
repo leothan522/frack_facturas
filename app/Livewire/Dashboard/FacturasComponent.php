@@ -265,7 +265,7 @@ class FacturasComponent extends Component
             //anexamos los datos extras en data para enviar email
             $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));
             $year = getFecha($factura->factura_fecha, 'Y');
-            $data['from_email'] = $this->getCorreoSistema();
+            $data['from_email'] = getCorreoSistema();
             $data['from_name'] = config('app.name');
             $data['reply_email'] = strtolower($factura->organizacion_email);
             $data['reply_name'] = strtoupper($factura->organizacion_nombre);
@@ -275,8 +275,8 @@ class FacturasComponent extends Component
             $data['nombre'] = strtoupper($factura->cliente_nombre);
             $data['apellido'] = strtoupper($factura->cliente_apellido);
             $data['mes'] = strtoupper($month);
-            $data['telefono'] = $this->getTelefonoSistema();
-            $data['email'] = $this->getCorreoSistema();
+            $data['telefono'] = getTelefonoSistema();
+            $data['email'] = getCorreoSistema();
 
             //enviamos el correo
             $to = $factura->cliente_email;
@@ -324,26 +324,6 @@ class FacturasComponent extends Component
     protected function getFactura($rowquid): ?Factura
     {
         return Factura::where('rowquid', $rowquid)->first();
-    }
-
-    protected function getCorreoSistema(): string
-    {
-        $email = '';
-        $parametro = Parametro::where('nombre', 'email_sistema')->first();
-        if ($parametro){
-            $email = strtolower($parametro->valor);
-        }
-        return $email;
-    }
-
-    protected function getTelefonoSistema(): string
-    {
-        $telefono = '';
-        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
-        if ($parametro){
-            $telefono = strtolower($parametro->valor);
-        }
-        return $telefono;
     }
 
 }

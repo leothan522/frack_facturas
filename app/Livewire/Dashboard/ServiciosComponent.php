@@ -381,7 +381,7 @@ class ServiciosComponent extends Component
     {
         $servicios = Servicio::find($id);
         $data = [
-            'from_email' => strtolower($servicios->cliente->email),
+            'from_email' => getCorreoSistema(),
             'from_name' => config('app.name'),
             'subject' => "CONTRATO DE SERVICIO",
             'organizacion_nombre' => strtoupper($servicios->organizacion->nombre),

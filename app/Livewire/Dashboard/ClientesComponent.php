@@ -268,26 +268,6 @@ class ClientesComponent extends Component
         return Cliente::where('rowquid', $rowquid)->first();
     }
 
-    protected function getCorreoSistema(): string
-    {
-        $email = '';
-        $parametro = Parametro::where('nombre', 'email_sistema')->first();
-        if ($parametro){
-            $email = strtolower($parametro->valor);
-        }
-        return $email;
-    }
-
-    protected function getTelefonoSistema(): string
-    {
-        $telefono = '';
-        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
-        if ($parametro){
-            $telefono = strtolower($parametro->valor);
-        }
-        return $telefono;
-    }
-
     public function btnReenviar()
     {
         $this->sendBienvenida($this->clientes_id);
@@ -299,13 +279,13 @@ class ClientesComponent extends Component
         $cliente = Cliente::find($id);
         if ($cliente){
             //anexamos los datos extras en data para enviar email
-            $data['from_email'] = $this->getCorreoSistema();
+            $data['from_email'] = getCorreoSistema();
             $data['from_name'] = config('app.name');
             $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
             $data['nombre'] = strtoupper($cliente->nombre);
             $data['apellido'] = strtoupper($cliente->apellido);
-            $data['email'] = $this->getCorreoSistema();
-            $data['telefono'] = $this->getTelefonoSistema();
+            $data['email'] = getCorreoSistema();
+            $data['telefono'] = getTelefonoSistema();
             //enviamos el correo
             $to = strtolower($cliente->email);
             Mail::to($to)->send(new BienvenidaMail($data));

@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\ValidacionPagoMail;
 use App\Models\Banco;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Metodo;
 use App\Models\Pago;
 use App\Models\Parametro;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
@@ -126,6 +128,7 @@ class PagosComponent extends Component
         $pago = Pago::find($this->pagos_id);
         $pago->estatus = 1;
         $pago->save();
+        $this->sendEmail($pago->id);
         $this->show($pago->rowquid);
         $this->alert('success', 'Datos Guardados.');
     }
@@ -135,6 +138,7 @@ class PagosComponent extends Component
         $pago = Pago::find($this->pagos_id);
         $pago->estatus = 2;
         $pago->save();
+        $this->sendEmail($pago->id);
         $this->show($pago->rowquid);
         $this->alert('success', 'Datos Guardados.');
     }
@@ -260,5 +264,33 @@ class PagosComponent extends Component
     {
         //JS
     }
+
+    protected function sendEmail($id)
+    {
+        $pago = Pago::find($id);
+        if ($pago) {
+            $data = [
+                'from_email' => getCorreoSistema(),
+                'from_name' => config('app.name'),
+                'subject' => 'Información sobre tu Pago',
+                'estatus' => $pago->estatus,
+                'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
+                'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
+                'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
+                'pago_metodo' => $this->filtro[$pago->metodo],
+                'pago_referencia' => $pago->referencia,
+                'pago_banco' => $pago->nombre,
+                'pago_moneda' => $pago->moneda,
+                'pago_monto' => formatoMillares($pago->monto),
+                'pago_fecha' => getFecha($pago->fecha),
+                'email' => getCorreoSistema(),
+                'telefono' => getTelefonoSistema()
+            ];
+            $to = $pago->cliente->email;
+            Mail::to($to)->send(new ValidacionPagoMail($data));
+        }
+    }
+
+
 
 }

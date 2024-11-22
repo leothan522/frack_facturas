@@ -66,14 +66,14 @@ class LoginComponent extends Component
             $parametro->rowquid = $rowquid;
             $parametro->save();
             //anexamos los datos extras en data para enviar email
-            $data['from_email'] = $this->getCorreoSistema();
+            $data['from_email'] = getCorreoSistema();
             $data['from_name'] = config('app.name');
             $data['subject'] = "CÓDIGO DE SEGURIDAD: $codigo";
             $data['nombre'] = strtoupper($cliente->nombre);
             $data['apellido'] = strtoupper($cliente->apellido);
             $data['codigo'] = $codigo;
-            $data['telefono'] = $this->getTelefonoSistema();
-            $data['email'] = $this->getCorreoSistema();
+            $data['telefono'] = getTelefonoSistema();
+            $data['email'] = getCorreoSistema();
 
             //enviamos el correo
             $to = $cliente->email;
@@ -158,26 +158,6 @@ class LoginComponent extends Component
             $borrar = Parametro::find($parametro->id);
             $borrar->delete();
         }
-    }
-
-    protected function getCorreoSistema(): string
-    {
-        $email = '';
-        $parametro = Parametro::where('nombre', 'email_sistema')->first();
-        if ($parametro){
-            $email = strtolower($parametro->valor);
-        }
-        return $email;
-    }
-
-    protected function getTelefonoSistema(): string
-    {
-        $telefono = '';
-        $parametro = Parametro::where('nombre', 'telefono_sistema')->first();
-        if ($parametro){
-            $telefono = strtolower($parametro->valor);
-        }
-        return $telefono;
     }
 
 }

@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\ValidacionPagoMail;
 use App\Models\Banco;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Metodo;
 use App\Models\Pago;
 use App\Models\Parametro;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
@@ -24,6 +26,13 @@ class PagosRegistroComponent extends Component
     public $referenciaPago, $idBanco, $fechaPago, $monedaPago = 'Bs', $codigoBanco, $montoPago;
     public $listarFacturas, $cliente, $bolivares;
     public $monto, $banco, $moneda = "Bs";
+
+    public array $filtro = [
+        'transferencia' => 'Tranferencias',
+        'movil' => 'Pago Móvil',
+        'zelle' => 'Zelle',
+        'all'   => 'Todos'
+    ];
 
     #[Locked]
     public $clientes_id, $metodos_id, $factura;
@@ -149,7 +158,7 @@ class PagosRegistroComponent extends Component
                     $pago->nombre = $banco->nombre;
                     $pago->codigo = $banco->codigo;
                 }
-                $pago->dollar = $this->getDollar();
+                $pago->dollar = getDollar();
                 $pago->clientes_id = $this->cliente;
                 $pago->facturas_id = $factura->id;
                 $pago->estatus = 1;
@@ -164,6 +173,8 @@ class PagosRegistroComponent extends Component
 
                 $factura->pagos_id = $pago->id;
                 $factura->save();
+
+                $this->sendEmail($pago->id);
 
                 $this->dispatch('actualizar')->to(PagosComponent::class);
 
@@ -265,18 +276,8 @@ class PagosRegistroComponent extends Component
 
     protected function getMontoBs($monto): float
     {
-        $dolar = $this->getDollar();
+        $dolar = getDollar();
         return $monto * $dolar;
-    }
-
-    protected function getDollar(): float
-    {
-        $dolar = 1.00;
-        $parametro = Parametro::where('nombre', 'precio_dolar')->first();
-        if ($parametro){
-            $dolar = floatval($parametro->valor);
-        }
-        return $dolar;
     }
 
     protected function getFactura($rowquid): ?Factura
@@ -289,6 +290,32 @@ class PagosRegistroComponent extends Component
     {
         if (is_numeric($referencia)){
             $this->referenciaPago = $referencia;
+        }
+    }
+
+    protected function sendEmail($id)
+    {
+        $pago = Pago::find($id);
+        if ($pago) {
+            $data = [
+                'from_email' => getCorreoSistema(),
+                'from_name' => config('app.name'),
+                'subject' => 'Información sobre tu Pago',
+                'estatus' => $pago->estatus,
+                'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
+                'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
+                'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
+                'pago_metodo' => $this->filtro[$pago->metodo],
+                'pago_referencia' => $pago->referencia,
+                'pago_banco' => $pago->nombre,
+                'pago_moneda' => $pago->moneda,
+                'pago_monto' => formatoMillares($pago->monto),
+                'pago_fecha' => getFecha($pago->fecha),
+                'email' => getCorreoSistema(),
+                'telefono' => getTelefonoSistema()
+            ];
+            $to = $pago->cliente->email;
+            Mail::to($to)->send(new ValidacionPagoMail($data));
         }
     }
 
