@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Mail\AvisoCorteMail;
 use App\Mail\FacturasMail;
 use App\Models\Cliente;
 use App\Models\Factura;
@@ -162,6 +163,39 @@ class PruebasComponent extends Component
         //dd($servicio);
 
         $this->alert('success', 'Factura Generada.');
+    }
+
+    public function avisoDeCorte()
+    {
+        $hoy = Carbon::now();
+
+        $facturas = Factura::where('estatus', 0)->where('aviso_corte', 0)->get();
+        foreach ($facturas as $factura){
+            $organizacion = Organizacion::find($factura->organizaciones_id);
+            $diasFactura = $organizacion->dias_factura;
+            $fechaCorte = Carbon::parse($factura->factura_fecha)->addDays($diasFactura);
+            $aviso = $fechaCorte->subDay();
+            if ($hoy->gte($aviso)){
+                $data = [
+                    'from_email' => getCorreoSistema(),
+                    'from_name' => config('app.name'),
+                    'subject' => 'Aviso de corte de servicio',
+                    'cliente_nombre' => strtoupper($factura->cliente_nombre.' '. $factura->cliente_apellido),
+                    'factura_numero' => strtoupper($factura->factura_numero),
+                    'factura_total' => formatoMillares($factura->factura_total),
+                    'plan_etiqueta' => strtoupper($factura->plan_etiqueta),
+                    'fecha_corte' => getFecha($fechaCorte),
+                    'organizacion_moneda' => $factura->organizacion_moneda,
+                    'email' => getCorreoSistema(),
+                    'telefono' => getTelefonoSistema()
+                ];
+                $to = $factura->cliente_email;
+                Mail::to($to)->send(new AvisoCorteMail($data));
+                $factura->aviso_corte = 1;
+                $factura->save();
+            }
+        }
+        //$this->alert('success', 'Factura Generada.');
     }
 
 }

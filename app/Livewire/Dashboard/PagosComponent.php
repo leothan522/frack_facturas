@@ -125,19 +125,27 @@ class PagosComponent extends Component
 
     public function btnSI()
     {
-        $pago = Pago::find($this->pagos_id);
-        $pago->estatus = 1;
-        $pago->save();
-        $this->sendEmail($pago->id);
-        $this->show($pago->rowquid);
-        $this->alert('success', 'Datos Guardados.');
+        $this->validarPago(1);
     }
 
     public function btnNO()
     {
+        $this->validarPago(2);
+    }
+
+    protected function validarPago($estatus)
+    {
         $pago = Pago::find($this->pagos_id);
-        $pago->estatus = 2;
+        $pago->estatus = $estatus;
         $pago->save();
+
+
+        if ($estatus == 1){
+            $factura = Factura::find($pago->facturas_id);
+            $factura->estatus = 1;
+            $factura->save();
+        }
+
         $this->sendEmail($pago->id);
         $this->show($pago->rowquid);
         $this->alert('success', 'Datos Guardados.');
@@ -162,6 +170,11 @@ class PagosComponent extends Component
         $pago = Pago::find($this->pagos_id);
         $pago->estatus = 0;
         $pago->save();
+
+        $factura = Factura::find($pago->facturas_id);
+        $factura->estatus = 0;
+        $factura->save();
+
         $this->show($pago->rowquid);
         $this->alert('info', 'Pago Reestablecido.');
     }

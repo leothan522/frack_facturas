@@ -172,6 +172,7 @@ class PagosRegistroComponent extends Component
 
 
                 $factura->pagos_id = $pago->id;
+                $factura->estatus = 1;
                 $factura->save();
 
                 $this->sendEmail($pago->id);

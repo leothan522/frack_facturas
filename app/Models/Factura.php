@@ -47,6 +47,8 @@ class Factura extends Model
         'organizaciones_id',
         'planes_id',
         'pagos_id',
+        'estatus',
+        'aviso_corte',
         'send',
         'rowquid'
     ];

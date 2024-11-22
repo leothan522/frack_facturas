@@ -80,7 +80,7 @@ class OrganizacionesComponent extends Component
             'telefono' => 'required',
             'web' => 'required',
             'moneda' => 'required',
-            'dias' => 'required|integer|gt:0',
+            'dias' => 'required|integer|gt:0|max:28',
             //'formato' => 'required',
             'proxima' => 'nullable|integer|gt:0',
             'direccion' => 'required',
