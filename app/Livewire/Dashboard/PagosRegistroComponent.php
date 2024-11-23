@@ -300,7 +300,7 @@ class PagosRegistroComponent extends Component
                 'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
                 'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
                 'pago_metodo' => getMetodoPago($pago->metodo),
-                'pago_referencia' => $pago->referencia,
+                'pago_referencia' => strtoupper($pago->referencia),
                 'pago_banco' => $pago->nombre,
                 'pago_moneda' => $pago->moneda,
                 'pago_monto' => formatoMillares($pago->monto),
