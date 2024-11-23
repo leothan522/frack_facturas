@@ -18,11 +18,7 @@ class FacturasController extends Controller
     {
         $factura = Factura::where('rowquid', $rowquid)->first();
         if ($factura){
-            $data = [
-                'factura' => $factura
-            ];
-            $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-            return $pdf->stream('factura.pdf');
+            return getPdfFactura($factura);
         }else{
             return redirect()->route('facturas.index');
         }

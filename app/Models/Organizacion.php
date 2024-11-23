@@ -25,6 +25,9 @@ class Organizacion extends Model
         'proxima_factura',
         'direccion',
         'representante',
+        'rif',
+        'imagen',
+        'mini',
         'rowquid'
     ];
 

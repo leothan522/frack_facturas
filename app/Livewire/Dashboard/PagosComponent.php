@@ -29,13 +29,6 @@ class PagosComponent extends Component
     public $verMetodo, $referencia, $banco, $fecha, $estatus = 0, $verEstatus, $moneda, $monto, $dollar;
     public $factura_numero, $factura_cliente, $factura_etiqueta, $factura_fecha, $factura_total, $factura_rowquid = 'null';
 
-
-    public array $filtro = [
-        'transferencia' => 'Tranferencias',
-        'movil' => 'Pago Móvil',
-        'zelle' => 'Zelle',
-        'all'   => 'Todos'
-    ];
     public $tipo = 'all';
     public array $icono = [
         0 => '<i class="fas fa-exclamation-circle text-primary"></i>',
@@ -74,7 +67,7 @@ class PagosComponent extends Component
         if ($pago) {
 
             $this->pagos_id = $pago->id;
-            $this->verMetodo = $this->filtro[$pago->metodo];
+            $this->verMetodo = getMetodoPago($pago->metodo);
             $this->referencia = $pago->referencia;
 
             if ($pago->metodo != "zelle"){
@@ -290,7 +283,7 @@ class PagosComponent extends Component
                 'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
                 'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
                 'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
-                'pago_metodo' => $this->filtro[$pago->metodo],
+                'pago_metodo' => getMetodoPago($pago->metodo),
                 'pago_referencia' => $pago->referencia,
                 'pago_banco' => $pago->nombre,
                 'pago_moneda' => $pago->moneda,

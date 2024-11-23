@@ -43,7 +43,7 @@
                         <button type="button" wire:click="initModal('{{ $factura->rowquid }}')" class="btn card-link text-primary" data-toggle="modal" data-target="#modal-default">
                             Ver Pago
                         </button>
-                        <a href="{{ route('facturas.pdf', [$factura->rowquid]) }}" class="btn card-link text-primary" target="_blank">Ver Factura</a>
+                        <a href="{{ route('facturas.pdf', [$factura->rowquid]) }}" wire:click="limpiar" class="btn card-link text-primary" target="_blank">Ver Factura</a>
                     </div>
                 </div>
 

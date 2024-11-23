@@ -27,13 +27,6 @@ class PagosRegistroComponent extends Component
     public $listarFacturas, $cliente, $bolivares;
     public $monto, $banco, $moneda = "Bs";
 
-    public array $filtro = [
-        'transferencia' => 'Tranferencias',
-        'movil' => 'Pago Móvil',
-        'zelle' => 'Zelle',
-        'all'   => 'Todos'
-    ];
-
     #[Locked]
     public $clientes_id, $metodos_id, $factura;
 
@@ -306,7 +299,7 @@ class PagosRegistroComponent extends Component
                 'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
                 'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
                 'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
-                'pago_metodo' => $this->filtro[$pago->metodo],
+                'pago_metodo' => getMetodoPago($pago->metodo),
                 'pago_referencia' => $pago->referencia,
                 'pago_banco' => $pago->nombre,
                 'pago_moneda' => $pago->moneda,

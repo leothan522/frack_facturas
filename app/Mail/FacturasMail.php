@@ -48,7 +48,6 @@ class FacturasMail extends Mailable
         return new Content(
             view: 'emails.factura',
             with: [
-                'factura' => $this->data['factura'],
                 'nombre' => $this->data['nombre'],
                 'apellido' => $this->data['apellido'],
                 'mes' => $this->data['mes'],

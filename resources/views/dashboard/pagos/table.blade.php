@@ -7,7 +7,7 @@
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                {{ $filtro[$tipo] }} [ <b class="text-warning">{{ $rows }}</b> ]
+                {{ getMetodoPago($tipo) }} [ <b class="text-warning">{{ $rows }}</b> ]
             @endif
         </h3>
 
@@ -30,12 +30,12 @@
         <div class="mailbox-controls">
 
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ $filtro[$tipo] }}</button>
+                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ getMetodoPago($tipo) }}</button>
                 <button type="button" class="btn btn-default dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu" role="menu">
-                    @foreach($filtro as $key => $value)
+                    @foreach(getMetodoPago() as $key => $value)
                         @if($key != $tipo)
                             <button type="button" wire:click="btnFiltro('{{ $key }}')" class="dropdown-item">{{ $value }}</button>
                         @endif
@@ -76,7 +76,7 @@
                             </td>
                             <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 200px;">
 
-                                <b>{{ $pago->moneda }} {{ formatoMillares($pago->monto) }}</b> - {{ $filtro[$pago->metodo] }}
+                                <b>{{ $pago->moneda }} {{ formatoMillares($pago->monto) }}</b> - {{ getMetodoPago($pago->metodo) }}
 
                             </td>
                             <td class="d-none d-md-table-cell text-nowrap text-uppercase text-truncate" style="max-width: 150px;">
@@ -116,12 +116,12 @@
         <div class="mailbox-controls">
 
             <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ $filtro[$tipo] }}</button>
+                <button type="button" class="btn btn-default" data-toggle="dropdown" aria-expanded="false">{{ getMetodoPago($tipo) }}</button>
                 <button type="button" class="btn btn-default dropdown-toggle dropdown-hover dropdown-icon" data-toggle="dropdown" aria-expanded="false">
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu" role="menu">
-                    @foreach($filtro as $key => $value)
+                    @foreach(getMetodoPago() as $key => $value)
                         @if($key != $tipo)
                             <button type="button" wire:click="btnFiltro('{{ $key }}')" class="dropdown-item">{{ $value }}</button>
                         @endif

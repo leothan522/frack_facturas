@@ -37,11 +37,11 @@ class PruebasComponent extends Component
             ->whereMonth('fecha_pago', '<=', $mes)
             ->get();
 
-        foreach ($clientes as $client){
+        foreach ($clientes as $client) {
 
             $servicio = Servicio::where('clientes_id', $client->id)->first();
 
-            if ($servicio){
+            if ($servicio) {
 
                 $organizacion = Organizacion::find($servicio->organizaciones_id);
                 $cliente = Cliente::find($servicio->clientes_id);
@@ -49,31 +49,33 @@ class PruebasComponent extends Component
 
                 //numero Factura
                 $next = 1;
-                if (!empty($organizacion->proxima_factura)){
+                if (!empty($organizacion->proxima_factura)) {
                     $next = $organizacion->proxima_factura;
                 }
                 $formato = $organizacion->formato_factura;
                 $i = 0;
-                do{
+                do {
                     $next = $next + $i;
                     $factura_numero = $formato . cerosIzquierda($next, numSizeCodigo());
                     $existe = Factura::where('factura_numero', $factura_numero)->where('organizaciones_id', $organizacion->id)->first();
-                    if ($existe){ $i++; }
-                }while($existe);
+                    if ($existe) {
+                        $i++;
+                    }
+                } while ($existe);
 
                 //fecha factura
                 $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
                 if ($ultima) {
                     $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
-                }else{
+                } else {
                     $ultima_fecha = Carbon::parse($cliente->fecha_pago);
                 }
                 $factura_fecha = Carbon::parse($ultima_fecha);
 
-                if (!$factura_fecha->gt($hoy)){
+                if (!$factura_fecha->gt($hoy)) {
 
-                    if (!$ultima){
-                        $factura_fecha = $year."-".$mes."-".Carbon::parse($cliente->fecha_pago)->format('d');
+                    if (!$ultima) {
+                        $factura_fecha = $year . "-" . $mes . "-" . Carbon::parse($cliente->fecha_pago)->format('d');
                     }
 
                     //montos factura
@@ -114,10 +116,10 @@ class PruebasComponent extends Component
                     $factura->clientes_id = $cliente->id;
                     $factura->organizaciones_id = $organizacion->id;
                     $factura->planes_id = $plan->id;
-                    do{
+                    do {
                         $rowquid = generarStringAleatorio(16);
                         $existe = Factura::where('rowquid', $rowquid)->first();
-                    }while($existe);
+                    } while ($existe);
                     $factura->rowquid = $rowquid;
                     $factura->save();
 
@@ -149,7 +151,7 @@ class PruebasComponent extends Component
                     Mail::to($to)->send(new FacturasMail($data));
 
                     $path = Storage::exists($data['path']);
-                    if ($path){
+                    if ($path) {
                         Storage::delete($data['path']);
                     }
 
@@ -170,17 +172,17 @@ class PruebasComponent extends Component
         $hoy = Carbon::now();
 
         $facturas = Factura::where('estatus', 0)->where('aviso_corte', 0)->get();
-        foreach ($facturas as $factura){
+        foreach ($facturas as $factura) {
             $organizacion = Organizacion::find($factura->organizaciones_id);
             $diasFactura = $organizacion->dias_factura;
             $fechaCorte = Carbon::parse($factura->factura_fecha)->addDays($diasFactura);
             $aviso = $fechaCorte->subDay();
-            if ($hoy->gte($aviso)){
+            if ($hoy->gte($aviso)) {
                 $data = [
                     'from_email' => getCorreoSistema(),
                     'from_name' => config('app.name'),
                     'subject' => 'Aviso de corte de servicio',
-                    'cliente_nombre' => strtoupper($factura->cliente_nombre.' '. $factura->cliente_apellido),
+                    'cliente_nombre' => strtoupper($factura->cliente_nombre . ' ' . $factura->cliente_apellido),
                     'factura_numero' => strtoupper($factura->factura_numero),
                     'factura_total' => formatoMillares($factura->factura_total),
                     'plan_etiqueta' => strtoupper($factura->plan_etiqueta),
@@ -201,7 +203,66 @@ class PruebasComponent extends Component
     public function pdfPrueba()
     {
         $filename = "pruebaPdf.pdf";
-        $pdf = Pdf::loadView('dashboard._export.pdf_prueba', []);
+        $factura = Factura::where('rowquid', 'Ebz4h7EFCFxIaG2e')->first();
+
+        $imagen = asset('img/logo.png');
+        if ($factura->organizacion_mini){
+            $imagen = verImagen($factura->organizacion_mini, false, true);
+        }
+
+        $pago = false;
+        $metodo = '';
+        $referencia = '';
+        $banco = '';
+        $monto = '';
+        $fecha = '';
+        $notas = '';
+        if ($factura->estatus == 1){
+            $pago = true;
+            $metodo = getMetodoPago($factura->pago->metodo);
+            $referencia = strtoupper($factura->pago->referencia);
+            $banco = $factura->pago->nombre;
+            $monto = $factura->pago->moneda.' '.formatoMillares($factura->pago->monto);
+            $fecha = getFecha($factura->pago->fecha);
+        }else{
+            if ($factura->pagos_id){
+                if ($factura->pago->estatus == 0){
+                    $notas = "Esta factura tiene un pago registrado esperando validación.";
+                }
+                if ($factura->pago->estatus == 2){
+                    $notas = "Esta factura tiene un pago registrado que fue rechazado porque no se pudo comprobar la operación.";
+                }
+            }
+        }
+
+        $data = [
+            'imagen' => $imagen,
+            'factura_fecha' => ucfirst(fechaEnLetras($factura->factura_fecha, "MMMM D[,] YYYY")),
+            'factura_numero' => strtoupper($factura->factura_numero),
+            'organizacion_nombre' => strtoupper($factura->organizacion_nombre),
+            'organizacion_rif' => strtoupper($factura->organizacion_rif),
+            'organizacion_representante' => strtoupper('Frank Sierra'),
+            'organizacion_telefono' => strtoupper($factura->organizacion_telefono),
+            'organizacion_email' => strtolower($factura->organizacion_email),
+            'organizacion_direccion' => ucfirst($factura->organizacion_direccion),
+            'organizacion_moneda' => $factura->organizacion_moneda,
+            'cliente_cedula' => strtoupper($factura->cliente_cedula),
+            'cliente_nombre' => strtoupper($factura->cliente_nombre.' '.$factura->cliente_apellido),
+            'cliente_email' => strtolower($factura->cliente_email),
+            'cliente_telefono' => strtoupper($factura->cliente_telefono),
+            'cliente_direccion' => ucfirst($factura->cliente_direccion),
+            'plan_servicio' => strtoupper($factura->plan_etiqueta .' ('. mesEspanol(getFecha($factura->factura_fecha, 'm')) .')'),
+            'total' => formatoMillares($factura->factura_total),
+            'pago' => $pago,
+            'metodo' => $metodo,
+            'referencia' => $referencia,
+            'banco' => $banco,
+            'monto' => $monto,
+            'fecha_pago' => $fecha,
+            'notas' => $notas
+        ];
+
+        $pdf = Pdf::loadView('dashboard._export.pdf_prueba', $data);
         $pdf->save($filename, 'public');
     }
 

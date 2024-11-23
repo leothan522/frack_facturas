@@ -113,6 +113,11 @@ class FacturarAutomatico extends Command
                     $factura->organizacion_telefono = $organizacion->telefono;
                     $factura->organizacion_web = $organizacion->web;
                     $factura->organizacion_moneda = $organizacion->moneda;
+                    $factura->organizacion_direccion = $organizacion->direccion;
+                    $factura->organizacion_representante = $organizacion->representante;
+                    $factura->organizacion_rif = $organizacion->rif;
+                    $factura->organizacion_imagen = $organizacion->imagen;
+                    $factura->organizacion_mini = $organizacion->mini;
                     $factura->cliente_cedula = $cliente->cedula;
                     $factura->cliente_nombre = $cliente->nombre;
                     $factura->cliente_apellido = $cliente->apellido;
@@ -145,14 +150,7 @@ class FacturarAutomatico extends Command
 
 
                     //sendFactura al correo
-
-                    $data = [
-                        'factura' => $factura
-                    ];
-                    //creamos el PDF y lo guardamos en Storage => public
-                    $filename = "sendFacturaID_$factura->id.pdf";
-                    $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-                    $pdf->save($filename, 'public');
+                    $filename = getPdfFactura($factura, 'save');
 
                     //anexamos los datos extras en data para enviar email
                     $month = mesEspanol(getFecha($factura->factura_fecha, 'm'));

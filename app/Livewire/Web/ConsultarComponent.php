@@ -87,15 +87,8 @@ class ConsultarComponent extends Component
                 $this->pagos_id = $pago->id;
                 $this->monto = $pago->monto;
                 $this->moneda = $pago->moneda;
-                if ($pago->metodo == "transferencia"){
-                    $this->verMetodo = "Transferencia";
-                }
-                if ($pago->metodo == "movil"){
-                    $this->verMetodo = "Pago Móvil";
-                }
-                if ($pago->metodo == "zelle"){
-                    $this->verMetodo = "Zelle";
-                }
+                $this->verMetodo = getMetodoPago($pago->metodo);
+
                 $this->referencia = $pago->referencia;
                 $this->banco = $pago->nombre;
                 $this->fecha = getFecha($pago->fecha);
