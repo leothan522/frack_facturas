@@ -198,4 +198,11 @@ class PruebasComponent extends Component
         //$this->alert('success', 'Factura Generada.');
     }
 
+    public function pdfPrueba()
+    {
+        $filename = "pruebaPdf.pdf";
+        $pdf = Pdf::loadView('dashboard._export.pdf_prueba', []);
+        $pdf->save($filename, 'public');
+    }
+
 }
