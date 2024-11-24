@@ -4,7 +4,7 @@
 use App\Models\Parametro;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
-//use Intervention\Image\Facades\Image;
+use Intervention\Image\Facades\Image;
 
 function generarStringAleatorio($largo = 10, $soloNumeros = false , $espacio = false): string
 {
@@ -298,7 +298,7 @@ function crearMiniaturas($imagen_data, $path_data, $opcion = 'mini'): array
 
     $respuesta = array();
 
-    /*$image = Image::make($imagen_data);
+    $image = Image::make($imagen_data);
     foreach ($sizes as $nombre => $items){
         $width = null;
         $height = null;
@@ -311,7 +311,7 @@ function crearMiniaturas($imagen_data, $path_data, $opcion = 'mini'): array
         $respuesta[$nombre] = $path;
         $image->resize($width, $height);
         $image->save($path);
-    }*/
+    }
 
     return $respuesta;
 
@@ -324,6 +324,8 @@ function crearImagenTemporal($photo, $carpeta): string
     $miniatura = crearMiniaturas($imagen, $path_data, 'temporal');
     return "".$miniatura['temporal'];
 }
+
+
 
 //borrar imagenes incluyendo las miniaturas
 function borrarImagenes($imagen, $carpeta): void
