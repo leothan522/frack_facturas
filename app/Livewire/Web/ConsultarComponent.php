@@ -112,6 +112,8 @@ class ConsultarComponent extends Component
                 $this->datosZelle = Metodo::where('metodo', 'zelle')->first();
             }
 
+        }else{
+            $this->dispatch('cerrarModal');
         }
 
     }
