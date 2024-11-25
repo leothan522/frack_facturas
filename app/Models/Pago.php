@@ -23,6 +23,7 @@ class Pago extends Model
         'nombre',
         'codigo',
         'dollar',
+        'factura_numero',
         'clientes_id',
         'facturas_id',
         'estatus',
@@ -33,6 +34,7 @@ class Pago extends Model
     {
         return $query->where('referencia', 'LIKE', "%$keyword%")
             ->orWhere('fecha', 'LIKE', "%$keyword%")
+            ->orWhere('factura_numero', 'LIKE', "%$keyword%")
             ;
     }
 
