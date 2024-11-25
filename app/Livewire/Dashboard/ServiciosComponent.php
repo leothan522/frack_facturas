@@ -242,16 +242,16 @@ class ServiciosComponent extends Component
     {
         $id = null;
         $servicio  = $this->getServicio($this->rowquid);
-        if ($servicio){
+        /*if ($servicio){
             $id = $servicio->id;
-        }
+        }*/
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
-        $factura = Factura::where('servicios_id', $id)->first();
+        /*$factura = Factura::where('servicios_id', $id)->first();
         if ($factura){
             $vinculado = true;
-        }
+        }*/
 
         if ($vinculado) {
             $this->alert('warning', '¡No se puede Borrar!', [

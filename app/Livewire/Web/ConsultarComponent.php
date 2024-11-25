@@ -44,7 +44,7 @@ class ConsultarComponent extends Component
             ->limit($this->rows)
             ->get();
 
-        return view('livewire.web.consultar-component');
+        return view('livewire.web.co!nsultar-component');
     }
 
     public function setLimit()
@@ -222,6 +222,7 @@ class ConsultarComponent extends Component
                 $pago->dollar = getDollar();
                 $pago->clientes_id = $this->cliente['id'];
                 $pago->facturas_id = $this->facturas_id;
+                $pago->factura_numero = $factura->factura_numero;
 
                 do{
                     $rowquid = generarStringAleatorio(16);

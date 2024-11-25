@@ -155,6 +155,7 @@ class PagosRegistroComponent extends Component
                 $pago->clientes_id = $this->cliente;
                 $pago->facturas_id = $factura->id;
                 $pago->estatus = 1;
+                $pago->factura_numero = $factura->factura_numero;
 
                 do{
                     $rowquid = generarStringAleatorio(16);
