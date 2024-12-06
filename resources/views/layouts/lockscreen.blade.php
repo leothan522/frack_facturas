@@ -53,6 +53,9 @@
 <script src="{{ asset('vendor/sweetalert2/sweetalert2.all.min.js') }}"></script>
 @livewireScripts
 <x-livewire-alert::scripts />
+{!! verToastBootstrap() !!}
+<script src="{{ asset('js/toastBootstrap.js') }}"></script>
+@include('layouts.toastBootstrap')
 @yield('js')
 </body>
 </html>
