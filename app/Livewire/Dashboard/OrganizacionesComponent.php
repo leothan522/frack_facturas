@@ -6,17 +6,16 @@ use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use App\Traits\ToastBootstrap;
 use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class OrganizacionesComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
     public $nuevo = true, $editar = false, $keyword;
@@ -122,8 +121,6 @@ class OrganizacionesComponent extends Component
             $organizacion->representante = $this->representante;
             $organizacion->save();
 
-            $this->alert('success', 'Datos Guardados.');
-
             if (!$this->organizaciones_id){
                 $this->reset('keyword');
             }
@@ -131,8 +128,11 @@ class OrganizacionesComponent extends Component
             if ($this->cerrarModal){
                 $this->limpiar();
                 $this->dispatch('cerrarModal');
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap();
             }else{
                 $this->showOrganizacion($organizacion->rowquid);
+                $this->toastBootstrap();
             }
         }else{
             dispatch('cerrarModal');
@@ -180,36 +180,31 @@ class OrganizacionesComponent extends Component
     public function destroy($rowquid)
     {
         $this->rowquid = $rowquid;
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, bórralo!',
-            'text' => '¡No podrás revertir esto!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmed',
-        ]);
+        $this->confirmToastBootstrap('confirmed');
     }
 
     #[On('confirmed')]
     public function confirmed()
     {
         $organizacion = $this->getOrganizaciones($this->rowquid);
+        if ($organizacion){
+            $id = $organizacion->id;
+        }
 
         //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
         $vinculado = false;
 
-        $servicios = Servicio::where('organizaciones_id', $this->organizaciones_id)->first();
+        $servicios = Servicio::where('organizaciones_id', $id)->first();
         if ($servicios){
             $vinculado = true;
         }
 
-        $facturas = Factura::where('organizaciones_id', $this->organizaciones_id)->first();
+        $facturas = Factura::where('organizaciones_id', $id)->first();
         if ($facturas){
             $vinculado = true;
         }
 
-        $planes = Plan::where('organizaciones_id', $this->organizaciones_id)->first();
+        $planes = Plan::where('organizaciones_id', $id)->first();
         if ($planes){
             $vinculado = true;
         }
@@ -217,24 +212,21 @@ class OrganizacionesComponent extends Component
 
 
         if ($vinculado) {
-            $this->alert('warning', '¡No se puede Borrar!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
-            ]);
+            $this->htmlToastBoostrap();
         } else {
             if ($organizacion){
+                $nombre = "<b>".mb_strtoupper($organizacion->nombre)."</b>";
                 $organizacion->nombre = "*".$organizacion->nombre;
                 $organizacion->save();
                 $organizacion->delete();
-                $this->alert('success', 'Organización Eliminada.');
+                $this->dispatch('cerrarModal');
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap('success', "Organización $nombre Eliminada.");
+            }else{
+                $this->dispatch('cerrarModal');
+                $this->limpiar();
             }
-            $this->dispatch('cerrarModal');
-            $this->limpiar();
+
         }
 
     }

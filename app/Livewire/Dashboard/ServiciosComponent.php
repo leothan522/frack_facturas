@@ -4,24 +4,22 @@ namespace App\Livewire\Dashboard;
 
 use App\Mail\ContratoMail;
 use App\Models\Cliente;
-use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
+use App\Traits\ToastBootstrap;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 class ServiciosComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
     public $nuevo = true, $editar = false, $keyword;
@@ -152,8 +150,6 @@ class ServiciosComponent extends Component
                 $this->sendContrato($servicios->id);
             }
 
-            $this->alert('success', 'Datos Guardados.');
-
             if ($this->servicios_id){
                 $this->reset('keyword');
             }
@@ -161,8 +157,11 @@ class ServiciosComponent extends Component
             if ($this->cerrarModal){
                 $this->limpiar();
                 $this->dispatch('cerrarModal');
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap();
             }else{
                 $this->showServicio($servicios->rowquid);
+                $this->toastBootstrap();
             }
 
         }else{
@@ -226,15 +225,7 @@ class ServiciosComponent extends Component
     public function destroy($rowquid)
     {
         $this->rowquid = $rowquid;
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, bórralo!',
-            'text' => '¡No podrás revertir esto!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmed',
-        ]);
+        $this->confirmToastBootstrap('confirmed');
     }
 
     #[On('confirmed')]
@@ -254,25 +245,22 @@ class ServiciosComponent extends Component
         }*/
 
         if ($vinculado) {
-            $this->alert('warning', '¡No se puede Borrar!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
-            ]);
+            $this->htmlToastBoostrap();
         } else {
 
             if ($servicio){
+                $codigo = "<b>".mb_strtoupper($servicio->codigo)."</b>";
                 $servicio->delete();
-                $this->alert('success', 'Servicio Eliminado.');
+                $this->dispatch('cerrarModal');
+                $this->dispatch('limpiarFacturas');
+                $this->limpiar();
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap('success', "Servicio $codigo Eliminado.");
+            }else{
+                $this->dispatch('cerrarModal');
+                $this->dispatch('limpiarFacturas');
+                $this->limpiar();
             }
-
-            $this->limpiar();
-            $this->dispatch('cerrarModal');
-            $this->dispatch('limpiarFacturas');
         }
     }
 
@@ -374,7 +362,7 @@ class ServiciosComponent extends Component
     public function btnReenviar()
     {
         $this->sendContrato($this->servicios_id);
-        $this->alert('success', 'Contrato enviado.');
+        $this->toastBootstrap('info', 'Contrato enviado.');
     }
 
     protected function sendContrato($id)

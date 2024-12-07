@@ -2,12 +2,12 @@
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Busqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
+                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
                 <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Total [ <b class="text-danger">{{ $rowsClientes }}</b> ]
+                Todos [ <b class="text-danger">{{ $rowsClientes }}</b> ]
             @endif
         </h3>
 

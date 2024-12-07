@@ -7,21 +7,19 @@ use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Pago;
-use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Traits\ToastBootstrap;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class FacturasComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $viewFactura = false, $limit = 12, $botonMasFacturas = false;
     public $codigo, $cliente, $plan, $organizacion, $fecha_pago, $listarFacturas;
@@ -120,16 +118,11 @@ class FacturasComponent extends Component
 
             if ($factura_fecha->gt($hoy)) {
                 //no
-                $this->alert('warning', '¡No se puede Generar la Factura!', [
-                    'position' => 'center',
-                    'timer' => '',
-                    'toast' => false,
-                    'text' => 'Aún no se ha alcanzado la fecha de pago del cliente para la proxima factura.',
-                    'showConfirmButton' => true,
-                    'onConfirmed' => '',
-                    'confirmButtonText' => 'OK',
+                $this->confirmToastBootstrap(null, [
+                    'type' => 'warning',
+                    'title' => "¡No se puede Generar la Factura!",
+                    'message' => 'Aún no se ha alcanzado la fecha de pago del cliente para la proxima factura.'
                 ]);
-
             } else {
 
                 if (!$ultima) {
@@ -191,7 +184,7 @@ class FacturasComponent extends Component
                 $organizacion->proxima_factura = ++$next;
                 $organizacion->save();
 
-                $this->alert('success', 'Factura Generada.');
+                $this->toastBootstrap('info', 'Factura Generada.');
             }
 
         }
@@ -207,15 +200,7 @@ class FacturasComponent extends Component
     public function destroyFactura($rowquid)
     {
         $this->facturaRowquid = $rowquid;
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, bórralo!',
-            'text' => '¡No podrás revertir esto!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmedFactura',
-        ]);
+        $this->confirmToastBootstrap('confirmedFactura');
     }
 
     #[On('confirmedFactura')]
@@ -236,19 +221,12 @@ class FacturasComponent extends Component
         }
 
         if ($vinculado) {
-            $this->alert('warning', '¡No se puede Borrar!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
-            ]);
+            $this->htmlToastBoostrap();
         } else {
             if ($row) {
+                $numero = '<b>'.mb_strtoupper($row->factura_numero).'</b>';
                 $row->delete();
-                $this->alert('success', 'Factura Eliminada.');
+                $this->toastBootstrap('success', "Factura $numero Eliminada.");
             }
             $this->reset('facturas_id', 'facturaRowquid');
             $this->getFacturas($this->servicioRowquid);
@@ -291,21 +269,16 @@ class FacturasComponent extends Component
             $factura->save();
             $this->getFacturas($this->servicioRowquid);
 
-            $this->alert("success", 'Factura Enviada.');
+            $this->toastBootstrap('info', 'Factura Enviada.');
         }
     }
 
     public function reSendFactura($rowquid)
     {
         $this->facturaRowquid = $rowquid;
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, volver a enviar!',
-            'text' => '¡Esta Factura ya fue enviada anteriormente!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmedEnviar',
+        $this->confirmToastBootstrap('confirmedEnviar', [
+            'message' => "¡Esta Factura ya fue enviada anteriormente!",
+            'button' => "¡Sí, volver a enviar!"
         ]);
     }
 

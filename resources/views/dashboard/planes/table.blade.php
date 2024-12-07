@@ -7,7 +7,7 @@
                     <i class="fas fa-times-circle"></i>
                 </button>
             @else
-                Total [ <b class="text-danger">{{ $rowsPlanes }}</b> ]
+                Todos [ <b class="text-danger">{{ $rowsPlanes }}</b> ]
             @endif
         </h3>
 
