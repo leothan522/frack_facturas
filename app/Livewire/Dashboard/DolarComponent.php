@@ -3,14 +3,14 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Parametro;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Traits\ToastBootstrap;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class DolarComponent extends Component
 {
 
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $monto = 1, $dolar_id;
     public $email, $email_id;
@@ -47,7 +47,7 @@ class DolarComponent extends Component
             $parametro->valor = $this->monto;
             $parametro->save();
             $this->dispatch('printDollar', dollar: formatoMillares($this->monto));
-            $this->alert('success', "Dolar Actualizado.");
+            $this->toastBootstrap('success', 'Dolar Actualizado.');
         }
     }
 
@@ -123,7 +123,7 @@ class DolarComponent extends Component
             $parametro->valor = $this->email;
             $parametro->save();
             $this->dispatch('printEmail', email: strtolower($this->email));
-            $this->alert('success', "Email Actualizado.");
+            $this->toastBootstrap('success', 'Email Actualizado.');
         }
     }
 
@@ -177,7 +177,7 @@ class DolarComponent extends Component
             $parametro->valor = $this->telefono;
             $parametro->save();
             $this->dispatch('printTelefono', telefono: $this->telefono);
-            $this->alert('success', "Teléfono Actualizado.");
+            $this->toastBootstrap('success','Teléfono Actualizado.');
         }
     }
 

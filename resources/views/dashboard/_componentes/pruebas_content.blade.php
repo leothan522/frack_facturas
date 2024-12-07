@@ -9,6 +9,10 @@
             Prueba PDF
         </button>
 
+        <button type="button" class="btn btn-default" wire:click="btnToast">
+            Prueba Toast
+        </button>
+
 
 
 

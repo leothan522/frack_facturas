@@ -2,21 +2,20 @@
 
 namespace App\Livewire\Dashboard;
 
-use App\Models\Empresa;
 use App\Models\Parametro;
 use App\Models\User;
+use App\Traits\ToastBootstrap;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UsuariosComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $rows = 0, $numero = 14, $tableStyle = false;
     public $view = "create", $keyword;
@@ -150,7 +149,8 @@ class UsuariosComponent extends Component
             $this->reset('keyword');
             $this->limpiar();
             $this->dispatch('cerrarModal', selector: 'btn_modal_default_create');
-            $this->alert('success', 'Usuario Creado.');
+            Sleep::for(500)->millisecond();
+            $this->toastBootstrap();
         } else {
 
             $this->validate($this->rules($this->users_id));
@@ -180,7 +180,7 @@ class UsuariosComponent extends Component
                 }
                 $usuarios->save();
                 $this->edit($usuarios->rowquid);
-                $this->alert('success', 'Usuario Actualizado.');
+                $this->toastBootstrap();
             }else{
                 $this->dispatch('cerrarModal', selector: 'button_edit_modal_cerrar');
             }
@@ -228,14 +228,16 @@ class UsuariosComponent extends Component
         if ($usuario){
             if ($usuario->estatus) {
                 $usuario->estatus = 0;
-                $texto = "Usuario Suspendido";
+                $alert = 'info';
+                $texto = "Usuario Suspendido.";
             } else {
                 $usuario->estatus = 1;
-                $texto = "Usuario Activado";
+                $alert = 'success';
+                $texto = "Usuario Activado.";
             }
             $usuario->update();
             $this->estatus = $usuario->estatus;
-            $this->alert('success', $texto);
+            $this->toastBootstrap($alert, $texto);
         }else{
             $this->dispatch('cerrarModal', selector: 'button_edit_modal_cerrar');
         }
@@ -253,7 +255,7 @@ class UsuariosComponent extends Component
             $usuario->password = Hash::make($clave);
             $usuario->update();
             $this->edit_password = $clave;
-            $this->alert('success', 'Contraseña Restablecida');
+            $this->toastBootstrap('info', "Contraseña Restablecida.");
         }else{
             $this->dispatch('cerrarModal', selector: 'button_edit_modal_cerrar');
         }
@@ -262,15 +264,7 @@ class UsuariosComponent extends Component
     public function destroy($rowquid)
     {
         $this->rowquid = $rowquid;
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, bórralo!',
-            'text' => '¡No podrás revertir esto!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmedUser',
-        ]);
+        $this->confirmToastBootstrap('confirmedUser');
     }
 
     #[On('confirmedUser')]
@@ -282,20 +276,14 @@ class UsuariosComponent extends Component
             $vinculado = false;
 
             if ($vinculado) {
-                $this->alert('warning', '¡No se puede Borrar!', [
-                    'position' => 'center',
-                    'timer' => '',
-                    'toast' => false,
-                    'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
-                    'showConfirmButton' => true,
-                    'onConfirmed' => '',
-                    'confirmButtonText' => 'OK',
-                ]);
+                $this->htmlToastBoostrap();
             } else {
+                $nombre = "<b>".$usuario->email."</b>";
                 $usuario->delete();
                 $this->limpiar();
                 $this->dispatch('cerrarModal', selector: 'button_edit_modal_cerrar');
-                $this->alert('success', 'Usuario Eliminado.');
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap('success', "Usuario $nombre Eliminado.");
             }
         }else{
             $this->dispatch('cerrarModal', selector: 'button_edit_modal_cerrar');
@@ -336,7 +324,7 @@ class UsuariosComponent extends Component
             $usuario->permisos = $this->getPermisos;
             $usuario->save();
             $this->reset('cambios');
-            $this->alert('success', 'Permisos Guardados.');
+            $this->toastBootstrap('success', "Permisos Guardados.");
         }else{
             $this->dispatch('cerrarModal', selector: 'button_permisos_modal_cerrar');
         }
