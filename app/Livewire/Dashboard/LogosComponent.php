@@ -3,7 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Organizacion;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Traits\ToastBootstrap;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -11,7 +11,7 @@ use Livewire\WithFileUploads;
 
 class LogosComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
     use WithFileUploads;
 
     public $verImagen, $clinkImagen = false, $iconoBorrar = false, $btnGuardar = false;
@@ -63,7 +63,6 @@ class LogosComponent extends Component
                 $this->iconoBorrar = !empty($organizacion->imagen);
                 $this->clinkImagen = true;
                 $this->organizaciones_id = $organizacion->id;
-                $this->alert('success', 'hola');
             }else{
                 $this->limpiarLogo();
             }
@@ -149,7 +148,7 @@ class LogosComponent extends Component
             $this->imagen = $organizacion->imagen;
             $this->mini = $organizacion->mini;
             $this->reset('temporal', 'photo', 'btnGuardar', 'img_borrar');
-            $this->alert('success', 'Datos Guardados.');
+            $this->toastBootstrap();
 
         }else{
             $this->limpiarLogo();

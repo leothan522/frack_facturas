@@ -1,5 +1,5 @@
 <div class="float-right d-none d-sm-block">
-    <b>Version</b> 1.0
+    <b>Version</b> 1.1
 </div>
 <span class="d-none d-sm-block">
     <span>&copy; 2024 {{ mb_strtoupper(config('app.name')) }}</span>&nbsp;

@@ -6,17 +6,16 @@ use App\Models\Banco;
 use App\Models\Factura;
 use App\Models\Metodo;
 use App\Models\Pago;
-use App\Models\Parametro;
 use App\Models\Servicio;
+use App\Traits\ToastBootstrap;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ConsultarComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $rows = 0, $numero = 6;
     public $servicio, $facturas;
@@ -44,7 +43,7 @@ class ConsultarComponent extends Component
             ->limit($this->rows)
             ->get();
 
-        return view('livewire.web.co!nsultar-component');
+        return view('livewire.web.consultar-component');
     }
 
     public function setLimit()
@@ -237,14 +236,10 @@ class ConsultarComponent extends Component
 
                 $this->dispatch('cerrarModal');
 
-                $this->alert('success', '¡Pago Registrado!', [
-                    'position' => 'center',
-                    'timer' => '',
-                    'toast' => false,
-                    'text' => 'Recibimos los datos del pago y lo estamos verificando. Este proceso puede demorar hasta 30 minutos.',
-                    'showConfirmButton' => true,
-                    'onConfirmed' => '',
-                    'confirmButtonText' => 'OK',
+                $this->confirmToastBootstrap(null, [
+                    'type' => "success",
+                    'title' => "¡Pago Registrado!",
+                    'message' => 'Recibimos los datos del pago y lo estamos verificando. Este proceso puede demorar hasta 30 minutos.'
                 ]);
 
             }else{

@@ -3,15 +3,10 @@
 namespace App\Livewire\Dashboard;
 
 use App\Mail\ValidacionPagoMail;
-use App\Models\Banco;
-use App\Models\Cliente;
 use App\Models\Factura;
-use App\Models\Metodo;
 use App\Models\Pago;
-use App\Models\Parametro;
+use App\Traits\ToastBootstrap;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -20,7 +15,7 @@ use Livewire\WithPagination;
 
 class PagosComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
     use WithPagination, WithoutUrlPagination;
 
     public $view = 'show',$order = 'DESC', $keyword;
@@ -141,19 +136,14 @@ class PagosComponent extends Component
 
         $this->sendEmail($pago->id);
         $this->show($pago->rowquid);
-        $this->alert('success', 'Datos Guardados.');
+        $this->toastBootstrap();
     }
 
     public function btnReset()
     {
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, restablacer!',
-            'text' => '¡Si restableces el pago, su estatus cambiara a Esperando Validación!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'resetPago',
+        $this->confirmToastBootstrap('resetPago', [
+            'button' => "¡Sí, restablacer!",
+            'message' => "¡Si restableces el pago, su estatus cambiara a Esperando Validación!"
         ]);
     }
 
@@ -169,7 +159,7 @@ class PagosComponent extends Component
         $factura->save();
 
         $this->show($pago->rowquid);
-        $this->alert('info', 'Pago Reestablecido.');
+        $this->toastBootstrap('info', 'Pago Reestablecido.');
     }
 
     protected function getPago($rowquid): ?Pago

@@ -4,14 +4,14 @@ namespace App\Livewire\Dashboard;
 
 use App\Exports\PagosExport;
 use App\Models\Pago;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Traits\ToastBootstrap;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportesComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $filtro = 'all', $desde, $hasta;
 
@@ -43,7 +43,7 @@ class ReportesComponent extends Component
             $pagos = Pago::whereBetween('fecha', [$this->desde, $this->hasta])->where('metodo', $this->filtro)->orderBy('fecha')->get();
         }
 
-        $this->alert('info', 'Generando reporte');
+        $this->toastBootstrap('info', 'Generando reporte.');
         return Excel::download(new PagosExport($pagos), "Pagos_$name.xlsx");
     }
 

@@ -8,10 +8,10 @@ use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Metodo;
 use App\Models\Pago;
-use App\Models\Parametro;
+use App\Traits\ToastBootstrap;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -19,7 +19,7 @@ use Livewire\Component;
 class PagosRegistroComponent extends Component
 {
 
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $titlePago = "Registrar Pago", $displayPago = "verCliente", $estatusPago, $displayDetalles;
     public $datosTransferencia, $datosPagoMovil, $datosZelle;
@@ -174,17 +174,8 @@ class PagosRegistroComponent extends Component
                 $this->dispatch('actualizar')->to(PagosComponent::class);
 
                 $this->dispatch('cerrarModalPago');
-
-                $this->alert('success', '¡Pago Registrado!', [
-                    'position' => 'center',
-                    'timer' => '',
-                    'toast' => false,
-                    'text' => 'Recibimos los datos del pago y lo estamos verificando. Este proceso puede demorar hasta 30 minutos.',
-                    'showConfirmButton' => true,
-                    'onConfirmed' => '',
-                    'confirmButtonText' => 'OK',
-                ]);
-
+                Sleep::for(500)->millisecond();
+                $this->toastBootstrap('success', 'Pago Registrado.');
             }else{
                 $this->dispatch('cerrarModalPago');
             }

@@ -4,15 +4,14 @@ namespace App\Livewire\Dashboard;
 
 use App\Models\Banco;
 use App\Models\Metodo;
-use Illuminate\Support\Sleep;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use App\Traits\ToastBootstrap;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class MetodosComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $view = "show", $classTransferencia = 'card-danger', $classPagoMovil = 'card-danger', $classZelle = 'card-danger';
     public $bancoTransferencia, $bancoPagoMovil;
@@ -105,7 +104,7 @@ class MetodosComponent extends Component
             $metodo->save();
             $this->classTransferencia = 'card-success';
             $this->limpiar();
-            $this->alert('success', 'Datos Guardados.');
+            $this->toastBootstrap();
         }
 
     }
@@ -138,7 +137,7 @@ class MetodosComponent extends Component
             $metodo->save();
             $this->classPagoMovil = 'card-success';
             $this->limpiar();
-            $this->alert('success', 'Datos Guardados.');
+            $this->toastBootstrap();
         }
 
     }
@@ -169,7 +168,7 @@ class MetodosComponent extends Component
             $metodo->save();
             $this->classZelle = 'card-success';
             $this->limpiar();
-            $this->alert('success', 'Datos Guardados.');
+            $this->toastBootstrap();
         }
 
     }
@@ -223,15 +222,7 @@ class MetodosComponent extends Component
 
     public function destroy()
     {
-        $this->confirm('¿Estas seguro?', [
-            'toast' => false,
-            'position' => 'center',
-            'showConfirmButton' => true,
-            'confirmButtonText' => '¡Sí, bórralo!',
-            'text' => '¡No podrás revertir esto!',
-            'cancelButtonText' => 'No',
-            'onConfirmed' => 'confirmed',
-        ]);
+        $this->confirmToastBootstrap('confirmed');
     }
 
     #[On('confirmed')]
@@ -243,22 +234,14 @@ class MetodosComponent extends Component
         $vinculado = false;
 
         if ($vinculado) {
-            $this->alert('warning', '¡No se puede Borrar!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'El registro que intenta borrar ya se encuentra vinculado con otros procesos.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
-            ]);
+            $this->htmlToastBoostrap();
         } else {
             if ($metodo){
                 $metodo->delete();
                 $this->getDatosTransferencia();
                 $this->getDatosPagoMovil();
                 $this->getDatosZelle();
-                $this->alert('success', 'Datos Eliminados.');
+                $this->toastBootstrap();
             }
             $this->limpiar();
         }

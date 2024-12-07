@@ -5,15 +5,15 @@ namespace App\Livewire\Web;
 use App\Mail\CodigosMail;
 use App\Models\Cliente;
 use App\Models\Parametro;
+use App\Traits\ToastBootstrap;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
 class LoginComponent extends Component
 {
-    use LivewireAlert;
+    use ToastBootstrap;
 
     public $user = false;
     public $cedula, $codigo, $cliente;
@@ -102,28 +102,20 @@ class LoginComponent extends Component
             if ($codigo == $this->codigo){
                 session()->put('cliente', $this->cliente);
                 $this->deleteSession();
-                $this->alert('success', 'Iniciando sesión...');
+               $this->toastBootstrap('success', 'Iniciando sesión...');
                 $this->redirect('consultar');
             }else{
-                $this->alert('error', '¡Código Invalido!', [
-                    'position' => 'center',
-                    'timer' => '',
-                    'toast' => false,
-                    'text' => 'El Código de seguridad es incorrecto, verifique e intente nuevamente.',
-                    'showConfirmButton' => true,
-                    'onConfirmed' => '',
-                    'confirmButtonText' => 'OK',
+                $this->confirmToastBootstrap(null, [
+                    'type' => 'error',
+                    'title' => "¡Código Invalido!",
+                    'message' => "El Código de seguridad es incorrecto, verifique e intente nuevamente."
                 ]);
             }
         }else{
-            $this->alert('warning', '¡Código Vencido!', [
-                'position' => 'center',
-                'timer' => '',
-                'toast' => false,
-                'text' => 'El Código de seguridad ha caducado, debes solicitar uno nuevo.',
-                'showConfirmButton' => true,
-                'onConfirmed' => '',
-                'confirmButtonText' => 'OK',
+            $this->confirmToastBootstrap(null, [
+                'type' => 'warning',
+                'title' => "¡Código Vencido!",
+                'message' => "El Código de seguridad ha caducado, debes solicitar uno nuevo."
             ]);
             $this->deleteSession();
         }
