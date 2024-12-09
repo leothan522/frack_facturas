@@ -23,18 +23,21 @@ trait ToastBootstrap{
 
     }
 
-    public function confirmToastBootstrap($confirmed = null, $options = []): void
+    public function confirmToastBootstrap($confirmed = null, $params = [], $options = []): void
     {
         $this->payload['toast'] = false;
         $this->payload['type'] = 'warning';
         if (!empty($confirmed)){
             $this->payload['confirmed'] = $confirmed;
         }
+        if (!empty($params)){
+            $this->payload['parametros'] = $params;
+        }
         $this->getOptions($options);
         $this->showToastBootstrap('toastBootstrap', $this->payload);
     }
 
-    public function htmlToastBoostrap($confirmed = null, $options = []): void
+    public function htmlToastBoostrap($confirmed = null, $params = [], $options = []): void
     {
         if (empty($options['message'])){
             $options['message'] = '
@@ -57,7 +60,7 @@ trait ToastBootstrap{
             $options['type'] = 'info';
         }
 
-        $this->confirmToastBootstrap($confirmed, $options);
+        $this->confirmToastBootstrap($confirmed, $params, $options);
 
     }
 
