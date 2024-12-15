@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Parametro;
+use App\Traits\LimitRows;
 use App\Traits\ToastBootstrap;
 use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
@@ -13,9 +14,9 @@ use Livewire\Component;
 class ParametrosComponent extends Component
 {
     use ToastBootstrap;
+    use LimitRows;
 
-    public $rows = 0, $numero = 14, $tableStyle = false;
-    public $view = "create", $keyword;
+    public $view = "create", $verToast = false, $keyword;
     public $nombre, $tabla_id, $valor;
 
     #[Locked]
@@ -30,37 +31,26 @@ class ParametrosComponent extends Component
     {
         $parametros = Parametro::buscar($this->keyword)
             ->orderBy('created_at', 'DESC')
-            ->limit($this->rows)
+            ->limit($this->limit)
             ->get();
 
-        $total = Parametro::buscar($this->keyword)->count();
+        $rows = Parametro::buscar($this->keyword)->count();
+        $limit = $parametros->count();
 
-        $rows = Parametro::count();
-
-        if ($rows > $this->numero) {
-            $this->tableStyle = true;
-        }
+        $this->btnVerMas($limit, $rows);
 
         return view('livewire.dashboard.parametros-component')
-            ->with('parametros', $parametros)
-            ->with('rowsParametros', $rows)
-            ->with('totalBusqueda', $total);
-    }
-
-    public function setLimit()
-    {
-        if (numRowsPaginate() < $this->numero) {
-            $rows = $this->numero;
-        } else {
-            $rows = numRowsPaginate();
-        }
-        $this->rows = $this->rows + $rows;
+            ->with('ListarParametros', $parametros)
+            ->with('rows', $rows);
     }
 
     public function limpiar()
     {
         $this->reset([
-            'parametros_id', 'nombre', 'tabla_id', 'valor', 'view', 'rowquid'
+            'view', 'verToast',
+            'nombre', 'tabla_id', 'valor',
+            'parametros_id', 'rowquid',
+
         ]);
         $this->resetErrorBag();
     }
@@ -69,9 +59,16 @@ class ParametrosComponent extends Component
     {
         $rules = [
             'nombre' => ['required', 'min:3', 'alpha_dash', Rule::unique('parametros', 'nombre')->ignore($id)],
-            'tabla_id' => 'nullable|integer'
+            'tabla_id' => 'nullable|integer',
+            'valor' => 'required_if:tabla_id,null',
         ];
         return $rules;
+    }
+
+    protected function messages(){
+        return [
+            'valor.required_if' => 'El campo valor es obligatorio cuando tabla id esta vacio.',
+        ];
     }
 
     public function save()
@@ -105,9 +102,10 @@ class ParametrosComponent extends Component
             if ($reset){
                 $this->reset('keyword');
             }
+
+            $this->verToast = true;
             $this->dispatch('cerrarModal');
-            Sleep::for(500)->millisecond();
-            $this->toastBootstrap();
+
         }else{
             $this->limpiar();
             $this->dispatch('cerrarModal');
@@ -139,18 +137,12 @@ class ParametrosComponent extends Component
         $this->keyword = $keyword;
     }
 
-    public function destroy($rowquid)
+    #[On('delete')]
+    public function delete($rowquid)
     {
-        $this->rowquid = $rowquid;
-        $this->confirmToastBootstrap('confirmed');
-    }
-
-    #[On('confirmed')]
-    public function confirmed()
-    {
-        $parametro = $this->getParametro($this->rowquid);
+        $parametro = $this->getParametro($rowquid);
         if ($parametro){
-            $nombre = "<b>".$parametro->nombre."</b>";
+            $nombre = '<b class="text-warning">'.$parametro->nombre.'</b>';
             $parametro->delete();
             $this->limpiar();
             $this->toastBootstrap('success', "Parametro $nombre Eliminado.");
@@ -161,12 +153,22 @@ class ParametrosComponent extends Component
     public function cerrarModal()
     {
         //JS
+        if ($this->verToast){
+            $this->toastBootstrap();
+            $this->reset(['verToast']);
+        }
+
     }
 
     public function cerrarBusqueda()
     {
         $this->reset('keyword');
         $this->limpiar();
+    }
+
+    public function actualizar()
+    {
+        //Refresh
     }
 
     protected function getParametro($rowquid): ?Parametro
