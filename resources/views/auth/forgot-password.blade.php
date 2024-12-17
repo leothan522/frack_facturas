@@ -26,14 +26,14 @@
                                         @csrf
 
                                         <div class="mb-4">
-                                            <p class="fs-6 d-flex">
+                                            <p class="fs-6 d-flex" style="text-align: justify !important;">
                                                 <small class="text-muted">{{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}</small>
                                             </p>
                                         </div>
 
                                         @if (session('status'))
                                             <div class="mb-4">
-                                                <p class="fs-6 d-flex text-success fw-normal">
+                                                <p class="fs-6 d-flex text-success fw-normal" style="text-align: justify !important;">
                                                     <small>{{ session('status') }}</small>
                                                 </p>
                                             </div>

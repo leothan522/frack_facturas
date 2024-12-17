@@ -1,6 +1,6 @@
-@extends('layouts.auth_bootstrap')
+@extends('layouts.lockscreen')
 
-@section('title', __('Log in'))
+@section('title', 'Login')
 
 @section('css')
     <style type="text/css">
@@ -29,9 +29,8 @@
 
 @endsection
 
-
 @section('js')
-    <script type="application/javascript">
-        console.log('Hi!');
+    <script !src="">
+        console.log('hi!');
     </script>
 @endsection

@@ -99,8 +99,7 @@
                 form.classList.add('was-validated')
             }, false)
         })
-    })()
-    console.log('Hi!')
+    })();
 </script>
 @yield('js')
 </body>
