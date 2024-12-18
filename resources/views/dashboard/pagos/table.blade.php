@@ -1,4 +1,4 @@
-<div class="card card-navy">
+<div class="card card-primary card-outline">
     <div class="card-header d-flex justify-content-between">
         <h3 class="card-title text-nowrap mr-2">
             @if($keyword)
