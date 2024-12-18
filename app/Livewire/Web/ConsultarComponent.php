@@ -19,7 +19,7 @@ class ConsultarComponent extends Component
 
     public $rows = 0, $numero = 6;
     public $servicio, $facturas;
-    public $display = "verMetodos", $displayDetalles, $titleModal = "¿Cómo vas a pagar?";
+    public $display = "verMetodos", $displayDetalles, $titleModal = "¿Cómo vas a pagar?", $verToast = false;
     public $datosTransferencia, $datosPagoMovil, $datosZelle;
     public $titular, $cuenta, $cedula, $tipo, $banco, $monto, $totalFactura, $telefono, $email;
     public $referencia, $idBanco, $fecha, $moneda = 'Bs', $codigoBanco;
@@ -54,7 +54,7 @@ class ConsultarComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'display', 'displayDetalles', 'titleModal',
+            'display', 'displayDetalles', 'titleModal', 'verToast',
             'datosTransferencia', 'datosPagoMovil', 'datosZelle',
             'titular', 'cuenta', 'cedula', 'tipo', 'banco', 'monto', 'codigoBanco',
             'telefono', 'email',
@@ -233,14 +233,8 @@ class ConsultarComponent extends Component
 
                 $factura->pagos_id = $pago->id;
                 $factura->save();
-
+                $this->verToast = true;
                 $this->dispatch('cerrarModal');
-
-                $this->confirmToastBootstrap(null, [
-                    'type' => "success",
-                    'title' => "¡Pago Registrado!",
-                    'message' => 'Recibimos los datos del pago y lo estamos verificando. Este proceso puede demorar hasta 30 minutos.'
-                ]);
 
             }else{
                 $this->dispatch('cerrarModal');
@@ -270,7 +264,28 @@ class ConsultarComponent extends Component
     #[On('cerrarModal')]
     public function cerrarModal()
     {
-        //JS
+        if ($this->verToast){
+            $html = '
+                    <div class="row">
+                        <div class="col-12 p-2">
+                            <div class="small-box" style="box-shadow: none; min-height: 40px;">
+                                <div class="overlay bg-light">
+                                    <i class="far fa-4x fa-lightbulb opacity-75 text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-justify">
+                            Recibimos los datos del pago y lo estamos verificando. Este proceso puede demorar hasta 30 minutos.
+                        </div>
+                    </div>
+                ';
+
+            $this->htmlToastBoostrap(null, null, [
+                'type' => 'success',
+                'title' => "¡Pago Registrado!",
+                'message' => $html
+            ]);
+        }
     }
 
     public function corregirPago()

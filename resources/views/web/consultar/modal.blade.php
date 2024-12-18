@@ -4,7 +4,7 @@
             <div class="modal-content {{--fondo--}}">
 
                 <div class="modal-header bg-navy">
-                    <h4 class="modal-title">
+                    <h4 class="modal-title" wire:loading.class="invisible">
                         {{ $titleModal }}
                     </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -12,7 +12,7 @@
                     </button>
                 </div>
 
-                <div class="modal-body">
+                <div class="modal-body" wire:loading.class="invisible" style="min-height: 300px;">
 
                     <div class="@if($display != "verMetodos") d-none @endif">
                         @include('web.consultar.metodos')
@@ -32,7 +32,7 @@
 
                 </div>
 
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" wire:loading.class="invisible">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default">Cerrar</button>
                     <button type="button" wire:click="btnRegistrar" class="btn btn-primary @if($display == "verForm" || $display == "verPago") d-none @endif" @if($display != "verDetalles") disabled @endif>Registrar Pago</button>
                     <button type="submit" class="btn btn-success @if($display != "verForm") d-none @endif">Guardar</button>
