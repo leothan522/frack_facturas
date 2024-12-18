@@ -22,7 +22,7 @@
                                         <h6 class="mt-1 mb-4 pb-1 text_title"><strong>{{ mb_strtoupper(env('APP_NAME', 'Laravel')) }}</strong></h6>
                                     </div>
 
-                                    <form class="needs-validation" method="POST" action="{{ route('verification.send') }}" novalidate>
+                                    <form class="needs-validation position-relative" method="POST" action="{{ route('verification.send') }}" novalidate>
                                         @csrf
 
                                         <div class="mb-4">
@@ -41,6 +41,12 @@
 
                                         <div class="text-center pt-1 mb-3 pb-1 d-grid gap-2">
                                             <button type="submit" class="btn shadow text-white btn-block  gradient-custom-2 mb-3">{{ __('Resend Verification Email') }}</button>
+                                        </div>
+
+                                        <div class="position-absolute top-50 start-50 translate-middle d-none verCargando">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
                                         </div>
 
                                     </form>

@@ -22,7 +22,7 @@
                                         <h6 class="mt-1 mb-4 pb-1 text_title"><strong>{{ mb_strtoupper(env('APP_NAME', 'Laravel')) }}</strong></h6>
                                     </div>
 
-                                    <form class="needs-validation" method="POST" action="{{ route('password.update') }}" novalidate>
+                                    <form class="needs-validation position-relative" method="POST" action="{{ route('password.update') }}" novalidate>
                                         @csrf
 
                                         <input type="hidden" name="token" value="{{ $request->route('token') }}">
@@ -64,8 +64,13 @@
                                         </div>
 
                                         <div class="text-center pt-1 pb-1 d-grid gap-2">
-
                                             <button type="submit" class="btn shadow text-white btn-block fa-lg gradient-custom-2">{{ __('Reset Password') }}</button>
+                                        </div>
+
+                                        <div class="position-absolute top-50 start-50 translate-middle d-none verCargando">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
                                         </div>
 
                                     </form>

@@ -33,5 +33,11 @@
 @section('js')
     <script type="application/javascript">
         console.log('Hi!');
+
+        function preloader() {
+            document.querySelector('#form_cliente').classList.add('opacity-50');
+            document.querySelector(".verCargando").classList.remove('d-none');
+        }
+
     </script>
 @endsection

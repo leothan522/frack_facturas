@@ -20,7 +20,7 @@
 
                                 <div class="position-relative" wire:loading.class="opacity-50">
 
-                                    <form  @if(!$user) wire:submit="validarCedula" @else wire:submit="validarCodigo" @endif >
+                                    <form id="form_cliente" onsubmit="preloader()"  @if(!$user) wire:submit="validarCedula" @else wire:submit="validarCodigo" @endif >
 
                                         @if ($errors->any())
                                             <div>
@@ -73,11 +73,17 @@
                                             @endif
                                         </div>
 
-                                        <div wire:loading class="position-absolute top-50 start-50 translate-middle verCargando">
+                                        <div wire:loading class="position-absolute top-50 start-50 translate-middle">
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
                                         </div>
+
+                                            <div class="position-absolute top-50 start-50 translate-middle d-none verCargando">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </div>
 
                                     </form>
                                 </div>

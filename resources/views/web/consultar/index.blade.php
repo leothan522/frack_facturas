@@ -77,10 +77,12 @@
 @section('js')
     <script src="{{ asset('vendor/select2/js/select2.full.js') }}"></script>
     <script src="{{ asset('vendor/select2/js/i18n/es.js') }}"></script>
-    <script !src="">
+    <script type="application/javascript">
 
         function salir() {
             Livewire.dispatch('cerrarSesion');
+            document.querySelector('#div_content_home').classList.add('invisible');
+            document.querySelector("#div_preloader").classList.remove('d-none');
         }
 
         function select_2(id, data, event) {
