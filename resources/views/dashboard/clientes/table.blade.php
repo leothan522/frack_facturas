@@ -1,17 +1,24 @@
-<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div class="card card-outline card-primary" xmlns:wire="http://www.w3.org/1999/xhtml">
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
-                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
-                    <i class="fas fa-times-circle"></i>
+                Búsqueda
+                <span class="text-nowrap">{ <b class="text-warning">{{ $keyword }}</b> }</span>
+                <span class="text-nowrap">[ <b class="text-warning">{{ $totalRows }}</b> ]</span>
+                <button class="d-sm-none btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times"></i>
                 </button>
             @else
-                Todos [ <b class="text-danger">{{ $rowsClientes }}</b> ]
+                Todos [ <b class="text-warning">{{ $rowsClientes }}</b> ]
             @endif
         </h3>
 
         <div class="card-tools">
+            @if($keyword)
+                <button class="d-none d-sm-inline-block btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times"></i>
+                </button>
+            @endif
             <button type="button" class="btn btn-tool" wire:click="limpiar">
                 <i class="fas fa-sync-alt"></i>
             </button>
@@ -26,16 +33,13 @@
     <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 67vh;" @endif >
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
-            <tr class="text-navy">
-                <th style="width: 10%">Cedula</th>
-                <th>Nombre</th>
-                <th class="d-none d-lg-table-cell">Telefono</th>
-                <th class="d-none d-lg-table-cell">Email</th>
-                <th class="d-none d-lg-table-cell text-center">Instalación</th>
-                <th class="d-none d-lg-table-cell text-center">Fecha Pago</th>
-                {{--<th class="d-none d-lg-table-cell">Latitud</th>
-                <th class="d-none d-lg-table-cell">Longitud</th>
-                <th class="d-none d-lg-table-cell">GPS</th>--}}
+            <tr class="text-lightblue">
+                <th class=" text-uppercase" style="width: 10%">Cédula</th>
+                <th class=" text-uppercase">Nombre</th>
+                <th class="d-none d-lg-table-cell text-uppercase">Teléfono</th>
+                <th class="d-none d-lg-table-cell text-uppercase">Email</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-center">Instalación</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-center">Fecha Pago</th>
                 <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $clientes->count() }}</small></th>
             </tr>
             </thead>
@@ -49,9 +53,6 @@
                         <td class="d-none d-lg-table-cell text-lowercase">{{ $cliente->email }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ getFecha($cliente->fecha_instalacion) }}</td>
                         <td class="d-none d-lg-table-cell text-center">{{ getFecha($cliente->fecha_pago) }}</td>
-                        {{--<td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->latitud }}</small></td>
-                        <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->longitud }}</small></td>
-                        <td class="d-none d-lg-table-cell text-uppercase"><small>{{ $cliente->gps }}</small></td>--}}
                         <td class="text-center justify-content-center">
                             <div class="d-md-none">
                                 <div class="btn-group">

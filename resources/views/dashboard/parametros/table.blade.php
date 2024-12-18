@@ -1,4 +1,4 @@
-<div id="div_table_parametros" class="card card-navy card-outline">
+<div id="div_table_parametros" class="card card-primary card-outline">
 
     <div class="card-header">
 

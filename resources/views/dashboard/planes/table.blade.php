@@ -1,17 +1,24 @@
-<div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+<div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
-                Búsqueda { <b class="text-danger">{{ $keyword }}</b> } [ <b class="text-danger">{{ $totalRows }}</b> ]
-                <button class="btn btn-tool text-danger" wire:click="cerrarBusqueda">
-                    <i class="fas fa-times-circle"></i>
+                Búsqueda
+                <span class="text-nowrap">{ <b class="text-warning">{{ $keyword }}</b> }</span>
+                <span class="text-nowrap">[ <b class="text-warning">{{ $totalRows }}</b> ]</span>
+                <button class="d-sm-none btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times"></i>
                 </button>
             @else
-                Todos [ <b class="text-danger">{{ $rowsPlanes }}</b> ]
+                Todos [ <b class="text-warning">{{ $rowsPlanes }}</b> ]
             @endif
         </h3>
 
         <div class="card-tools">
+            @if($keyword)
+                <button class="d-none d-sm-inline-block btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                    <i class="fas fa-times"></i>
+                </button>
+            @endif
             <button type="button" class="btn btn-tool" wire:click="limpiar">
                 <i class="fas fa-sync-alt"></i>
             </button>
@@ -26,14 +33,14 @@
     <div class="card-body table-responsive p-0" @if($tableStyle) style="height: 67vh;" @endif >
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
-            <tr class="text-navy">
-                <th>Nombre</th>
-                <th class="d-none d-lg-table-cell">Organización</th>
-                <th class="d-none d-lg-table-cell text-right">Etiqueta</th>
-                <th class="d-none d-lg-table-cell text-right">Subida</th>
-                <th class="d-none d-lg-table-cell text-right">Bajada</th>
-                <th class="d-none d-lg-table-cell text-right">Precio</th>
-                <th class="d-none d-lg-table-cell" style="width: 5%;">Moneda</th>
+            <tr class="text-lightblue">
+                <th class=" text-uppercase">Nombre</th>
+                <th class="d-none d-lg-table-cell text-uppercase">Organización</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-right">Etiqueta</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-right">Subida</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-right">Bajada</th>
+                <th class="d-none d-lg-table-cell text-uppercase text-right">Precio</th>
+                <th class="d-none d-lg-table-cell text-uppercase" style="width: 5%;">Moneda</th>
                 <th class="text-center" style="width: 5%;"><small class="text-muted">Rows {{ $planes->count() }}</small></th>
             </tr>
             </thead>

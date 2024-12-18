@@ -1,11 +1,13 @@
 @if($viewFactura)
-    <div class="card card-outline card-navy" xmlns:wire="http://www.w3.org/1999/xhtml">
+    <div class="card card-outline card-primary" xmlns:wire="http://www.w3.org/1999/xhtml">
         <div class="card-header">
             <h3 class="card-title">
                 @if(/*$keyword*/false)
-                    Busqueda { <b class="text-danger">{{ $keyword }}</b> }
-                    <button class="btn btn-tool text-danger" wire:click="limpiar">
-                        <i class="fas fa-times-circle"></i>
+                    Búsqueda
+                    <span class="text-nowrap">{ <b class="text-warning">{{ $keyword }}</b> }</span>
+                    <span class="text-nowrap">[ <b class="text-warning">{{ $rows }}</b> ]</span>
+                    <button class="d-sm-none btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                        <i class="fas fa-times"></i>
                     </button>
                 @else
                     Facturas Cliente
@@ -13,6 +15,11 @@
             </h3>
 
             <div class="card-tools">
+                @if(/*$keyword*/false)
+                    <button class="d-none d-sm-inline-block btn btn-tool text-warning" wire:click="cerrarBusqueda">
+                        <i class="fas fa-times"></i>
+                    </button>
+                @endif
                 <button class="btn btn-sm btn-tool" wire:click="generarFactura">
                     <i class="fas fa-file"></i> Generar Factura
                 </button>
@@ -36,11 +43,11 @@
             <div class="row table-responsive" @if($limit > 12) style="height: 67vh;" @endif >
                 <table class="table table-sm table-head-fixed table-hover text-nowrap">
                     <thead>
-                    <tr class="text-navy">
-                        <th class="d-none d-md-table-cell">Factura</th>
-                        <th class="d-none d-lg-table-cell">Plan</th>
-                        <th class="text-center">Fecha</th>
-                        <th class="text-right">Total</th>
+                    <tr class="text-lightblue">
+                        <th class="d-none d-md-table-cell text-uppercase">Factura</th>
+                        <th class="d-none d-lg-table-cell text-uppercase">Plan</th>
+                        <th class=" text-uppercase text-center">Fecha</th>
+                        <th class=" text-uppercase text-right">Total</th>
                         <th style="width: 5%;">&nbsp;</th>
                     </tr>
                     </thead>
@@ -93,14 +100,14 @@
             </div>
         </div>
 
-        <div class="modal-footer">
-            <div class="card-tools">
+        <div class="card-footer">
+            <div class="row justify-content-end">
                 @if($botonMasFacturas)
-                    <button class="btn btn-sm btn-tool" wire:click="verMasFacturas({{ $limit }})"><i
+                    <button class="btn btn-sm " wire:click="verMasFacturas({{ $limit }})"><i
                             class="fas fa-arrow-down"></i> Ver mas facturas
                     </button>
                 @endif
-                <button class="btn btn-sm btn-tool" wire:click="limpiarFacturas" onclick="getServicios()" data-card-widget="remove">
+                <button class="btn btn-default btn-sm" wire:click="limpiarFacturas" onclick="getServicios()" data-card-widget="remove">
                     Cerrar
                 </button>
             </div>

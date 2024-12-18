@@ -7,10 +7,21 @@
 @endsection
 
 @section('content')
-    <p>Bienvenido al panel de administración.</p>
-    <p>Precio Dólar: <b class="text-danger" id="ver_print_dollar"></b></p>
+    {{--<p>Bienvenido al panel de administración.</p>--}}
+    {{--<p>Precio Dólar: <b class="text-danger" id="ver_print_dollar"></b></p>
     <p>Correo Electrónico: <b class="text-danger" id="ver_print_email"></b></p>
-    <p>Teléfono Soporte: <b class="text-danger" id="ver_print_telefono"></b></p>
+    <p>Teléfono Soporte: <b class="text-danger" id="ver_print_telefono"></b></p>--}}
+
+    <div class="card card-primary card-outline">
+        <div class="card-body">
+            <p>Bienvenido al Panel de Administración.</p>
+            <p>Precio Dólar: <b class="text-lightblue" id="ver_print_dollar"></b></p>
+            <p>Correo Electrónico: <b class="text-lightblue" id="ver_print_email"></b></p>
+            <p>Teléfono Soporte: <b class="text-lightblue" id="ver_print_telefono"></b></p>
+        </div>
+    </div>
+
+
     @livewire('dashboard.dolar-component')
 @endsection
 

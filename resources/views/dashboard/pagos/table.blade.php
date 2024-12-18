@@ -1,10 +1,12 @@
-<div class="card card-navy <!--card-outline-->">
-    <div class="card-header">
-        <h3 class="card-title">
+<div class="card card-navy">
+    <div class="card-header d-flex justify-content-between">
+        <h3 class="card-title text-nowrap mr-2">
             @if($keyword)
-                Búsqueda <span class="d-none d-md-inline-block">{ <b class="text-warning">{{ $keyword }}</b> } [ <b class="text-warning mb-3">{{ $rows }}</b> ] </span>
+                Búsqueda
+                <span class="text-nowrap d-none d-md-inline-block">{ <b class="text-warning">{{ $keyword }}</b> }</span>
+                <span class="text-nowrap">[ <b class="text-warning">{{ $rows }}</b> ]</span>
                 <button class="btn btn-tool text-warning" wire:click="cerrarBusqueda">
-                    <i class="fas fa-times-circle"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             @else
                 {{ getMetodoPago($tipo) }} [ <b class="text-warning">{{ $rows }}</b> ]
@@ -60,7 +62,7 @@
             </div>
             <!-- /.float-right -->
         </div>
-        <div class="table-responsive mailbox-messages" style="height: 68vh;">
+        <div class="table-responsive mailbox-messages" style="max-height: 68vh;">
             <table class="table table-hover table-striped">
                 <tbody>
                 @if($pagos->isNotEmpty())
@@ -74,7 +76,7 @@
                                     {{ $pago->referencia }}
                                 </a>
                             </td>
-                            <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 200px;">
+                            <td class="mailbox-subject text-nowrap text-truncate" style="max-width: 150px;">
 
                                 <b>{{ $pago->moneda }} {{ formatoMillares($pago->monto) }}</b> - {{ getMetodoPago($pago->metodo) }}
 
