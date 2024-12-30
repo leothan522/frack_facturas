@@ -20,6 +20,7 @@
 
 @section('content')
     @livewire('dashboard.parametros-component')
+    @livewire('dashboard.dolar-component')
 @endsection
 
 @section('right-sidebar')

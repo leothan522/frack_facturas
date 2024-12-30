@@ -19,12 +19,12 @@ function allPermisos()
         'Usuarios' => [
             'route' => 'usuarios.index',
             'submenu' => [
+                'Exportar Excel' => 'usuarios.excel',
+                'Suspender Usuarios' => 'usuarios.estatus',
+                'Restituir Contraseña' => 'usuarios.password',
                 'Crear Usuarios' => 'usuarios.create',
                 'Editar Usuarios' => 'usuarios.edit',
-                'Suspender Usuarios' => 'usuarios.estatus',
-                'Reestablecer Contraseña' => 'usuarios.password',
-                'Descargar Excel' => 'usuarios.excel',
-                'Eliminar Usuarios' => 'usuarios.destroy',
+                'Borrar Usuarios' => 'usuarios.destroy',
             ]
         ],
     ];

@@ -1,4 +1,5 @@
 <div>
-    {{-- The Master doesn't talk, he acts. --}}
+    {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     @include('dashboard.usuarios.content')
+    @include('dashboard.usuarios.scripts')
 </div>
