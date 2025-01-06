@@ -24,11 +24,6 @@
             <button type="button" class="btn btn-tool" wire:click="actualizar">
                 <i class="fas fa-sync-alt"></i>
             </button>
-            @if(comprobarPermisos('usuarios.excel'))
-                <a href="{{ route('usuarios.excel', $keyword) }}" class="btn btn-tool text-success" onclick="toastBootstrap({ toast: 'toast', type: 'info', message: 'Descargando Archivo.'})">
-                    <i class="fas fa-file-excel"></i> <i class="fas fa-download"></i>
-                </a>
-            @endif
             <button class="btn btn-tool" wire:click="create" @if(!comprobarPermisos('usuarios.create')) disabled @endif>
                 <i class="fas fa-file"></i> Nuevo
             </button>

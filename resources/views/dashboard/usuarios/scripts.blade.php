@@ -2,10 +2,20 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        Livewire.on('buscar', () => {
+        function buscar(){
             addClassinvisible('#tbody_usuarios');
             verCargando('div_table_usuarios');
-        });
+            let input = $("#navbarSearch");
+            let keyword  = input.val();
+            if (keyword.length > 0){
+                input.blur();
+                let url = "{{ route('usuarios.excel', 'keyword') }}";
+                document.querySelector("#btn_header_exportar_excel").href = url.replace("keyword", keyword);
+                //document.querySelector("#btn_movile_exportar_excel").href = url.replace("keyword", keyword);
+                Livewire.dispatch('buscar', { keyword: keyword });
+            }
+            return false;
+        }
 
         Livewire.on('delete', () => {
             addClassinvisible('#tbody_usuarios');
@@ -33,18 +43,6 @@
             addClassinvisible('#div_footer_roles');
             Livewire.dispatch('showPermisos', { rowquid: rowquid });
         }
-
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
 
         console.log('Hi!');
     </script>
