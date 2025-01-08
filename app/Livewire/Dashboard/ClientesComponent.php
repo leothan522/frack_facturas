@@ -77,8 +77,8 @@ class ClientesComponent extends Component
     {
         return [
             'cedula' => ['required', 'integer', Rule::unique('clientes', 'cedula')->ignore($this->clientes_id)],
-            'nombre' => 'required|min:4',
-            'apellido' => 'required|min:4',
+            'nombre' => 'required|min:3',
+            'apellido' => 'required|min:3',
             'email' => 'required|email',
             'telefono' => 'required',
             'direccion' => 'required',
