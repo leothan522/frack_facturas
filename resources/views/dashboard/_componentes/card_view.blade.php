@@ -20,7 +20,7 @@
                     <i class="fas fa-ban"></i> Cancelar
                 </button>
             @endif
-            <button type="button" class="btn btn-tool " {{--data-card-widget="remove"--}}>
+            <button type="button" class="btn btn-tool d-md-none" wire:click="showHide">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -41,11 +41,12 @@
                     </div>
 
                     <div class="card-body @if(!$form) p-0 @endif ">
-                        @if($form)
+                        {{--@if($form)
                             @include('dashboard.empresas.form')
                         @else
                             @include('dashboard.empresas.show')
-                        @endif
+                        @endif--}}
+                        hola
                     </div>
 
                 </div>
@@ -64,11 +65,12 @@
                     </div>
 
                     <div class="card-body @if(!$form) attachment-block p-0 m-0 @endif ">
-                        @if($form)
-                            {{-- @include('dashboard.empresas.form_imagen')--}}
+                        {{--@if($form)
+                            --}}{{-- @include('dashboard.empresas.form_imagen')--}}{{--
                         @else
                             @include('dashboard.empresas.show_imagen')
-                        @endif
+                        @endif--}}
+                        mundo
                     </div>
                 </div>
 
@@ -77,10 +79,10 @@
             @if($form)
                 <div class="col-12">
                     <div class="col-md-4 float-right">
-                        <button type="submit" class="btn btn-block @if($empresas_id) btn-primary @else btn-success @endif">
+                        <button type="submit" class="btn btn-block @if($bienes_id) btn-primary @else btn-success @endif">
                             <i class="fas fa-save mr-1"></i>
                             Guardar
-                            @if($empresas_id)
+                            @if($bienes_id)
                                 Cambios
                             @endif
                         </button>
@@ -93,19 +95,13 @@
 
     </div>
 
-    @if(!$form && comprobarAccesoEmpresa(auth()->user()->permisos, auth()->id()))
+    @if(!$form)
         <div class="card-footer text-center" wire:loading.class="invisible" wire:target="create, cancel, show, showHide">
 
-            @if($empresas_id != $empresaDefault)
-                @if(auth()->user()->role == 100)
-                    <button type="button" class="btn btn-default btn-sm mr-1" onclick="confirmToastBootstrap('delete', { rowquid: '{{ $rowquid }}'})"
-                            @if(!comprobarPermisos('empresas.destroy')) disabled @endif>
-                        <i class="fas fa-trash-alt"></i> Borrar
-                    </button>
-                @endif
-                <button type="button" class="btn btn-default btn-sm mr-1" wire:click="convertirDefault"
-                        @if(!comprobarPermisos('empresas.edit')) disabled @endif>
-                    <i class="fas fa-certificate"></i> Convertir en Default
+            @if(auth()->user()->role == 100)
+                <button type="button" class="btn btn-default btn-sm mr-1" onclick="confirmToastBootstrap('delete', { rowquid: '{{ $rowquid }}'})"
+                        @if(!comprobarPermisos('empresas.destroy')) disabled @endif>
+                    <i class="fas fa-trash-alt"></i> Borrar
                 </button>
             @endif
 

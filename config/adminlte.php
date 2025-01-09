@@ -369,13 +369,7 @@ return [
             'can'       => ['usuarios', 'parametros', 'pruebas'],
             'submenu' => [
                 [
-                    'text' => 'Usuarios',
-                    'icon' => 'fas fa-fw fa-users-cog',
-                    'route'  => 'usuarios.index',
-                    'can'  => 'usuarios',
-                ],
-                [
-                    'text' => 'Correo Electrónico',
+                    'text' => 'Correo Soporte',
                     'icon'      => 'fas fa-fw fa-mail-bulk',
                     'url' => '#',
                     'data'  => [
@@ -393,6 +387,12 @@ return [
                         'target' => '#modal-telefono-soporte-sistema',
                     ],
                     'id' => 'button_telefono_soporte_sistema'
+                ],
+                [
+                    'text' => 'Usuarios',
+                    'icon' => 'fas fa-fw fa-users-cog',
+                    'route'  => 'usuarios.index',
+                    'can'  => 'usuarios',
                 ],
                 [
                     'text' => 'Parametros',

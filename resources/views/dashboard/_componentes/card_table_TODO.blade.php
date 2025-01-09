@@ -1,16 +1,16 @@
-<div class="card card-navy card-outline" id="div_table_empresas">
+<div class="card card-navy card-outline" id="div_table_parametros">
 
     <div class="card-header">
         <h3 class="card-title">
             @if($keyword)
                 Búsqueda
                 <span class="text-nowrap">{ <b class="text-warning">{{ $keyword }}</b> }</span>
-                <span class="text-nowrap">[ <b class="text-warning">{{ $rowsEmpresas }}</b> ]</span>
+                <span class="text-nowrap">[ <b class="text-warning">{{ $rows }}</b> ]</span>
                 <button class="d-sm-none btn btn-tool text-warning" wire:click="cerrarBusqueda">
                     <i class="fas fa-times"></i>
                 </button>
             @else
-                Empresas [ <b class="text-warning">{{ $rowsEmpresas }}</b> ]
+                Todos [ <b class="text-warning">{{ $rows }}</b> ]
             @endif
         </h3>
 
@@ -43,7 +43,7 @@
                 </th>
                 <th>
                     <span class="text-uppercase">Nombre</span>
-                    <small class="float-right">Rows {{ $listarEmpresas->count() }}</small>
+                    <small class="float-right">Rows {{ $listar->count() }}</small>
                 </th>
             </tr>
             </thead>
@@ -51,9 +51,9 @@
 
         <!-- TO DO List -->
         <ul class="todo-list" data-widget="todo-list">
-            @if($listarEmpresas->isNotEmpty())
-                @foreach($listarEmpresas as $empresa)
-                    <li class=" @if(/*$empresa->id == $empresas_id*/true) text-warning @endif ">
+            @if($listar->isNotEmpty())
+                @foreach($listar as $parametro)
+                    <li class=" @if(/*$parametro->id == $parametros_id*/true) text-warning @endif ">
 
                         <!-- todo text -->
                         <span class="text">
@@ -63,7 +63,7 @@
                         <!-- Emphasis label -->
                         <small class="badge" style="cursor: pointer;">
                             <span class="text-uppercase text-truncate" style="max-width: 250px;">
-                                {{ $empresa->nombre }}
+                                {{ $parametro->nombre }}
                             </span>
                         </small>
 
