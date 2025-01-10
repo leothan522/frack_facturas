@@ -22,9 +22,9 @@ trait Imagenes
         ];
 
         if (empty($nombre)){
-            $imagen = Imagen::where('bienes_id', $id)->first();
+            $imagen = Imagen::where('tabla_id', $id)->first();
         }else{
-            $imagen = Imagen::where('bienes_id', $id)->where('nombre', $nombre)->first();
+            $imagen = Imagen::where('tabla_id', $id)->where('nombre', $nombre)->first();
         }
 
         if ($imagen){
@@ -63,7 +63,7 @@ trait Imagenes
             $path_data = "storage/$path/size_".$nombre[1];
             $miniatura = crearMiniaturas($imagen->imagen, $path_data);
             $imagen->mini = $miniatura['mini'];
-            $imagen->bienes_id = $tabla_id;
+            $imagen->tabla_id = $tabla_id;
             $imagen->nombre = $name;
             $imagen->save();
         }
