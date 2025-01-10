@@ -103,11 +103,11 @@
     @endif
 
     {{-- Custom Scripts --}}
-    @yield('adminlte_js')
     <x-livewire-alert::scripts />
     {!! verToastBootstrap() !!}
     <script src="{{ asset('js/toastBootstrap.js') }}"></script>
     @include('layouts.toastBootstrap')
+    @yield('adminlte_js')
 </body>
 
 </html>

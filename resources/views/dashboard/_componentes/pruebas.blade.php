@@ -38,30 +38,6 @@
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
-
-        function search(){
-            let input = $("#navbarSearch");
-            let keyword  = input.val();
-            if (keyword.length > 0){
-                input.blur();
-                alert('Falta vincular con el componente Livewire');
-                //Livewire.dispatch('buscar', { keyword: keyword });
-            }
-            return false;
-        }
-
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
-
         console.log('Hi!');
     </script>
 @endsection

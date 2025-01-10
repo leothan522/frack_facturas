@@ -47,18 +47,6 @@
             Livewire.dispatch('verTelefono');
         });
 
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
-
         Livewire.on('printDollar', ({ dollar }) => {
             $("#ver_print_dollar").text(dollar);
         });

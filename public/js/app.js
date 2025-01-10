@@ -8,20 +8,28 @@ function buscar(){
     let keyword  = input.val();
     if (keyword.length > 0){
         input.blur();
-        //$('#cargar_buscar').removeClass('d-none');
-        try {
-            Livewire.dispatch('buscar', { keyword: keyword });
-        }catch (e) {
-            alert('Falta vincular con el componente Livewire');
-        }
+        alert('Falta vincular con el componente Livewire');
     }
     return false;
 }
+
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover({
         html: true
     });
+});
+
+$("#button_dolar_dispath").click(function (e) {
+    Livewire.dispatch('initDollar');
+});
+
+$("#button_email_dispath_sistema").click(function (e) {
+    Livewire.dispatch('initEmail');
+});
+
+$("#button_telefono_soporte_sistema").click(function (e) {
+    Livewire.dispatch('initTelefono');
 });
 
 /**

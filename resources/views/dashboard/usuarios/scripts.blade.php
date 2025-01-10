@@ -3,15 +3,14 @@
     <script>
 
         function buscar(){
-            addClassinvisible('#tbody_usuarios');
-            verCargando('div_table_usuarios');
             let input = $("#navbarSearch");
             let keyword  = input.val();
             if (keyword.length > 0){
                 input.blur();
+                addClassinvisible('#tbody_usuarios');
+                verCargando('div_table_usuarios');
                 let url = "{{ route('usuarios.excel', 'keyword') }}";
                 document.querySelector("#btn_header_exportar_excel").href = url.replace("keyword", keyword);
-                //document.querySelector("#btn_movile_exportar_excel").href = url.replace("keyword", keyword);
                 Livewire.dispatch('buscar', { keyword: keyword });
             }
             return false;
@@ -43,7 +42,7 @@
             addClassinvisible('#div_footer_roles');
             Livewire.dispatch('showPermisos', { rowquid: rowquid });
         }
-		
+
 		Livewire.on('resetPassword', () => {
             verCargando('div_show_user');
         });

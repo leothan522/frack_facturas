@@ -32,13 +32,13 @@
 
 @section('css')
     {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
-@stop
+@endsection
 
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        /*function buscar(){
+        function buscar(){
             let input = $("#navbarSearch");
             let keyword  = input.val();
             if (keyword.length > 0){
@@ -47,7 +47,7 @@
                 //Livewire.dispatch('buscar', { keyword: keyword });
             }
             return false;
-        }*/
+        }
 
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();

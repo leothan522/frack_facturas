@@ -16,26 +16,25 @@ use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use function Laravel\Prompts\text;
 
 class OrganizacionesComponent extends Component
 {
     use ToastBootstrap;
     use LimitRows;
+    use CardView;
     use WithFileUploads;
     use Imagenes;
-    use CardView;
 
-    public $title = "Ver Organización";
+    public $texto = "Organización";
     public $mini, $imagen, $photo, $btnImgBorrar = false;
     public $nombre, $email, $telefono, $web, $moneda, $dias, $formato, $proxima, $direccion, $representante;
-
-    #[Locked]
-    public $table_id, $rowquid;
 
     public function mount()
     {
         $this->setLimit();
         $this->setSize(245);
+        $this->setTitle();
         $this->confirmed = 'deleteOrganizaciones';
         $this->modulo = 'organizaciones';
         $this->rowquid = 'jhfghgfhghg';
@@ -60,42 +59,18 @@ class OrganizacionesComponent extends Component
     {
         $this->limpiarCardView();
         $this->reset([
-            'title', 'btnImgBorrar',
+            'btnImgBorrar',
             'nombre', 'email', 'telefono', 'web', 'moneda', 'dias', 'formato', 'proxima',
             'direccion', 'representante',
-            'table_id'
         ]);
         $this->resetErrorBag();
         $this->setSaveImagen(false);
-    }
-
-    protected function setTitle($option = null)
-    {
-        $this->title = match ($option) {
-            'edit' => "Editar Organización",
-            default => "Crear Organización",
-        };
-
-    }
-
-    public function create()
-    {
-        $this->limpiar();
-        $this->setTitle();
-        $this->btnNuevo = false;
-        $this->btnCancelar = true;
-        $this->form = true;
-        $this->sizeFooter = 0;
     }
 
     public function show($rowquid)
     {
         $this->setSizeFooter();
         $this->limpiar();
-    }
-    public function edit()
-    {
-        $this->setTitle('edit');
     }
 
     public function save()
@@ -114,15 +89,5 @@ class OrganizacionesComponent extends Component
         ];
         $this->validate($rules);
     }
-
-    public function cancel()
-    {
-        if ($this->rowquid){
-            $this->show($this->rowquid);
-        }else{
-            $this->create();
-        }
-    }
-
 
 }

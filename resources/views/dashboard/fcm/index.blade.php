@@ -50,18 +50,6 @@
                 .prop('checked', false);
         }
 
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
-
         console.log('Hi!');
     </script>
 @endsection

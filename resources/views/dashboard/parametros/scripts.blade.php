@@ -18,22 +18,17 @@
             verCargando('div_table_parametros');
         });
 
-        Livewire.on('buscar', () => {
-            addClassinvisible("#tbody_parametros");
-            verCargando('div_table_parametros');
-        });
-
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
+        function buscar(){
+            let input = $("#navbarSearch");
+            let keyword  = input.val();
+            if (keyword.length > 0){
+                input.blur();
+                addClassinvisible("#tbody_parametros");
+                verCargando('div_table_parametros');
+                Livewire.dispatch('buscar', { keyword: keyword });
+            }
+            return false;
+        }
 
         console.log('Hi!');
     </script>
