@@ -1,5 +1,7 @@
 @extends('adminlte::page')
 
+@section('plugins.Lightbox', true)
+
 @section('title', 'Organizaciones')
 
 @section('content')

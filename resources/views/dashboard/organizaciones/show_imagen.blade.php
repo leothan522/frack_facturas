@@ -4,10 +4,10 @@
         <div class="col-8">
             @if($mini)
                 <a href="{{ verImagen($imagen, false, true) }}" data-toggle="lightbox" data-title="Ver Imagen">
-                    <img class="img-thumbnail" src="{{ verImagen($mini, false, true) }}" alt="Logo Empresa"/>
+                    <img class="img-thumbnail" src="{{ verImagen($mini, false, true) }}" alt="Logo {{ $texto }}"/>
                 </a>
             @else
-                <img class="img-thumbnail" src="{{ verImagen(null, false, true) }}" alt="Logo Empresa"/>
+                <img class="img-thumbnail" src="{{ verImagen(null, false, true) }}" alt="Logo {{ $texto }}"/>
             @endif
         </div>
     </div>

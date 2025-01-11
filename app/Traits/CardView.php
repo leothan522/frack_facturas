@@ -7,10 +7,10 @@ use Livewire\Attributes\On;
 
 trait CardView
 {
-    public $sizeFooter = 0; //60;
+    public $sizeFooter = 0; //55;
     public $title = 'texto', $modulo = "tabla", $form = false;
     public $ocultarTable = false, $ocultarCard = true;
-    public $keyword, $btnNuevo = true, $btnCancelar = false, $confirmed = 'deleteNombre';
+    public $keyword, $btnNuevo = true, $btnCancelar = false, $confirmed = 'delete';
 
     #[Locked]
     public $table_id, $rowquid;
@@ -30,7 +30,7 @@ trait CardView
         $this->btnNuevo = false;
         $this->btnCancelar = true;
         $this->form = true;
-        $this->sizeFooter = 0;
+        $this->setSizeFooter();
     }
 
     public function edit()
@@ -39,7 +39,7 @@ trait CardView
         $this->btnNuevo = true;
         $this->btnCancelar = true;
         $this->form = true;
-        $this->sizeFooter = 0;
+        $this->setSizeFooter();
     }
 
     public function cancel()
@@ -86,15 +86,6 @@ trait CardView
         $this->create();
     }
 
-    protected function setSizeFooter()
-    {
-        if ($this->ocultarTable){
-            $this->sizeFooter = 63;
-        }else{
-            $this->sizeFooter = 0;
-        }
-    }
-
     protected function setTitle($option = null)
     {
         $this->title = match ($option) {
@@ -103,6 +94,15 @@ trait CardView
             default => "Ver ". $this->texto,
         };
 
+    }
+
+    protected function setSizeFooter()
+    {
+        if ($this->form) {
+            $this->sizeFooter = 55;
+        }else{
+            $this->sizeFooter = 0;
+        }
     }
 
 }

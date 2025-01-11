@@ -17,7 +17,7 @@
 
     <div class="row col-12 justify-content-center mb-3 mt-3">
         <div class="col-8" style="cursor:pointer;">
-            <img class="img-thumbnail" src="{{ asset(verImagen($imagen)) }}" alt="Logo Empesa" onclick="imgEmpresa()"   />
+            <img class="img-thumbnail" src="{{ asset(verImagen($imagen)) }}" alt="Logo Empesa" onclick="imgLogo()"   />
             @if($photo || $btnImgBorrar)
                 <button type="button" class="btn badge text-danger position-absolute float-right" wire:click="btnBorrarImagen">
                     <i class="fas fa-trash-alt"></i>

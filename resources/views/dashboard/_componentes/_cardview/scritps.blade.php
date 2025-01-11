@@ -2,10 +2,17 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
-        const div_table_card = document.querySelector("#div_table_card_{{ $modulo }}");
-        const div_table_header = document.querySelector("#div_table_header_{{ $modulo }}");
-        const div_table_body = document.querySelector("#div_table_body_{{ $modulo }}");
-        const div_table_footer = document.querySelector("#div_table_footer_{{ $modulo }}");
+        const div_view_card = "div_view_card_{{ $modulo }}";
+        const div_view_header = "#div_view_header_{{ $modulo }}";
+        const div_view_body = "#div_view_body_{{ $modulo }}";
+        const div_view_footer = "#div_view_footer_{{ $modulo }}";
+
+        Livewire.on('{{ $confirmed }}', () => {
+            addClassinvisible(div_view_header)
+            addClassinvisible(div_view_body)
+            addClassinvisible(div_view_footer)
+            verCargando(div_view_card)
+        });
 
         function buscar(){
             let input = $("#navbarSearch");
@@ -19,21 +26,6 @@
             }
             return false;
         }
-
-        function imgEmpresa()
-        {
-            $('#customFileLang').click();
-        }
-
-        /* Ekko Lightbox */
-        $(function () {
-            $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-                event.preventDefault();
-                $(this).ekkoLightbox({
-                    alwaysShowClose: true
-                });
-            });
-        });
 
         console.log('Hi!');
     </script>

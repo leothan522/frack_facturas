@@ -26,8 +26,6 @@ class Organizacion extends Model
         'direccion',
         'representante',
         'rif',
-        'imagen',
-        'mini',
         'rowquid'
     ];
 

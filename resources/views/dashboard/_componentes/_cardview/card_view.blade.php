@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="card-body table-responsive" id="div_view_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, save, show, showHide, edit" style="max-height: calc(100vh - {{ $size + $sizeFooter }}px)">
+    <div class="card-body table-responsive" id="div_view_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, save, show, showHide, edit" style="max-height: calc(100vh - {{ $size - $sizeFooter }}px)">
 
         <form class="row" wire:submit="save">
 

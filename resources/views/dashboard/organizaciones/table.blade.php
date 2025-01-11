@@ -34,7 +34,7 @@
 
     </div>
 
-    <div class="card-body table-responsive p-0" id="div_table_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="createHide, showHide" style="max-height: calc(100vh - {{ $size }}px)">
+    <div class="card-body table-responsive p-0" id="div_table_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="createHide, showHide" style="max-height: calc(100vh - {{ $size - 7 }}px)">
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-lightblue">
