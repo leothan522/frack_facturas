@@ -6,236 +6,213 @@ use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
+use App\Traits\CardView;
+use App\Traits\Imagenes;
+use App\Traits\LimitRows;
 use App\Traits\ToastBootstrap;
 use Illuminate\Support\Sleep;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class PlanesComponent extends Component
 {
     use ToastBootstrap;
+    use LimitRows;
+    use CardView;
+    use WithFileUploads;
 
-    public $rows = 0, $numero = 14, $tableStyle = false;
-    public $nuevo = true, $editar = false, $keyword;
-    public $nombre, $bajada, $subida, $precio, $organizaciones_id, $etiqueta, $organizacion;
-    public $cerrarModal= true, $show = false;
-
-    #[Locked]
-    public $planes_id, $rowquid;
+    public $texto = "Plan";
+    public $verOrganizacion;
+    public $organizaciones_id, $nombre, $etiqueta, $bajada, $subida, $precio;
 
     public function mount()
     {
         $this->setLimit();
+        $this->setTitle();
+        $this->modulo = 'planes';
+        $this->lastRegistro();
     }
 
     public function render()
     {
-        $planes = Plan::buscar($this->keyword)
+        $listar = Plan::buscar($this->keyword)
             ->orderBy('created_at', 'DESC')
-            ->limit($this->rows)
+            ->limit($this->limit)
             ->get();
-
-        $total = Plan::buscar($this->keyword)->count();
-
-        $rows = Plan::count();
-
-        if ($rows > $this->numero) {
-            $this->tableStyle = true;
-        }
-
-        $organizaciones = Organizacion::orderBy('nombre', 'ASC')->get();
+        $limit = $listar->count();
+        $rows = Plan::buscar($this->keyword)->count();
+        $this->btnVerMas($limit, $rows);
 
         return view('livewire.dashboard.planes-component')
-            ->with('planes', $planes)
-            ->with('rowsPlanes', $rows)
-            ->with('organizaciones', $organizaciones)
-            ->with('totalRows', $total);
-    }
-
-    public function setLimit()
-    {
-        if (numRowsPaginate() < $this->numero) {
-            $rows = $this->numero;
-        } else {
-            $rows = numRowsPaginate();
-        }
-        $this->rows = $this->rows + $rows;
+            ->with('listar', $listar)
+            ->with('rows', $rows);
     }
 
     public function limpiar()
     {
+        $this->limpiarCardView();
         $this->reset([
-            'nombre', 'bajada', 'subida', 'precio', 'organizaciones_id', 'planes_id', 'etiqueta',
-            'nuevo', 'editar', 'organizacion',
-            'show', 'rowquid'
+            'verOrganizacion',
+            'organizaciones_id', 'nombre', 'etiqueta', 'bajada', 'subida', 'precio',
         ]);
         $this->resetErrorBag();
+        $this->dataOrganizacion();
     }
 
-    protected function rules()
+    public function save()
     {
-        return [
+        $rules = [
             'nombre' => 'required|min:3',
-            'etiqueta' => 'required|min:3',
+            'etiqueta' => 'required',
             'bajada' => 'required|integer|gt:0',
             'subida' => 'required|integer|gt:0',
             'precio' => 'required|numeric|gt:0',
             'organizaciones_id' => 'required',
         ];
-    }
+        $message = [
+            'organizaciones_id.required' => 'El campo organización es obligatorio.',
+            'etiqueta.required' => 'El campo etiqueta - factura es obligatorio.',
+            'bajada.required' => 'La velocidad de bajada es obligatoria.',
+            'bajada.gt' => 'La velocidad de bajada debe ser mayor que 0.',
+            'subida.gt' => 'La velocidad de subida debe ser mayor que 0.',
+            'subida.required' => 'La velocidad de subida es obligatoria.',
+            'precio.required' => 'El campo precio mensual es obligatorio.',
+            'precio.gt' => 'El campo precio debe ser mayor que 0.',
+        ];
+        $this->validate($rules, $message);
 
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->planes_id){
+        if ($this->table_id){
             //editar
-            $plan = Plan::find($this->planes_id);
+            $model = Plan::find($this->table_id);
         }else{
             //nuevo
-            $plan = new Plan();
+            $model = new Plan();
             do{
                 $rowquid = generarStringAleatorio(16);
                 $existe = Plan::where('rowquid', $rowquid)->first();
             }while($existe);
-            $plan->rowquid = $rowquid;
+            $model->rowquid = $rowquid;
         }
 
-        if ($plan){
-            $plan->nombre = $this->nombre;
-            $plan->etiqueta_factura = $this->etiqueta;
-            $plan->bajada = $this->bajada;
-            $plan->subida = $this->subida;
-            $plan->precio = $this->precio;
-            $organizacion = $this->getOrganizacion($this->organizaciones_id);
-            $plan->organizaciones_id = $organizacion->id;
-            $plan->save();
+        if ($model){
 
-            if (!$this->planes_id){
-                $this->reset('keyword');
-            }
+            $model->organizaciones_id = $this->organizaciones_id;
+            $model->nombre = $this->nombre;
+            $model->etiqueta_factura = $this->etiqueta;
+            $model->bajada = $this->bajada;
+            $model->subida = $this->subida;
+            $model->precio = $this->precio;
+            $model->save();
 
-            if ($this->cerrarModal){
-                $this->limpiar();
-                $this->dispatch('cerrarModal');
-                Sleep::for(500)->millisecond();
-                $this->toastBootstrap();
-            }else{
-                $this->showPlan($plan->rowquid);
-                $this->toastBootstrap();
-            }
-        }else{
-            $this->dispatch('cerrarModal');
+            $this->show($model->rowquid);
+            $this->toastBootstrap();
+
         }
+
     }
 
-    public function edit($rowquid, $cerrarModal = true)
+    public function show($rowquid)
     {
         $this->limpiar();
-        $plan = $this->getPlan($rowquid);
-        if ($plan){
+        $this->setSizeFooter();
+        $registro = Plan::where('rowquid', $rowquid)->first();
+        if ($registro){
 
-            $this->nombre = $plan->nombre;
-            $this->etiqueta = $plan->etiqueta_factura;
-            $this->bajada = $plan->bajada;
-            $this->subida = $plan->subida;
-            $this->precio = $plan->precio;
-            $organizacion = Organizacion::find($plan->organizaciones_id);
-            $this->organizaciones_id = $organizacion->rowquid;
-            $this->organizacion = $plan->organizacion->nombre;
-            $this->rowquid = $plan->rowquid;
+            $this->table_id = $registro->id;
+            $this->rowquid = $registro->rowquid;
 
-            $this->nuevo = false;
-            $this->editar = true;
-            $this->planes_id = $plan->id;
+            $this->organizaciones_id = $registro->organizaciones_id;
+            $this->nombre = $registro->nombre;
+            $this->etiqueta = $registro->etiqueta_factura;
+            $this->bajada = $registro->bajada;
+            $this->subida = $registro->subida;
+            $this->precio = $registro->precio;
 
-            if (!$cerrarModal){
-                $this->cerrarModal = false;
+            $this->getOrganizacion($registro->organizaciones_id);
+            $this->dispatch('setSelectOrganizacion', rowquid: $registro->organizacion->rowquid);
+
+        }
+    }
+
+    #[On('delete')]
+    public function delete()
+    {
+        $registro = Plan::find($this->table_id);
+        if ($registro){
+
+            //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
+            $vinculado = false;
+
+            $servicios = Servicio::where('planes_id', $registro->id)->first();
+            $facturas = Factura::where('planes_id', $registro->id)->first();
+
+            if ($servicios || $facturas){
+                $vinculado = true;
             }
 
+            if ($vinculado) {
+                $this->htmlToastBoostrap();
+            } else {
+                $nombre = '<b class="text-uppercase text-warning">'.$registro->nombre.'</b>';
+                $registro->delete();
+                $this->lastRegistro();
+                if ($this->ocultarTable){
+                    $this->showHide();
+                }
+                $this->toastBootstrap('success', "$this->texto $nombre Eliminado.");
+            }
+
+        }
+    }
+
+    protected function lastRegistro()
+    {
+        $registro = Plan::orderBy('created_at', 'DESC')->first();
+        if ($registro){
+            $this->show($registro->rowquid);
         }else{
-            Sleep::for(500)->millisecond();
-            $this->dispatch('cerrarModal');
+            $this->create();
         }
+
     }
 
-    public function showPlan($rowquid)
+    protected function getOrganizacion($id)
     {
-        $this->edit($rowquid, false);
-        $this->show = true;
-    }
-
-    public function destroy($rowquid)
-    {
-        $this->rowquid = $rowquid;
-        $this->confirmToastBootstrap('confirmed');
-    }
-
-    #[On('confirmed')]
-    public function confirmed()
-    {
-        $id = null;
-        $plan = $this->getPlan($this->rowquid);
-        if ($plan){
-            $id = $plan->id;
-        }
-
-        //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
-        $vinculado = false;
-
-        $servicios = Servicio::where('planes_id', $id)->first();
-        if ($servicios){
-            $vinculado = true;
-        }
-
-        $facturas = Factura::where('planes_id', $id)->first();
-        if ($facturas){
-            $vinculado = true;
-        }
-
-        if ($vinculado) {
-            $this->htmlToastBoostrap();
-        } else {
-            if ($plan){
-                $nombre = "<b>".mb_strtoupper($plan->nombre)."</b>";
-                $plan->delete();
-                $this->dispatch('cerrarModal');
-                Sleep::for(500)->millisecond();
-                $this->toastBootstrap('success', "Plan $nombre Eliminado.");
-            }else{
-                $this->dispatch('cerrarModal');
-                $this->limpiar();
-            }
+        $organizacion = Organizacion::find($id);
+        if ($organizacion){
+            $this->verOrganizacion = $organizacion;
         }
     }
 
-    #[On('buscar')]
-    public function buscar($keyword)
-    {
-        $this->keyword = $keyword;
-    }
-
-    #[On('cerrarModal')]
-    public function cerrarModal()
+    #[On('initSelectOrganizacion')]
+    public function initSelectOrganizacion($data)
     {
         //JS
     }
 
-    public function cerrarBusqueda()
+    #[On('getSelectOrganizacion')]
+    public function getSelectOrganizacion($rowquid)
     {
-        $this->reset('keyword');
-        $this->limpiar();
+        $organzazion = Organizacion::where('rowquid', $rowquid)->first();
+        if ($organzazion){
+            $this->organizaciones_id = $organzazion->id;
+        }
     }
 
-    protected function getPlan($rowquid): ?Plan
+    #[On('setSelectOrganizacion')]
+    public function setSelectOrganizacion($rowquid)
     {
-        return Plan::where('rowquid', $rowquid)->first();
+        //JS
     }
 
-    protected function getOrganizacion($rowquid): ?Organizacion
+    protected function dataOrganizacion()
     {
-        return Organizacion::where('rowquid', $rowquid)->first();
+        $organizaciones = Organizacion::orderBy('nombre', 'ASC')->get();
+        $data = getDataSelect2($organizaciones, 'nombre');
+        $this->dispatch('initSelectOrganizacion', data: $data);
     }
 
 }

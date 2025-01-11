@@ -433,7 +433,7 @@ function getDataSelect2($rows, $text, $id = "rowquid"): array
     foreach ($filas as $row){
         $option = [
             'id' => $row[$id],
-            'text' => $row[$text]
+            'text' => mb_strtoupper($row[$text])
         ];
         $data[] = $option;
     }

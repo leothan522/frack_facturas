@@ -1,40 +1,26 @@
-<div class="col-12">
-    <!-- Widget: user widget style 2 -->
-    <div class="card card-widget widget-user-2">
-        <div class="card-footer p-0">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Organización <span class="float-right text-bold text-uppercase">{{ $organizacion }}</span>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Nombre <span class="float-right text-bold text-uppercase">{{ $nombre }}</span>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Etiqueta - Factura <span class="float-right text-bold text-uppercase">{{ $etiqueta }}</span>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Velocidad de Bajada <span class="float-right text-bold">{{ $bajada }}</span>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Velocidad de Subida <span class="float-right text-bold">{{ $subida }}</span>
-                    </span>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link">
-                        Precio Mensual <span class="float-right text-bold">{{ formatoMillares($precio) }}</span>
-                    </span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <!-- /.widget-user -->
-</div>
+<ul class="todo-list list-group list-group-flush" >
+    <li class="list-group-item">
+        <span>Organización: </span>
+        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verOrganizacion->nombre ?? '' }}</span>
+    </li>
+    <li class="list-group-item">
+        <span>Nombre: </span>
+        <span class="float-right text-bold text-lightblue text-uppercase">{{ $nombre }}</span>
+    </li>
+    <li class="list-group-item">
+        <span>Etiqueta - Factura: </span>
+        <span class="float-right text-bold text-lightblue text-uppercase">{{ $etiqueta }}</span>
+    </li>
+    <li class="list-group-item">
+        <span>Velocidad de Bajada: </span>
+        <span class="float-right text-bold text-lightblue">{{ formatoMillares($bajada, 0) }} Mbps.</span>
+    </li>
+    <li class="list-group-item">
+        <span>Velocidad de Subida: </span>
+        <span class="float-right text-bold text-lightblue">{{ formatoMillares($subida, 0) }} Mbps.</span>
+    </li>
+    <li class="list-group-item">
+        <span>Precio Mensual: </span>
+        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verOrganizacion->moneda ?? '' }} {{ formatoMillares($precio) }}</span>
+    </li>
+</ul>
