@@ -8,7 +8,7 @@
         <span class="float-right text-bold text-lightblue text-uppercase">{{ $representante }}</span>
     </li>
     <li class="list-group-item">
-        <span>{{ __('Email') }}: </span>
+        <span>Email: </span>
         <span class="float-right text-bold text-lightblue text-lowercase">{{ $email }}</span>
     </li>
     <li class="list-group-item">

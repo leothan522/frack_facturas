@@ -10,6 +10,7 @@ use App\Traits\CardView;
 use App\Traits\LimitRows;
 use App\Traits\ToastBootstrap;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -205,6 +206,18 @@ class ClientesComponent extends Component
             //enviamos el correo
             $to = strtolower($cliente->email);
             Mail::to($to)->send(new BienvenidaMail($data));
+        }
+    }
+
+    public function btPlanServicio()
+    {
+        $cliente = Cliente::find($this->table_id);
+        if ($cliente){
+            $this->dispatch('initClienteServicio', id: $cliente->id);
+        }else{
+            //cerrarModal
+            Sleep::for(250)->milliseconds();
+            $this->dispatch('cerrarModalClienteServicio');
         }
     }
 

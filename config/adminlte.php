@@ -338,7 +338,7 @@ return [
             'can'       => ['clientes', 'organizaciones', 'planes'],
             'submenu' => [
                 [
-                    'text' => 'Servicios & Facturas',
+                    'text' => 'Facturas',
                     'icon' => 'fas fa-fw fa-file-invoice',
                     'route'  => 'facturas.index',
                     'can'  => 'facturas',

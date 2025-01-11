@@ -72,6 +72,20 @@
     </div>
 </div>
 
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Organización:</small>
+    <div wire:ignore>
+        <div id="div_select_organizacion" class="input-group">
+            <select class="custom-select">
+                <option value="">Seleccione</option>
+            </select>
+        </div>
+    </div>
+    @error('organizaciones_id')
+    <small class="text-danger text-bold">{{ $message }}</small>
+    @enderror
+</div>
+
 
 
 

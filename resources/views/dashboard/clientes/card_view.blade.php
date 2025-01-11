@@ -105,11 +105,20 @@
                 <i class="fas fa-trash-alt"></i> Borrar
             </button>
 
-            <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar">
+            <button type="button" class="btn btn-default btn-sm mr-1" wire:click="btnReenviar">
                 <i class="fas fa-paper-plane"></i> Reenviar Bienvenida
             </button>
 
-            <button type="button" class="btn btn-default btn-sm" wire:click="edit"
+            <button type="button" class="btn btn-default btn-sm mr-1 mt-1 mt-sm-auto" wire:click="btPlanServicio"
+                    data-toggle="modal" data-target="#modal-cliente-servicio" onclick="verPlanServicio()">
+                <i class="far fa-file-alt"></i> Plan de Servicio
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm mr-1 mt-1 mt-sm-auto" {{--wire:click="btnReenviar"--}}>
+                <i class="fas fa-file-invoice"></i> Facturas Cliente
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm mt-1 mt-sm-auto" wire:click="edit"
                     @if(!comprobarPermisos($modulo.'.edit')) disabled @endif>
                 <i class="fas fa-edit"></i> Editar
             </button>

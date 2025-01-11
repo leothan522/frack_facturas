@@ -52,6 +52,9 @@
             $("#select_organizacion").val(rowquid).trigger('change');
         });
 
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
 
         console.log('Hi!');
     </script>
