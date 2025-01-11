@@ -6,258 +6,187 @@ use App\Mail\BienvenidaMail;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Servicio;
+use App\Traits\CardView;
+use App\Traits\LimitRows;
 use App\Traits\ToastBootstrap;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Sleep;
 use Illuminate\Validation\Rule;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ClientesComponent extends Component
 {
     use ToastBootstrap;
+    use LimitRows;
+    use CardView;
 
-    public $rows = 0, $numero = 14, $tableStyle = false;
-    public $nuevo = true, $editar = false, $keyword;
-    public $cedula, $nombre, $apellido, $email, $telefono, $direccion, $instalacion, $pago,
-        $latitud, $longitud, $gps;
-    public $cerrarModal= true, $show = false;
-
-    #[Locked]
-    public $clientes_id, $rowquid;
+    public $texto = "Cliente";
+    public $cedula, $nombre, $apellido, $telefono, $email, $direccion;
+    public $fechaInstalacion, $fechaPago, $latitud, $longitud, $gps;
 
     public function mount()
     {
         $this->setLimit();
+        $this->setTitle();
+        $this->modulo = 'clientes';
+        $this->lastRegistro();
     }
 
     public function render()
     {
-        $clientes = Cliente::buscar($this->keyword)
+        $listar = Cliente::buscar($this->keyword)
             ->orderBy('created_at', 'DESC')
-            ->limit($this->rows)
+            ->limit($this->limit)
             ->get();
-
-        $total = Cliente::buscar($this->keyword)->count();
-
-        $rows = Cliente::count();
-
-        if ($rows > $this->numero) {
-            $this->tableStyle = true;
-        }
+        $limit = $listar->count();
+        $rows = Cliente::buscar($this->keyword)->count();
+        $this->btnVerMas($limit, $rows);
 
         return view('livewire.dashboard.clientes-component')
-            ->with('clientes', $clientes)
-            ->with('rowsClientes', $rows)
-            ->with('totalRows', $total);
-    }
-
-    public function setLimit()
-    {
-        if (numRowsPaginate() < $this->numero) {
-            $rows = $this->numero;
-        } else {
-            $rows = numRowsPaginate();
-        }
-        $this->rows = $this->rows + $rows;
+            ->with('listar', $listar)
+            ->with('rows', $rows);
     }
 
     public function limpiar()
     {
+        $this->limpiarCardView();
         $this->reset([
-            'cedula', 'nombre', 'apellido', 'email', 'telefono', 'direccion', 'instalacion',
-            'pago', 'latitud', 'longitud', 'gps', 'clientes_id', 'nuevo', 'editar',
-            'show'
+            'cedula', 'nombre', 'apellido', 'telefono', 'email', 'direccion',
+            'fechaInstalacion', 'fechaPago', 'latitud', 'longitud', 'gps'
         ]);
         $this->resetErrorBag();
     }
 
-    protected function rules()
+    public function save()
     {
-        return [
-            'cedula' => ['required', 'integer', Rule::unique('clientes', 'cedula')->ignore($this->clientes_id)],
+        $rules = [
+            'cedula' => ['required', 'integer', 'min_digits:6', Rule::unique('clientes', 'cedula')->ignore($this->table_id)],
             'nombre' => 'required|min:3',
             'apellido' => 'required|min:3',
-            'email' => 'required|email',
             'telefono' => 'required',
+            'email' => 'required|email',
             'direccion' => 'required',
-            'instalacion' => 'required',
-            'pago' => 'required',
+            'fechaInstalacion' => 'required',
+            'fechaPago' => 'required',
             'latitud' => 'nullable',
             'longitud' => 'nullable',
             'gps' => 'nullable',
         ];
-    }
+        $message = [
+            'cedula.required' => 'El campo cédula es obligatorio.',
+            'cedula.min_digits' => 'El campo cédula debe tener al menos 6 dígitos.',
+            'cedula.unique' => 'El campo cédula ya ha sido registrado.',
+            'telefono.required' => 'El campo teléfono es obligatorio.',
+            'direccion.required' => 'El campo dirección es obligatorio.',
+            'fechaInstalacion.required' => 'El campo fecha instalación es obligatorio.',
+        ];
+        $this->validate($rules, $message);
 
-    public function save()
-    {
-        $this->validate();
-
-        if ($this->clientes_id){
+        if ($this->table_id){
             //editar
-            $cliente = Cliente::find($this->clientes_id);
-            $mail = false;
+            $model = Cliente::find($this->table_id);
         }else{
             //nuevo
-            $cliente = new Cliente();
+            $model = new Cliente();
             do{
                 $rowquid = generarStringAleatorio(16);
                 $existe = Cliente::where('rowquid', $rowquid)->first();
             }while($existe);
-            $cliente->rowquid = $rowquid;
-            $mail = true;
+            $model->rowquid = $rowquid;
         }
 
-        if ($cliente){
-            $cliente->cedula = $this->cedula;
-            $cliente->nombre = $this->nombre;
-            $cliente->apellido = $this->apellido;
-            $cliente->email = $this->email;
-            $cliente->telefono = $this->telefono;
-            $cliente->direccion = $this->direccion;
-            $cliente->fecha_instalacion = $this->instalacion;
-            $cliente->fecha_pago = $this->pago;
-            $cliente->latitud = $this->latitud;
-            $cliente->longitud = $this->longitud;
-            $cliente->gps = $this->gps;
-            $cliente->save();
+        if ($model){
 
+            $model->cedula = $this->cedula;
+            $model->nombre = $this->nombre;
+            $model->apellido = $this->apellido;
+            $model->telefono = $this->telefono;
+            $model->email = $this->email;
+            $model->direccion = $this->direccion;
+            $model->fecha_instalacion = $this->fechaInstalacion;
+            $model->fecha_pago = $this->fechaPago;
+            $model->latitud = $this->latitud;
+            $model->longitud = $this->longitud;
+            $model->gps = $this->gps;
+            $model->save();
 
-            if ($mail){
-                $this->sendBienvenida($cliente->id);
-            }
+            $this->show($model->rowquid);
+            $this->toastBootstrap();
 
-            if (!$this->clientes_id){
-                $this->reset('keyword');
-            }
-
-            if ($this->cerrarModal){
-                $this->limpiar();
-                $this->dispatch('cerrarModal');
-                Sleep::for(500)->millisecond();
-                $this->toastBootstrap();
-            }else{
-                $this->showCliente($cliente->rowquid);
-                $this->toastBootstrap();
-            }
-        }else{
-            $this->dispatch('cerrarModal');
         }
 
     }
 
-    public function edit($rowquid, $cerrarModal = true)
+    public function show($rowquid)
     {
         $this->limpiar();
-        $cliente = $this->getCliente($rowquid);
-        if ($cliente){
+        $this->setSizeFooter();
+        $registro = Cliente::where('rowquid', $rowquid)->first();
+        if ($registro){
 
-            $this->cedula = $cliente->cedula;
-            $this->nombre = $cliente->nombre;
-            $this->apellido = $cliente->apellido;
-            $this->email = $cliente->email;
-            $this->telefono = $cliente->telefono;
-            $this->direccion = $cliente->direccion;
-            $this->instalacion = $cliente->fecha_instalacion;
-            $this->pago = $cliente->fecha_pago;
-            $this->latitud = $cliente->latitud;
-            $this->longitud = $cliente->longitud;
-            $this->gps = $cliente->gps;
-            $this->rowquid = $cliente->rowquid;
+            $this->table_id = $registro->id;
+            $this->rowquid = $registro->rowquid;
 
-            $this->nuevo = false;
-            $this->editar = true;
-            $this->clientes_id = $cliente->id;
+            $this->cedula = $registro->cedula;
+            $this->nombre = $registro->nombre;
+            $this->apellido = $registro->apellido;
+            $this->telefono = $registro->telefono;
+            $this->email = $registro->email;
+            $this->direccion = $registro->direccion;
+            $this->fechaInstalacion = $registro->fecha_instalacion;
+            $this->fechaPago = $registro->fecha_pago;
+            $this->latitud = $registro->latitud;
+            $this->longitud = $registro->longitud;
+            $this->gps = $registro->gps;
 
-            if (!$cerrarModal){
-                $this->cerrarModal = false;
+        }
+    }
+
+    #[On('delete')]
+    public function delete()
+    {
+        $registro = Cliente::find($this->table_id);
+        if ($registro){
+
+            //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
+            $vinculado = false;
+
+            $servicios = Servicio::where('clientes_id', $registro->id)->first();
+            $facturas = Factura::where('clientes_id', $registro->id)->first();
+
+            if ($servicios || $facturas){
+                $vinculado = true;
             }
 
+            if ($vinculado) {
+                $this->htmlToastBoostrap();
+            } else {
+                $nombre = '<b class="text-uppercase text-warning">'.formatoMillares($registro->cedula, 0).'</b>';
+                $registro->delete();
+                $this->lastRegistro();
+                if ($this->ocultarTable){
+                    $this->showHide();
+                }
+                $this->toastBootstrap('success', "$this->texto $nombre Eliminado.");
+            }
+
+        }
+    }
+
+    protected function lastRegistro()
+    {
+        $registro = Cliente::orderBy('created_at', 'DESC')->first();
+        if ($registro){
+            $this->show($registro->rowquid);
         }else{
-            Sleep::for(500)->millisecond();
-            $this->dispatch('cerrarModal');
+            $this->create();
         }
 
-    }
-
-    public function showCliente($rowquid)
-    {
-        $this->edit($rowquid, false);
-        $this->show = true;
-    }
-
-    public function destroy($rowquid)
-    {
-        $this->rowquid = $rowquid;
-        $this->confirmToastBootstrap('confirmed');
-    }
-
-    #[On('confirmed')]
-    public function confirmed()
-    {
-        $id = null;
-        $cliente = $this->getCliente($this->rowquid);
-        if ($cliente){
-            $id = $cliente->id;
-        }
-        //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
-        $vinculado = false;
-
-        $servicios = Servicio::where('clientes_id', $id)->first();
-        if ($servicios){
-            $vinculado = true;
-        }
-
-        $facturas = Factura::where('clientes_id', $id)->first();
-        if ($facturas){
-            $vinculado = true;
-        }
-
-        if ($vinculado) {
-            $this->htmlToastBoostrap();
-        } else {
-            if ($cliente){
-                $cedula = "<b>".$cliente->cedula."</b>";
-                $cliente->cedula = "*".$cliente->cedula;
-                $cliente->save();
-                $cliente->delete();
-                $this->dispatch('cerrarModal');
-                Sleep::for(500)->millisecond();
-                $this->toastBootstrap('success', "Cliente $cedula Eliminado.");
-            }else{
-                $this->dispatch('cerrarModal');
-                $this->limpiar();
-            }
-        }
-    }
-
-    #[On('buscar')]
-    public function buscar($keyword)
-    {
-        $this->keyword = $keyword;
-    }
-
-    #[On('cerrarModal')]
-    public function cerrarModal()
-    {
-        //JS
-    }
-
-    public function cerrarBusqueda()
-    {
-        $this->reset('keyword');
-        $this->limpiar();
-    }
-
-    protected function getCliente($rowquid): ?Cliente
-    {
-        return Cliente::where('rowquid', $rowquid)->first();
     }
 
     public function btnReenviar()
     {
-        $this->sendBienvenida($this->clientes_id);
+        $this->sendBienvenida($this->table_id);
         $this->toastBootstrap('info', 'Email Enviado.');
     }
 

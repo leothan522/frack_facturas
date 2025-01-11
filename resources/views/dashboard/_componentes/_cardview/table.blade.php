@@ -57,8 +57,7 @@
                         <td class="justify-content-end">
 
                             <div class="btn-group d-md-none">
-                                <button wire:click="showHide('{{ $parametro->rowquid }}')" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#modal-default">
+                                <button wire:click="showHide('{{ $parametro->rowquid }}')" class="btn btn-primary">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>

@@ -1,18 +1,12 @@
 @extends('adminlte::page')
 
-@section('title', 'Clientes')
+@section('plugins.Select2', true)
 
-@section('content_header')
-    <h1><i class="fas fa-user-friends"></i> Clientes</h1>
-@endsection
+@section('title', 'Clientes')
 
 @section('content')
     @livewire('dashboard.clientes-component')
     @livewire('dashboard.dolar-component')
-@endsection
-
-@section('right-sidebar')
-    @include('dashboard.right-sidebar')
 @endsection
 
 @section('footer')
@@ -37,28 +31,6 @@
         }
         input[type=date] { -moz-appearance:textfield; }
     </style>
-@stop
-
-@section('js')
-    <script src="{{ asset("js/app.js") }}"></script>
-    <script>
-
-        Livewire.on('cerrarModal', () => {
-            $("#btn_modal_cerrar").click();
-        });
-
-        $("#button_dolar_dispath").click(function (e) {
-            Livewire.dispatch('initDollar');
-        });
-
-        $("#button_email_dispath_sistema").click(function (e) {
-            Livewire.dispatch('initEmail');
-        });
-
-        $("#button_telefono_soporte_sistema").click(function (e) {
-            Livewire.dispatch('initTelefono');
-        });
-
-        console.log('Hi!');
-    </script>
 @endsection
+
+

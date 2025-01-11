@@ -7,22 +7,16 @@ use App\Models\Organizacion;
 use App\Models\Plan;
 use App\Models\Servicio;
 use App\Traits\CardView;
-use App\Traits\Imagenes;
 use App\Traits\LimitRows;
 use App\Traits\ToastBootstrap;
-use Illuminate\Support\Sleep;
-use Illuminate\Validation\Rule;
-use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
 class PlanesComponent extends Component
 {
     use ToastBootstrap;
     use LimitRows;
     use CardView;
-    use WithFileUploads;
 
     public $texto = "Plan";
     public $verOrganizacion;

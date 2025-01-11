@@ -21,7 +21,7 @@
 <div class="form-group">
     <small class="text-lightblue text-bold text-uppercase">{{ __('Email') }}:</small>
     <div class="input-group">
-        <input type="text" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}">
+        <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}">
         @error('email')
         <span class="error invalid-feedback text-bold">{{ $message }}</span>
         @enderror
