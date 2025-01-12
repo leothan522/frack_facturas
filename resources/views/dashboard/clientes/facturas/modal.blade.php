@@ -24,7 +24,7 @@
                 <div class="row col-12 justify-content-between" wire:loading.class="invisible">
 
                     <button type="button" wire:click="btnGenerarFactura" class="btn btn-primary" @if(!$servicios_id) disabled @endif>
-                        <i class="fas fa-file mr-1"></i> Generar Factura
+                        <i class="fas fa-file-invoice mr-1"></i> Generar Factura
                     </button>
 
                     <button type="button" class="btn btn-default" data-dismiss="modal">
