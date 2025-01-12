@@ -28,3 +28,11 @@
         <span class="float-right text-bold text-lightblue text-uppercase">{{ $verOrganizacion->moneda ?? '' }} {{ formatoMillares($precio) }}</span>
     </li>
 </ul>
+
+<div class="row">
+    <div class="col-12 mt-3 text-right float-right">
+        <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar">
+            <i class="fas fa-paper-plane"></i> Reenviar Contrato
+        </button>
+    </div>
+</div>

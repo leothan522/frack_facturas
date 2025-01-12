@@ -79,15 +79,13 @@
 
             @if($form)
                 <div class="col-12">
-                    <div class="col-md-4 float-right">
-                        <button type="submit" class="btn btn-block @if($table_id) btn-primary @else btn-success @endif">
-                            <i class="fas fa-save mr-1"></i>
-                            Guardar
-                            @if($table_id)
-                                Cambios
-                            @endif
-                        </button>
-                    </div>
+                    <button type="submit" class="col-md-4 float-right btn btn-block @if($table_id) btn-primary @else btn-success @endif">
+                        <i class="fas fa-save mr-1"></i>
+                        Guardar
+                        @if($table_id)
+                            Cambios
+                        @endif
+                    </button>
                 </div>
             @endif
 

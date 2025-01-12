@@ -53,12 +53,7 @@
 
                             </div>
 
-                            <button type="button" class="btn btn-default" wire:click="btnReenviar">
-                                <i class="fas fa-paper-plane"></i> Reenviar Contrato
-                            </button>
-
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
-                                    id="btn_modal_show_municipios">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_show_municipios">
                                 Cerrar
                             </button>
 
