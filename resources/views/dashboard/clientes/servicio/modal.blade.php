@@ -53,7 +53,7 @@
 
                             </div>
 
-                            <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_show_municipios">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
                                 Cerrar
                             </button>
 

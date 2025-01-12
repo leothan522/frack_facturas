@@ -209,7 +209,7 @@ class ClientesComponent extends Component
         }
     }
 
-    public function btPlanServicio()
+    public function btnPlanServicio()
     {
         $cliente = Cliente::find($this->table_id);
         if ($cliente){
@@ -218,6 +218,18 @@ class ClientesComponent extends Component
             //cerrarModal
             Sleep::for(250)->milliseconds();
             $this->dispatch('cerrarModalClienteServicio');
+        }
+    }
+
+    public function btnFacturasCliente()
+    {
+        $cliente = Cliente::find($this->table_id);
+        if ($cliente){
+            $this->dispatch('initFacturasCliente', id: $cliente->id);
+        }else{
+            //cerrarModal
+            Sleep::for(250)->milliseconds();
+            $this->dispatch('cerrarModalFacturasCliente');
         }
     }
 

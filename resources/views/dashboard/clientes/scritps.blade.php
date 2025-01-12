@@ -76,6 +76,17 @@
             document.querySelector('.select2-search__field').focus();
         });
 
+        function verFacturasCliente() {
+            addClassinvisible('#modal_facturas_cliente_header');
+            addClassinvisible('#modal_facturas_cliente_body');
+            addClassinvisible('#modal_facturas_cliente_footer');
+            verCargando('modal-facturas-cliente');
+        }
+
+        Livewire.on('cerrarModalFacturasCliente', () => {
+            $("#btn_cerrar_modal_facturas_cliente").click();
+        });
+
         console.log('Hi!');
     </script>
 @endsection
