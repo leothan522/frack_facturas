@@ -1,61 +1,59 @@
-<form wire:submit="save">
-    <div wire:ignore.self class="modal fade" id="modal-default">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content {{--fondo--}}">
+<div wire:ignore.self class="modal fade" id="modal-ver-factura">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
 
-                <div class="modal-header bg-navy">
-                    <h4 class="modal-title">
-                        @if($show)
-                            Ver
-                        @else
-                            @if($nuevo)
-                                Crear
-                            @else
-                                Editar
-                            @endif
-                        @endif
-                        Servicio
-                    </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-white" aria-hidden="true">×</span>
-                    </button>
-                </div>
+            <div class="modal-header bg-navy">
+                <h4 class="modal-title" wire:loading.class="invisible">
+                    Ver Factura
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-white" aria-hidden="true">×</span>
+                </button>
+            </div>
 
-                <div class="modal-body">
+            <div class="modal- embed-responsive embed-responsive-4by3" wire:loading.class="invisible">
 
-                    <div class="@if($show) d-none @endif">
-                        @include('dashboard.facturas.form_servicios')
-                    </div>
-
-                    <div class="@if(!$show) d-none @endif">
-                        @include('dashboard.facturas.show_servicios')
-                    </div>
-
-                </div>
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_cerrar">Cerrar
-                    </button>
-                    @if(!$show)
-                        <button type="submit" class="btn @if($nuevo) btn-success @else btn-primary @endif ">
-                            Guardar
-                            @if($editar)
-                                Cambios
-                            @endif
-                        </button>
-                    @else
-                        <button type="button" class="btn btn-danger" wire:click="destroy('{{ $rowquid }}')">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                        <button type="button" class="btn btn-primary" wire:click="edit('{{ $rowquid }}')">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                    @endif
-                </div>
-
-                {!! verSpinner() !!}
+                @if($verPDF)
+                    <iframe class="embed-responsive-item" src="{{ asset('ViewerJS/#../storage/'.$verPDF) }}" allowfullscreen></iframe>
+                @endif
 
             </div>
+
+            <div class="modal-footer">
+
+                <div class="row col-12 justify-content-between" wire:loading.class="invisible">
+
+                    <div class="btn-group">
+
+                        <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('delete')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+
+                        @if($send)
+                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('reeviarFactura',  'NoParametros', { type: 'warning', message: '¡Esta Factura ya fue enviada anteriormente!', button: '¡Sí, volver a enviar!' })">
+                                <i class="fas fa-envelope-open"></i>
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-primary" wire:click="btnSendFactura">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        @endif
+
+                    </div>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_ver_factura">
+                        Cerrar
+                    </button>
+
+                </div>
+
+            </div>
+
+            {!! verSpinner() !!}
+
         </div>
+        <!-- /.modal-content -->
     </div>
-</form>
+    <!-- /.modal-dialog -->
+</div>
+

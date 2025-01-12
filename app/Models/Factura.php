@@ -61,7 +61,10 @@ class Factura extends Model
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('factura_numero', 'LIKE', "%$keyword%")
-            /*->orWhere('nombre', 'LIKE', "%$keyword%")*/
+            ->orWhere('factura_fecha', 'LIKE', "%$keyword%")
+            ->orWhere('cliente_cedula', 'LIKE', "%$keyword%")
+            ->orWhere('cliente_nombre', 'LIKE', "%$keyword%")
+            ->orWhere('cliente_apellido', 'LIKE', "%$keyword%")
             ;
     }
 

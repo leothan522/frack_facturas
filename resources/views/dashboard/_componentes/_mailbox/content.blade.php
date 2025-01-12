@@ -6,7 +6,6 @@
 
     <div class="col-md-8 col-lg-9">
         @include('dashboard.facturas.table')
-        @include('dashboard.facturas.modal')
     </div>
 
     <div class="col-sm-6 d-md-none">
