@@ -26,9 +26,26 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="#" class="nav-link" wire:click.prevent="btnGenerarFacturas">
+                    <span wire:loading wire:target="btnGenerarFacturas">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
+                    </span>
+                    <span wire:loading.class="d-none" wire:target="btnGenerarFacturas">
+                        <i class="fas fa-file-invoice"></i> Generar Facturas
+                        @if($verNuevasFacturas)
+                            <span class="badge bg-warning float-right">{{ $nuevasFacturas }}</span>
+                        @endif
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item d-none">
                 <a href="#" class="nav-link">
-                    <i class="fas fa-file-invoice"></i> Generar Facturas
-                    <span class="badge bg-warning float-right">65</span>
+                    <span wire:loading wire:target="getOrganizacion">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
+                    </span>
+                    <span wire:loading.class="d-none" wire:target="getOrganizacion">
+                        <i class="fas fa-filter"></i> Prueba
+                    </span>
                 </a>
             </li>
         </ul>

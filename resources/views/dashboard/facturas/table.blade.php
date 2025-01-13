@@ -12,7 +12,7 @@
                             <i class="fas fa-times"></i>
                         </button>
                     @else
-                        Todos [ <b class="text-warning">{{ $rows }}</b> ]
+                        {{ $this->getOrganizacion($organizacionActual) }} [ <b class="text-warning">{{ $rows }}</b> ]
                     @endif
                 </h3>
             </div>

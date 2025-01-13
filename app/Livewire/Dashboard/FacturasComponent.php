@@ -3,8 +3,10 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Factura;
+use App\Models\Organizacion;
 use App\Models\Pago;
 use App\Models\Parametro;
+use App\Models\Servicio;
 use App\Traits\Facturas;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;
@@ -19,8 +21,9 @@ class FacturasComponent extends Component
     use MailBox;
     use Facturas;
 
-    public $idFacturarAutomatico, $facturarAutomatico, $nuevasFacturas = 0;
+    public $idFacturarAutomatico, $facturarAutomatico, $nuevasFacturas = 0, $verNuevasFacturas = false;
     public $verPDF, $send;
+    public $organizacionActual = 0;
 
     #[Locked]
     public $rowquid;
@@ -32,10 +35,20 @@ class FacturasComponent extends Component
 
     public function render()
     {
-        $listar = Factura::buscar($this->keyword)
-            ->orderBy('factura_fecha', $this->order)
-            ->paginate(15);
-        $rows = Factura::buscar($this->keyword)->count();
+        if ($this->organizacionActual){
+            $listar = Factura::buscar($this->keyword)
+                ->where('organizaciones_id', $this->organizacionActual)
+                ->orderBy('factura_fecha', $this->order)
+                ->paginate(numRowsPaginate());
+            $rows = Factura::buscar($this->keyword)
+                ->where('organizaciones_id', $this->organizacionActual)
+                ->count();
+        }else{
+            $listar = Factura::buscar($this->keyword)
+                ->orderBy('factura_fecha', $this->order)
+                ->paginate(numRowsPaginate());
+            $rows = Factura::buscar($this->keyword)->count();
+        }
         return view('livewire.dashboard.facturas-component')
             ->with('listar', $listar)
             ->with('rows', $rows);
@@ -93,6 +106,7 @@ class FacturasComponent extends Component
         }
         $factura = Factura::where('rowquid', $rowquid)->first();
         if ($factura) {
+            $this->facturaNumero = $factura->factura_numero;
             $this->rowquid = $factura->rowquid;
             $this->send = $factura->send;
             $this->verPDF = $this->getPdfFacturaTrait($factura, 'save');
@@ -145,6 +159,47 @@ class FacturasComponent extends Component
     public function confirmedDelete()
     {
         //JS
+    }
+
+    public function btnGenerarFacturas()
+    {
+        $this->reset(['nuevasFacturas', 'verNuevasFacturas']);
+        $data = [];
+        $servicios = Servicio::all();
+        foreach ($servicios as $servicio){
+            $data[] = [
+                'id' => $servicio->id,
+                'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
+                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido
+            ];
+        }
+        $orderServicios = collect($data)->sortBy('fecha');
+        foreach ($orderServicios as $servicio){
+            $factura = $this->createFacturaTrait($servicio['id']);
+            if ($factura){
+                $this->nuevasFacturas++;
+            }
+        }
+        $this->verNuevasFacturas = true;
+    }
+
+    public function getOrganizacion($id = null)
+    {
+        $data[0] = "Todos";
+        $organizaciones = Organizacion::orderBy('nombre', 'ASC')->get();
+        foreach ($organizaciones as $organizacion){
+            $data[$organizacion->id] = $organizacion->nombre;
+        }
+        if (!is_null($id)){
+            return $data[$id];
+        }else{
+            return $data;
+        }
+    }
+
+    public function btnFiltro($key)
+    {
+        $this->organizacionActual = $key;
     }
 
 }

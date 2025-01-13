@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <div class="modal-body" id="modal_facturas_cliente_body" wire:loading.class="invisible">
+            <div class="modal-body" id="modal_facturas_cliente_body" wire:loading.class="invisible" style="height: 358px;">
 
                 <div class="row table-responsive p-0">
                     @include('dashboard.clientes.facturas.table')

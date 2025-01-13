@@ -4,7 +4,7 @@
 
             <div class="modal-header bg-navy">
                 <h4 class="modal-title" wire:loading.class="invisible">
-                    Ver Factura
+                    <span class="text-nowrap">Factura [ <b class="text-warning text-uppercase">{{ $facturaNumero }}</b> ]</span>
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="text-white" aria-hidden="true">×</span>
