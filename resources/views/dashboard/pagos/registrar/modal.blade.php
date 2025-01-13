@@ -15,7 +15,7 @@
                 <div class="modal-body">
 
                     <div class="@if($displayPago != "verCliente") d-none @endif">
-                        @include('dashboard.pagos.form_cliente')
+                        @include('dashboard.pagos.registrar.form_cliente')
                     </div>
 
                     @if($factura)
@@ -37,11 +37,11 @@
                     @endif
 
                     <div class="@if($displayPago != "verMetodos") d-none @endif">
-                        @include('dashboard.pagos.metodos')
+                        @include('dashboard.pagos.registrar.metodos')
                     </div>
 
                     <div class="@if($displayPago != "verForm") d-none @endif">
-                        @include('dashboard.pagos.form')
+                        @include('dashboard.pagos.registrar.form')
                     </div>
 
                 </div>

@@ -75,5 +75,3 @@
         <!-- /.modal-dialog -->
     </div>
 </form>
-
-

@@ -9,7 +9,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ReportesComponent extends Component
+class PagosReportesComponent extends Component
 {
     use ToastBootstrap;
 
@@ -17,7 +17,7 @@ class ReportesComponent extends Component
 
     public function render()
     {
-        return view('livewire.dashboard.reportes-component');
+        return view('livewire.dashboard.pagos-reportes-component');
     }
 
     #[On('limpiar')]
@@ -46,6 +46,5 @@ class ReportesComponent extends Component
         $this->toastBootstrap('info', 'Generando reporte.');
         return Excel::download(new PagosExport($pagos), "Pagos_$name.xlsx");
     }
-
 
 }
