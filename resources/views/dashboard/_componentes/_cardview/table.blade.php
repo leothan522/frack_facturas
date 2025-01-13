@@ -49,7 +49,7 @@
             @if($listar->isNotEmpty())
                 @php($i = 0)
                 @foreach($listar as $parametro)
-                    <tr>
+                    <tr class="@if($parametro->id == $table_id) text-warning @endif">
                         <td class="align-middle text-bold text-center">{{ ++$i }}</td>
                         <td class="align-middle d-table-cell text-uppercase text-truncate" style="max-width: 150px;">{{ $parametro->nombre }}</td>
                         {{--<td class="align-middle d-none d-md-table-cell">table_id</td>

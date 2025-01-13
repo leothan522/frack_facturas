@@ -48,7 +48,7 @@
             <tbody id="tbody_{{ $modulo }}" wire:loading.class="invisible" wire:target="actualizar, cerrarBusqueda, setLimit">
             @if($listar->isNotEmpty())
                 @foreach($listar as $parametro)
-                    <tr>
+                    <tr class="@if($parametro->id == $table_id) text-warning @endif">
                         <td class="align-middle text-right">{{ formatoMillares($parametro->cedula, 0) }}</td>
                         <td class="align-middle d-table-cell text-uppercase text-truncate" style="max-width: 150px;">{{ $parametro->nombre }} {{ $parametro->apellido }}</td>
                         {{--<td class="align-middle d-none d-md-table-cell">table_id</td>
