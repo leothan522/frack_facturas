@@ -6,7 +6,6 @@ use App\Models\Factura;
 use App\Models\Organizacion;
 use App\Models\Pago;
 use App\Models\Parametro;
-use App\Models\Servicio;
 use App\Traits\Facturas;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;

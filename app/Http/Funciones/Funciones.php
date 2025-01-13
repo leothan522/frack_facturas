@@ -2,7 +2,6 @@
 //Funciones Personalizadas para el Proyecto
 
 use App\Models\Parametro;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 
@@ -337,8 +336,6 @@ function crearImagenTemporal($photo, $carpeta): string
     return "".$miniatura['temporal'];
 }
 
-
-
 //borrar imagenes incluyendo las miniaturas
 function borrarImagenes($imagen, $carpeta): void
 {
@@ -501,75 +498,5 @@ function getMetodoPago($metodo = null): array|string
         return $filtro[$metodo];
     }else{
         return $filtro;
-    }
-}
-
-function getPdfFactura($factura, $out = "stream"): \Illuminate\Http\Response|string
-{
-    $imagen = asset('img/logo.png');
-    if ($factura->organizacion_mini){
-        $imagen = verImagen($factura->organizacion_mini, false, true);
-    }
-
-    $pago = false;
-    $metodo = '';
-    $referencia = '';
-    $banco = '';
-    $monto = '';
-    $fecha = '';
-    $notas = '';
-    if ($factura->estatus == 1){
-        $pago = true;
-        $metodo = getMetodoPago($factura->pago->metodo);
-        $referencia = strtoupper($factura->pago->referencia);
-        $banco = $factura->pago->nombre;
-        $monto = $factura->pago->moneda.' '.formatoMillares($factura->pago->monto);
-        $fecha = getFecha($factura->pago->fecha);
-    }else{
-        if ($factura->pagos_id){
-            if ($factura->pago->estatus == 0){
-                $notas = "Esta factura tiene un pago registrado esperando validación.";
-            }
-            if ($factura->pago->estatus == 2){
-                $notas = "Esta factura tiene un pago registrado que fue rechazado porque no se pudo comprobar la operación.";
-            }
-        }
-    }
-
-    $data = [
-        'imagen' => $imagen,
-        'factura_fecha' => ucfirst(fechaEnLetras($factura->factura_fecha, "MMMM D[,] YYYY")),
-        'factura_numero' => strtoupper($factura->factura_numero),
-        'organizacion_nombre' => strtoupper($factura->organizacion_nombre),
-        'organizacion_rif' => strtoupper($factura->organizacion_rif),
-        'organizacion_representante' => strtoupper('Frank Sierra'),
-        'organizacion_telefono' => strtoupper($factura->organizacion_telefono),
-        'organizacion_email' => strtolower($factura->organizacion_email),
-        'organizacion_direccion' => ucfirst($factura->organizacion_direccion),
-        'organizacion_moneda' => $factura->organizacion_moneda,
-        'cliente_cedula' => strtoupper($factura->cliente_cedula),
-        'cliente_nombre' => strtoupper($factura->cliente_nombre.' '.$factura->cliente_apellido),
-        'cliente_email' => strtolower($factura->cliente_email),
-        'cliente_telefono' => strtoupper($factura->cliente_telefono),
-        'cliente_direccion' => ucfirst($factura->cliente_direccion),
-        'plan_servicio' => strtoupper($factura->plan_etiqueta .' ('. mesEspanol(getFecha($factura->factura_fecha, 'm')) .')'),
-        'total' => formatoMillares($factura->factura_total),
-        'pago' => $pago,
-        'metodo' => $metodo,
-        'referencia' => $referencia,
-        'banco' => $banco,
-        'monto' => $monto,
-        'fecha_pago' => $fecha,
-        'notas' => $notas
-    ];
-    //creamos el PDF y lo guardamos en Storage => public
-    $filename = "sendFacturaID_$factura->rowquid.pdf";
-    $pdf = Pdf::loadView('dashboard._export.pdf_factura', $data);
-
-    if ($out == "stream"){
-        return $pdf->stream('Factura_'.strtoupper($factura->factura_numero).'.pdf');
-    }else{
-        $pdf->save($filename, 'public');
-        return $filename;
     }
 }

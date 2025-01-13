@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Factura;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
+use App\Traits\Facturas;
 
 class FacturasController extends Controller
 {
+    use Facturas;
+
     public function index()
     {
         return view('dashboard.facturas.index');
@@ -18,7 +19,7 @@ class FacturasController extends Controller
     {
         $factura = Factura::where('rowquid', $rowquid)->first();
         if ($factura){
-            return getPdfFactura($factura);
+            return $this->getPdfFacturaTrait($factura);
         }else{
             return redirect()->route('facturas.index');
         }
