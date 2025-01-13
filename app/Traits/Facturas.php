@@ -248,4 +248,17 @@ trait Facturas
         }
     }
 
+    protected function getServiciosTrait(): \Illuminate\Support\Collection
+    {
+        $data = [];
+        $servicios = Servicio::all();
+        foreach ($servicios as $servicio){
+            $data[] = [
+                'id' => $servicio->id,
+                'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
+                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido
+            ];
+        }
+        return collect($data)->sortBy('fecha');
+    }
 }

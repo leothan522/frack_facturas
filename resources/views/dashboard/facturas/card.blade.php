@@ -38,6 +38,19 @@
                     </span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" wire:click.prevent="btnSendFacturas">
+                    <span wire:loading wire:target="btnSendFacturas">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
+                    </span>
+                    <span wire:loading.class="d-none" wire:target="btnSendFacturas">
+                        <i class="fas fa-paper-plane"></i> Enviar Facturas
+                        @if($verFacturasEnviadas)
+                            <span class="badge bg-warning float-right">{{ $facturasEnviadas }}</span>
+                        @endif
+                    </span>
+                </a>
+            </li>
             <li class="nav-item d-none">
                 <a href="#" class="nav-link">
                     <span wire:loading wire:target="getOrganizacion">

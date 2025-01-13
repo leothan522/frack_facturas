@@ -24,6 +24,7 @@ class FacturasComponent extends Component
     public $idFacturarAutomatico, $facturarAutomatico, $nuevasFacturas = 0, $verNuevasFacturas = false;
     public $verPDF, $send;
     public $organizacionActual = 0;
+    public $verFacturasEnviadas = false, $facturasEnviadas = 0;
 
     #[Locked]
     public $rowquid;
@@ -164,16 +165,7 @@ class FacturasComponent extends Component
     public function btnGenerarFacturas()
     {
         $this->reset(['nuevasFacturas', 'verNuevasFacturas']);
-        $data = [];
-        $servicios = Servicio::all();
-        foreach ($servicios as $servicio){
-            $data[] = [
-                'id' => $servicio->id,
-                'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
-                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido
-            ];
-        }
-        $orderServicios = collect($data)->sortBy('fecha');
+        $orderServicios = $this->getServiciosTrait();
         foreach ($orderServicios as $servicio){
             $factura = $this->createFacturaTrait($servicio['id']);
             if ($factura){
@@ -200,6 +192,23 @@ class FacturasComponent extends Component
     public function btnFiltro($key)
     {
         $this->organizacionActual = $key;
+    }
+
+    public function btnSendFacturas()
+    {
+        $this->reset(['verFacturasEnviadas', 'facturasEnviadas']);
+        $facturas = Factura::where('send', 0)
+            ->orderBy('factura_fecha', 'ASC')
+            ->get();
+        foreach ($facturas as $factura){
+            $send = $this->sendFacturaTrait($factura->rowquid);
+            if ($send){
+                $factura->send = 1;
+                $factura->save();
+                $this->facturasEnviadas++;
+            }
+        }
+        $this->verFacturasEnviadas = true;
     }
 
 }
