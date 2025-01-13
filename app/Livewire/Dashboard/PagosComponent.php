@@ -2,114 +2,138 @@
 
 namespace App\Livewire\Dashboard;
 
-use App\Mail\ValidacionPagoMail;
-use App\Models\Factura;
+
 use App\Models\Pago;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Sleep;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithoutUrlPagination;
-use Livewire\WithPagination;
 
 class PagosComponent extends Component
 {
     use ToastBootstrap;
     use MailBox;
 
+    public $metodo = 'all';
+    public $verMetodo, $verReferencia, $verBanco, $verMoneda, $verMonto, $verFecha, $classEstatus, $verEstatus, $verFactura, $verRowquid, $verCliente, $verTotal, $verBs;
+
     #[Locked]
-    public $rowquid;
+    public $pagos_id, $rowquid, $estatus;
 
     public function render()
     {
-        $listar = Pago::buscar($this->keyword)
-            ->orderBy('factura', $this->order)
-            ->paginate(numRowsPaginate());
-        $rows = Pago::buscar($this->keyword)->count();
+        if ($this->metodo == 'all'){
+            $listar = Pago::buscar($this->keyword)
+                ->orderBy('fecha', $this->order)
+                ->paginate(numRowsPaginate());
+            $rows = Pago::buscar($this->keyword)->count();
+        }else{
+            $listar = Pago::buscar($this->keyword)
+                ->where('metodo', $this->metodo)
+                ->orderBy('fecha', $this->order)
+                ->paginate(numRowsPaginate());
+            $rows = Pago::buscar($this->keyword)->where('metodo', $this->metodo)->count();
+        }
 
         return view('livewire.dashboard.pagos-component')
             ->with('listar', $listar)
             ->with('rows', $rows);
     }
 
-    public function btnSI()
+    public function limpiar()
     {
-        $this->validarPago(1);
+        $this->reset([
+            'verMetodo', 'verReferencia', 'verBanco', 'verMoneda', 'verMonto', 'verFecha', 'classEstatus', 'verEstatus', 'verFactura', 'verRowquid', 'verCliente', 'verTotal', 'verBs',
+            'pagos_id', 'rowquid', 'estatus'
+        ]);
+        $this->resetErrorBag();
     }
 
-    public function btnNO()
+    public function show($rowquid)
     {
-        $this->validarPago(2);
-    }
+        $this->limpiar();
+        $pago = Pago::where('rowquid', $rowquid)->first();
+        if ($pago){
 
-    protected function validarPago($estatus)
-    {
-        $pago = Pago::find($this->pagos_id);
-        $pago->estatus = $estatus;
-        $pago->save();
+            $this->pagos_id = $pago->id;
+            $this->rowquid = $pago->rowquid;
 
+            $this->verMetodo = getMetodoPago($pago->metodo);
+            $this->verReferencia = $pago->referencia;
+            if ($pago->metodo != "zelle"){
+                $this->verBanco = $pago->nombre;
+                $alCambio = $pago->dollar * $pago->factura->factura_total;
+                $this->verBs = " / Bs ".formatoMillares($alCambio);
+            }
+            $this->verMoneda = $pago->moneda;
+            $this->verMonto = formatoMillares($pago->monto);
+            $this->verFecha = getFecha($pago->fecha);
+            if ($pago->estatus == 0){
+                $this->classEstatus = 'text-primary';
+                $this->verEstatus = $this->icono[$pago->estatus]." Esperando Validación";
+            }
+            if ($pago->estatus == 1){
+                $this->classEstatus = 'text-success';
+                $this->verEstatus = $this->icono[$pago->estatus]." Validado";
+            }
+            if ($pago->estatus == 2){
+                $this->classEstatus = 'text-danger';
+                $this->verEstatus = $this->icono[$pago->estatus]." NO Validado (Revisar)";
+            }
+            $this->verFactura = $pago->factura_numero;
+            $this->verRowquid = $pago->factura->rowquid;
+            $this->verCliente = $pago->cliente->nombre." ".$pago->cliente->apellido;
+            $this->verTotal = $pago->factura->organizacion_moneda." ".formatoMillares($pago->factura->factura_total);
 
-        if ($estatus == 1){
-            $factura = Factura::find($pago->facturas_id);
-            $factura->estatus = 1;
-            $factura->save();
+            $this->estatus = $pago->estatus;
+
+        }else{
+            Sleep::for(250)->milliseconds();
+            $this->dispatch('cerrarModalShowPago');
         }
-
-        $this->sendEmail($pago->id);
-        $this->show($pago->rowquid);
-        $this->toastBootstrap();
     }
 
+    public function btnFiltro($key)
+    {
+        $this->metodo = $key;
+    }
+
+    #[On('btnResetPago')]
     public function btnReset()
     {
-        $this->confirmToastBootstrap('resetPago', [
-            'button' => "¡Sí, restablacer!",
-            'message' => "¡Si restableces el pago, su estatus cambiara a Esperando Validación!"
-        ]);
+        $this->setEstatusPago(0);
     }
 
-    #[On('resetPago')]
-    public function resetPago()
+    #[On('btnRechazarPago')]
+    public function btnRechazar()
+    {
+        $this->setEstatusPago(2);
+    }
+
+    #[On('btnAprobarPago')]
+    public function btnAprobar()
+    {
+        $this->setEstatusPago(1);
+    }
+
+    #[On('cerrarModalShowPago')]
+    public function cerrarModal()
+    {
+        //JS
+    }
+
+    protected function setEstatusPago($estatus)
     {
         $pago = Pago::find($this->pagos_id);
-        $pago->estatus = 0;
-        $pago->save();
-
-        $factura = Factura::find($pago->facturas_id);
-        $factura->estatus = 0;
-        $factura->save();
-
-        $this->show($pago->rowquid);
-        $this->toastBootstrap('info', 'Pago Reestablecido.');
-    }
-
-    protected function sendEmail($id)
-    {
-        $pago = Pago::find($id);
-        if ($pago) {
-            $data = [
-                'from_email' => getCorreoSistema(),
-                'from_name' => config('app.name'),
-                'subject' => 'Información sobre tu Pago',
-                'estatus' => $pago->estatus,
-                'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
-                'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
-                'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
-                'pago_metodo' => getMetodoPago($pago->metodo),
-                'pago_referencia' => strtoupper($pago->referencia),
-                'pago_banco' => $pago->nombre,
-                'pago_moneda' => $pago->moneda,
-                'pago_monto' => formatoMillares($pago->monto),
-                'pago_fecha' => getFecha($pago->fecha),
-                'email' => getCorreoSistema(),
-                'telefono' => getTelefonoSistema()
-            ];
-            $to = $pago->cliente->email;
-            Mail::to($to)->send(new ValidacionPagoMail($data));
+        if ($pago){
+            $pago->estatus = $estatus;
+            $pago->save();
+            $this->show($this->rowquid);
         }
     }
+
 
 
 

@@ -6,6 +6,10 @@
             $('#navbar_search_id').addClass('d-none');
         });
 
+        Livewire.on('cerrarModalShowPago', () => {
+            $('#btn_modal_show_pagos').click();
+        });
+
         function select_2(id, data, event) {
 
             let html = '<select class="custom-control custom-select" id="'+ id +'"></select>';

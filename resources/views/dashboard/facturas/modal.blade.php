@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <div class="modal- embed-responsive embed-responsive-4by3" wire:loading.class="invisible">
+            <div class="modal-body embed-responsive embed-responsive-4by3" wire:loading.class="invisible">
 
                 @if($verPDF)
                     <iframe class="embed-responsive-item" src="{{ asset('ViewerJS/#../storage/'.$verPDF) }}" allowfullscreen></iframe>

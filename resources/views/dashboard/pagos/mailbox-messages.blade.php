@@ -1,25 +1,25 @@
 <div class="table-responsive mailbox-messages" style="height: calc(100vh - {{ $size }}px)">
     <table class="table table-hover table-striped">
-        <tbody wire:loading.class="invisible" wire:target.except="setFacturarAutomatico">
+        <tbody wire:loading.class="invisible" wire:target.except="show">
         @if($listar->isNotEmpty())
             @foreach($listar as $registro)
                 <tr>
+                    <td class="text-nowrap" style="width: 5%">
+                        {!! $icono[$registro->estatus] !!}
+                    </td>
                     <td class="text-nowrap text-uppercase" style="width: 10%">
-                        <a href="#">
-                            {{ $registro->factura_numero }}
+                        <a href="#" wire:click="show('{{ $registro->rowquid }}')" data-toggle="modal" data-target="#modal-pagos-show">
+                            {{ $registro->referencia}}
                         </a>
                     </td>
                     <td class="text-nowrap d-none d-md-table-cell " style="width: 10%">
-                        {{ getFecha($registro->factura_fecha) }}
+                        {{ getFecha($registro->fecha) }}
                     </td>
                     <td class="text-nowrap d-none d-md-table-cell  text-uppercase text-truncate" style="max-width: 150px;">
-                        {{ $registro->cliente_nombre }} {{ $registro->cliente_apellido }}
-                    </td>
-                    <td class="text-nowrap" style="width: 5%">
-                        {!! $icono[1] !!}
+                        <b>{{ $registro->factura_numero }}</b> - {{ $registro->cliente->nombre }} {{ $registro->cliente->apellido }}
                     </td>
                     <td class="text-nowrap text-right" style="width: 10%">
-                        <span class="text-bold">{{ $registro->organizacion_moneda }} {{ formatoMillares($registro->factura_total) }}</span>
+                        <span class="text-bold">{{ $registro->moneda }} {{ formatoMillares($registro->monto) }}</span>
                     </td>
                 </tr>
             @endforeach
@@ -40,5 +40,4 @@
         @endif
         </tbody>
     </table>
-    <!-- /.table -->
 </div>

@@ -1,5 +1,5 @@
 <div class="card card-primary card-outline">
-    <div class="card-header" wire:loading.class="invisible" wire:target="show, create">
+    <div class="card-header" wire:loading.class="invisible" wire:target="">
 
         <div class="row p-0">
             <div class="col-7 col-sm-8 col-md-9 p-0">
@@ -12,7 +12,7 @@
                             <i class="fas fa-times"></i>
                         </button>
                     @else
-                        Todos [ <b class="text-warning">{{ $rows }}</b> ]
+                        {{ getMetodoPago($metodo) }} [ <b class="text-warning">{{ $rows }}</b> ]
                     @endif
                 </h3>
             </div>
@@ -36,7 +36,7 @@
     </div>
 
 
-    <div class="card-body p-0" wire:loading.class="invisible" wire:target="show, create">
+    <div class="card-body p-0" wire:loading.class="invisible" wire:target="">
 
         @include('dashboard.pagos.mailbox-controls')
         @include('dashboard.pagos.mailbox-messages')
@@ -44,7 +44,7 @@
     </div>
 
 
-    <div class="card-footer p-0" wire:loading.class="invisible" wire:target="show, create">
+    <div class="card-footer p-0" wire:loading.class="invisible" wire:target="">
         @include('dashboard.pagos.mailbox-controls')
     </div>
 
