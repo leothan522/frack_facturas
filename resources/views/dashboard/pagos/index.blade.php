@@ -8,6 +8,7 @@
     @livewire('dashboard.pagos-component')
     @livewire('dashboard.pagos-registro-component')
     @livewire('dashboard.pagos-reportes-component')
+    @livewire('dashboard.modal-pdf-component')
     @livewire('dashboard.dolar-component')
 @endsection
 

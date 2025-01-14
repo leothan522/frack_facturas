@@ -135,6 +135,10 @@ class PagosComponent extends Component
     }
 
 
+    public function btnVerPDF()
+    {
+        $this->dispatch('initModalVerPDF', pdf: $this->verPDF, title: 'Factura', codigo: $this->facturaNumero);
+    }
 
 
 }

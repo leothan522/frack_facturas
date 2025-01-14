@@ -25,6 +25,8 @@ class FacturasComponent extends Component
     public $organizacionActual = 0;
     public $verFacturasEnviadas = false, $facturasEnviadas = 0;
 
+    public $verOrganizacion, $verFecha, $verCedula, $verCliente, $verPlan, $verTotal, $verBs, $classEstatus, $verEstatus;
+
     #[Locked]
     public $rowquid;
 
@@ -96,7 +98,10 @@ class FacturasComponent extends Component
 
     public function show($rowquid)
     {
-        $this->reset(['send']);
+        $this->reset([
+            'send', 'verOrganizacion', 'verFecha', 'verCedula', 'verCliente', 'verPlan', 'verTotal', 'verBs', 'classEstatus', 'verEstatus',
+        ]);
+
         if ($this->verPDF){
             $path = Storage::exists('public/'.$this->verPDF);
             if ($path) {
@@ -104,13 +109,44 @@ class FacturasComponent extends Component
             }
             $this->reset(['verPDF']);
         }
+
         $factura = Factura::where('rowquid', $rowquid)->first();
         if ($factura) {
+
             $this->facturaNumero = $factura->factura_numero;
             $this->rowquid = $factura->rowquid;
             $this->send = $factura->send;
             $this->verPDF = $this->getPdfFacturaTrait($factura, 'save');
+
+            $this->verOrganizacion = $factura->organizacion_nombre;
+            $this->verFecha = getFecha($factura->factura_fecha);
+            $this->verCedula = formatoMillares($factura->cliente_cedula, 0);
+            $this->verCliente = $factura->cliente_nombre." ".$factura->cliente_apellido;
+            $this->verPlan = $factura->plan_etiqueta .' ('. mesEspanol(getFecha($factura->factura_fecha, 'm')) .')';
+            $this->verTotal = $factura->organizacion_moneda." ".$factura->factura_total;
+            if ($factura->pagos_id){
+                $estatus = $factura->pago->estatus;
+                if ($estatus == 0){
+                    $this->classEstatus = 'text-primary';
+                    $this->verEstatus = $this->icono[$estatus]." Pago Esperando Validación";
+                }
+                if ($estatus == 1){
+                    $this->classEstatus = 'text-success';
+                    $this->verEstatus = $this->icono[$estatus]." Pago Validado";
+                }
+                if ($estatus == 2){
+                    $this->classEstatus = 'text-danger';
+                    $this->verEstatus = $this->icono[$estatus]." Pago NO Validado (Revisar)";
+                }
+            }
+
         }
+
+    }
+
+    public function btnVerPDF()
+    {
+        $this->dispatch('initModalVerPDF', pdf: $this->verPDF, title: 'Factura', codigo: $this->facturaNumero);
     }
 
     #[On('delete')]

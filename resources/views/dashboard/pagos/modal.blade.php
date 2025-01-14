@@ -42,7 +42,8 @@
                     </li>
                     <li class="list-group-item">
                         <span>Factura:</span>
-                        <a href="{{ route('facturas.pdf', $verRowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase">{{ $verFactura }}</a>
+                        <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" data-toggle="modal" data-target="#modal-ver-pdf">{{ $verFactura }}</a>
+                        <a href="{{ route('facturas.pdf', $verRowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase d-none d-md-inline">{{ $verFactura }}</a>
                     </li>
                     <li class="list-group-item">
                         <span>Cliente:</span>

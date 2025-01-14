@@ -4,18 +4,52 @@
 
             <div class="modal-header bg-navy">
                 <h4 class="modal-title" wire:loading.class="invisible">
-                    <span class="text-nowrap">Factura [ <b class="text-warning text-uppercase">{{ $facturaNumero }}</b> ]</span>
+                    Ver Factura
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="text-white" aria-hidden="true">×</span>
                 </button>
             </div>
 
-            <div class="modal-body embed-responsive embed-responsive-4by3" wire:loading.class="invisible">
+            <div class="modal-body p-0" wire:loading.class="invisible">
 
-                @if($verPDF)
-                    <iframe class="embed-responsive-item" src="{{ asset('ViewerJS/#../storage/'.$verPDF) }}" allowfullscreen></iframe>
-                @endif
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <span>Organización:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verOrganizacion }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Factura:</span>
+                        <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" data-toggle="modal" data-target="#modal-ver-pdf">{{ $facturaNumero }}</a>
+                        <a href="{{ route('facturas.pdf', $rowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase d-none d-md-inline">{{ $facturaNumero }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Fecha:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verFecha }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Cédula:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verCedula }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Cliente:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verCliente }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Plan de Servicio:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verPlan }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        <span>Total:</span>
+                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verTotal }}</span>
+                    </li>
+                    @if($verEstatus)
+                        <li class="list-group-item bg-warning">
+                            <span>Estatus:</span>
+                            <span class="float-right text-bold {{ $classEstatus }} text-uppercase">{!! $verEstatus  !!}</span>
+                        </li>
+                    @endif
+                </ul>
 
             </div>
 
