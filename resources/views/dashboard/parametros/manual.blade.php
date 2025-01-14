@@ -10,11 +10,7 @@
     </li>
     <li class="text-wrap">
         <span class="text-nowrap">proximo_codigo_servicios</span>
-        <span class="text-nowrap">[organizaciones_id|numero]</span>
-    </li>
-    <li class="text-wrap">
-        <span class="text-nowrap">formato_codigo_servicios</span>
-        <span class="text-nowrap">[organizaciones_id|text]</span>
+        <span class="text-nowrap">[numero|formato]</span>
     </li>
 </ul>
 

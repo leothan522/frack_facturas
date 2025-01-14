@@ -243,11 +243,13 @@ function nextCodigo($parametros_nombre, $parametros_tabla_id, $nombre_formato = 
         $parametro->nombre = $parametros_nombre;
         $parametro->tabla_id = $parametros_tabla_id;
         $parametro->valor = 2;
+        do{
+            $rowquid = generarStringAleatorio(16);
+            $existe = Parametro::where('rowquid', $rowquid)->first();
+        }while($existe);
+        $parametro->rowquid = $rowquid;
     }
-    do{
-        $rowquid = generarStringAleatorio(16);
-        $existe = Parametro::where('rowquid', $rowquid)->first();
-    }while($existe);
+
     $parametro->save();
 
     $size = cerosIzquierda($next, numSizeCodigo());

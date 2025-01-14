@@ -38,7 +38,7 @@
         <table class="table table-sm table-head-fixed table-hover text-nowrap">
             <thead>
             <tr class="text-lightblue">
-                <th class="text-center text-uppercase" style="width: 5%">id</th>
+                <th class="text-center text-uppercase" style="width: 5%">#</th>
                 <th class="text-uppercase">nombre</th>
                 {{--<th class="d-none d-md-table-cell text-uppercase">table_id</th>
                 <th class="d-none d-md-table-cell text-uppercase">valor</th>--}}

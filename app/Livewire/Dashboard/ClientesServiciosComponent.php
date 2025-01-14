@@ -5,6 +5,7 @@ namespace App\Livewire\Dashboard;
 use App\Mail\ContratoMail;
 use App\Models\Cliente;
 use App\Models\Organizacion;
+use App\Models\Parametro;
 use App\Models\Plan;
 use App\Models\Servicio;
 use App\Traits\ToastBootstrap;
@@ -59,7 +60,7 @@ class ClientesServiciosComponent extends Component
         }else{
             //nuevo
             $servicio = new Servicio();
-            $this->codigo = nextCodigo('proximo_codigo_servicios', $this->organizaciones_id, 'formato_codigo_servicios');
+            $this->codigo = $this->getCodigoServicio();
             do{
                 $rowquid = generarStringAleatorio(16);
                 $existe = Servicio::where('rowquid', $rowquid)->first();
@@ -245,6 +246,46 @@ class ClientesServiciosComponent extends Component
         $planes = Plan::where('organizaciones_id', $id)->orderBy('nombre', 'ASC')->get();
         $data = getDataSelect2($planes, 'nombre');
         $this->dispatch('initSelectPlan', data: $data);
+    }
+
+    protected function getCodigoServicio(): string
+    {
+        $parametro = Parametro::where("nombre", 'proximo_codigo_servicios')->first();
+        if ($parametro) {
+            $numero = $parametro->tabla_id;
+            $formato = $parametro->valor;
+            $id = $parametro->id;
+        }else{
+            $numero = 1;
+            $formato = "S-";
+            $id = null;
+        }
+
+        $size = cerosIzquierda($numero, numSizeCodigo());
+        $codigo = $formato . $size;
+        $this->saveParametro('proximo_codigo_servicios', ++$numero, $formato, $id);
+        return $codigo;
+    }
+
+    protected function saveParametro($nombre, $tabla_id, $valor, $id = null): void
+    {
+        if ($id){
+            $parametro = Parametro::find($id);
+        }else{
+            $parametro = new Parametro();
+            do{
+                $rowquid = generarStringAleatorio(16);
+                $existe = Parametro::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $parametro->rowquid = $rowquid;
+        }
+
+        if ($parametro){
+            $parametro->nombre = $nombre;
+            $parametro->tabla_id = $tabla_id;
+            $parametro->valor = $valor;
+            $parametro->save();
+        }
     }
 
 }

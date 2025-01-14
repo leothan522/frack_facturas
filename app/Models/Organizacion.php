@@ -29,6 +29,13 @@ class Organizacion extends Model
         'rowquid'
     ];
 
+    public function scopeBuscar($query, $keyword)
+    {
+        return $query->where('nombre', 'LIKE', "%$keyword%")
+            ->orWhere('email', 'LIKE', "%$keyword%")
+            ;
+    }
+
     public function planes(): HasMany
     {
         return $this->hasMany(Plan::class, 'organizaciones_id', 'id');
@@ -42,13 +49,6 @@ class Organizacion extends Model
     public function facturas(): HasMany
     {
         return $this->hasMany(Factura::class, 'organizaciones_id', 'id');
-    }
-
-    public function scopeBuscar($query, $keyword)
-    {
-        return $query->where('nombre', 'LIKE', "%$keyword%")
-            ->orWhere('email', 'LIKE', "%$keyword%")
-            ;
     }
 
 }
