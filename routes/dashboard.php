@@ -40,12 +40,11 @@ Route::middleware([
     Route::get('export/usuarios/{buscar?}', [UsuariosController::class, 'export'])->name('usuarios.excel');
 
     Route::get('pruebas', [PruebasController::class, 'index'])->name('pagina.pruebas');
-
     Route::get('clientes', [ ClientesController::class, 'index'])->name('clientes.index');
+    Route::get('clientes/export', [ClientesController::class, 'export'])->name('clientes.excel');
     Route::get('organizaciones', [ OrganizacionesController::class, 'index'])->name('organizaciones.index');
     Route::get('planes', [PlanesController::class, 'index'])->name('planes.index');
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
-    //Route::get('facturas/{id}/export', [FacturasController::class, 'exportFactura'])->name('facturas.pdf');
     Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('pagos', [PagosController::class, 'index'])->name('pagos.index');
 

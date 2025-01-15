@@ -5,4 +5,7 @@
     <div class="col-md-7 col-lg-8 @if($ocultarCard) d-none @endif d-md-block">
         @include('dashboard.clientes.card_view')
     </div>
+    <div class="col-sm-6 d-md-none">
+        @include('dashboard.clientes.tareas')
+    </div>
 </div>
