@@ -10,64 +10,28 @@
             $('#btn_modal_show_pagos').click();
         });
 
-        function select_2(id, data, event) {
-
-            let html = '<select class="custom-control custom-select" id="'+ id +'"></select>';
-
-            $("#div_" + id).html(html);
-
-            $("#" + id).select2({
-                dropdownParent: $('#modal-default-registrar-pago'),
-                theme: 'bootstrap4',
-                data: data,
-                placeholder: 'Seleccione'
-            })
-                .val(null)
-                .trigger('change')
-                .on('change', function () {
-                    let value = $(this).val();
-                    Livewire.dispatch(event, { rowquid: value });
-                });
+        function initReporte() {
+            Livewire.dispatch('limpiar');
         }
 
-        function initRegistro() {
-            Livewire.dispatch('initRegistrarPago');
+        function ocultarFormRegistroPago() {
+            addClassinvisible('#card_registro_pago_header')
+            addClassinvisible('#card_registro_pago_body')
+            verCargando('card_registro_pago')
         }
 
-        Livewire.on('initCliente', ({ data }) => {
-            select_2("select_clientes", data, "getCliente");
+        Livewire.on('initRegistrarPago', () => {
+            ocultarFormRegistroPago();
         });
 
-        Livewire.on('setCliente', ({ rowquid }) => {
-            $("#select_clientes").val(rowquid).trigger('change');
-        });
-
-        Livewire.on('initBanco', ({ data }) => {
-            select_2("select_bancos", data, 'getBanco');
-        });
-
-        Livewire.on('setBanco', ({ rowquid }) => {
-            $("#select_bancos").val(rowquid).trigger('change');
-        });
-
-        function pegarPortapapeles() {
-            navigator.clipboard.readText()
-                .then(text => {
-                    Livewire.dispatch('pegarReferencia', { referencia: text });
-                    console.log('Texto del portapapeles:', text)
-                })
-                .catch(err => {
-                    console.error('Error al leer del portapapeles:', err)
-                });
+        function cancelarRegistroPago() {
+            ocultarFormRegistroPago()
+            Livewire.dispatch('btnCancelRegistrar');
         }
 
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
         });
-
-        function initReporte() {
-            Livewire.dispatch('limpiar');
-        }
 
         console.log('Hi!');
     </script>

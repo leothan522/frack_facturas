@@ -22,6 +22,7 @@ class PagosComponent extends Component
 
     public $metodo = 'all';
     public $verMetodo, $verReferencia, $verBanco, $verMoneda, $verMonto, $verFecha, $classEstatus, $verEstatus, $verFactura, $verRowquid, $verCliente, $verTotal, $verBs;
+    public $registrarPago = false;
 
     #[Locked]
     public $pagos_id, $rowquid, $estatus;
@@ -50,6 +51,7 @@ class PagosComponent extends Component
     {
         $this->reset([
             'verMetodo', 'verReferencia', 'verBanco', 'verMoneda', 'verMonto', 'verFecha', 'classEstatus', 'verEstatus', 'verFactura', 'verRowquid', 'verCliente', 'verTotal', 'verBs',
+            'registrarPago',
             'pagos_id', 'rowquid', 'estatus'
         ]);
         $this->resetErrorBag();
@@ -131,6 +133,18 @@ class PagosComponent extends Component
     public function cerrarModal()
     {
         //JS
+    }
+
+    public function btnRegistrarPago()
+    {
+        $this->dispatch('initRegistrarPago');
+        $this->registrarPago = true;
+    }
+
+    #[On('btnCancelRegistrar')]
+    public function btnCancelRegistrar()
+    {
+        $this->limpiar();
     }
 
     protected function setEstatusPago($estatus)

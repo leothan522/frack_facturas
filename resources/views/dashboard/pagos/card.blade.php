@@ -11,11 +11,11 @@
     <div class="card-body p-0">
         <ul class="nav nav-pills flex-column">
             <li class="nav-item active">
-                <a href="#" class="nav-link" onclick="initRegistro()" data-toggle="modal" data-target="#modal-default-registrar-pago">
-                    <span wire:loading wire:target="">
+                <a href="#" class="nav-link" wire:click.prevent="btnRegistrarPago">
+                    <span wire:loading wire:target="btnRegistrarPago">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
                     </span>
-                    <span wire:loading.class="d-none" wire:target="">
+                    <span wire:loading.class="d-none" wire:target="btnRegistrarPago">
                         <i class="fas fa-donate"></i> Registrar Pago
                     </span>
                 </a>

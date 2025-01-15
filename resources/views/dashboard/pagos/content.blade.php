@@ -1,4 +1,4 @@
-<div class="row justify-content-center">
+<div class="row justify-content-center @if($registrarPago) d-none @endif">
 
     <div class="col-md-4 col-lg-3 d-none d-md-block">
         @include('dashboard.pagos.card')
@@ -13,4 +13,10 @@
         @include('dashboard.pagos.card')
     </div>
 
+</div>
+
+<div class="row justify-content-center @if(!$registrarPago) d-none @endif">
+    <div class="col-md-6">
+        @livewire('dashboard.pagos-registrar-component')
+    </div>
 </div>
