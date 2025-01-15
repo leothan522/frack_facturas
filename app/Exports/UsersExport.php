@@ -45,7 +45,7 @@ class UsersExport implements FromView, WithTitle, WithProperties, ShouldAutoSize
             'creator'        => config('app.name'),
             'lastModifiedBy' => Auth::user()->name,
             'title'          => 'Usuarios Registrados',
-            'company'        => 'MOrros Devops',
+            'company'        => 'Mrros Devops',
         ];
     }
 

@@ -15,6 +15,6 @@ class ClientesController extends Controller
 
     public function export()
     {
-        return \Excel::download(new ClientesExport(), 'clientes.xlsx');
+        return \Excel::download(new ClientesExport(), "Clientes_Registrados_".date('d-m-Y').".xlsx");
     }
 }
