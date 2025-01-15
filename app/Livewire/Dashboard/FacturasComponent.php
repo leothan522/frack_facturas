@@ -21,7 +21,7 @@ class FacturasComponent extends Component
     use Facturas;
 
     public $idFacturarAutomatico, $facturarAutomatico, $nuevasFacturas = 0, $verNuevasFacturas = false;
-    public $verPDF, $send;
+    public $send;
     public $organizacionActual = 0;
     public $verFacturasEnviadas = false, $facturasEnviadas = 0;
 
@@ -102,21 +102,12 @@ class FacturasComponent extends Component
             'send', 'verOrganizacion', 'verFecha', 'verCedula', 'verCliente', 'verPlan', 'verTotal', 'verBs', 'classEstatus', 'verEstatus',
         ]);
 
-        if ($this->verPDF){
-            $path = Storage::exists('public/'.$this->verPDF);
-            if ($path) {
-                Storage::delete('public/'.$this->verPDF);
-            }
-            $this->reset(['verPDF']);
-        }
-
         $factura = Factura::where('rowquid', $rowquid)->first();
         if ($factura) {
 
             $this->facturaNumero = $factura->factura_numero;
             $this->rowquid = $factura->rowquid;
             $this->send = $factura->send;
-            $this->verPDF = $this->getPdfFacturaTrait($factura, 'save');
 
             $this->verOrganizacion = $factura->organizacion_nombre;
             $this->verFecha = getFecha($factura->factura_fecha);
@@ -146,7 +137,7 @@ class FacturasComponent extends Component
 
     public function btnVerPDF()
     {
-        $this->dispatch('initModalVerPDF', pdf: $this->verPDF, title: 'Factura', codigo: $this->facturaNumero);
+        $this->showPdfFacturaTrait($this->rowquid);
     }
 
     #[On('delete')]
@@ -180,6 +171,7 @@ class FacturasComponent extends Component
     {
         $send = $this->sendFacturaTrait($this->rowquid);
         if ($send){
+            $this->show($this->rowquid);
             $nombre = '<b class="text-uppercase text-warning">'.$this->facturaNumero.'</b>';
             $this->toastBootstrap('info', "Factura $nombre Enviada.");
         }

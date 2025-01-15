@@ -32,6 +32,13 @@ $("#button_telefono_soporte_sistema").click(function (e) {
     Livewire.dispatch('initTelefono');
 });
 
+function verModalPDF() {
+    addClassinvisible('#modal_ver_pdf_header');
+    addClassinvisible('#modal_ver_pdf_body');
+    addClassinvisible('#modal_ver_pdf_footer');
+    verCargando('modal-ver-pdf');
+}
+
 /**
  * Muestra un Spinner mientras Carga.
  *

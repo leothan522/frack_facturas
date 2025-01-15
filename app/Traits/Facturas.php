@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 trait Facturas
 {
     public $facturaNumero, $facturaRowquid;
+    public $verPDF;
 
     protected function createFacturaTrait($servicios_id): bool
     {
@@ -295,5 +296,22 @@ trait Facturas
             }
         }
         //$this->alert('success', 'Factura Generada.');
+    }
+
+    protected function showPdfFacturaTrait($rowquid): void
+    {
+        if ($this->verPDF){
+            $path = Storage::exists('public/'.$this->verPDF);
+            if ($path) {
+                Storage::delete('public/'.$this->verPDF);
+            }
+            $this->reset(['verPDF']);
+        }
+
+        $factura = Factura::where('rowquid', $rowquid)->first();
+        if ($factura){
+            $this->verPDF = $this->getPdfFacturaTrait($factura, 'save');
+            $this->dispatch('initModalVerPDF', pdf: $this->verPDF, title: 'Factura', codigo: $factura->factura_numero);
+        }
     }
 }

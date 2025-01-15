@@ -3,7 +3,7 @@
         <div class="modal-content">
 
             <div class="modal-header bg-navy">
-                <h4 class="modal-title" wire:loading.class="invisible">
+                <h4 class="modal-title" wire:loading.class="invisible" wire:target.except="btnVerPDF">
                     Ver Pago
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -11,7 +11,7 @@
                 </button>
             </div>
 
-            <div class="modal-body p-0" wire:loading.class="invisible">
+            <div class="modal-body p-0" wire:loading.class="invisible" wire:target.except="btnVerPDF">
 
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item bg-warning">
@@ -42,7 +42,7 @@
                     </li>
                     <li class="list-group-item">
                         <span>Factura:</span>
-                        <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" data-toggle="modal" data-target="#modal-ver-pdf">{{ $verFactura }}</a>
+                        <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" onclick="verModalPDF()" data-toggle="modal" data-target="#modal-ver-pdf">{{ $verFactura }}</a>
                         <a href="{{ route('facturas.pdf', $verRowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase d-none d-md-inline">{{ $verFactura }}</a>
                     </li>
                     <li class="list-group-item">
@@ -59,7 +59,7 @@
 
             <div class="modal-footer">
 
-                <div class="row col-12 justify-content-between" wire:loading.class="invisible">
+                <div class="row col-12 justify-content-between" wire:loading.class="invisible" wire:target.except="btnVerPDF">
 
                     @if($estatus)
                         <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('btnResetPago', 'NoParametros', { type: 'info', message: 'Su Estatus cambiara a <b>ESPERANDO VALIDACIÓN</b>', button: '¡SI, Reset!'})">

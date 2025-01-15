@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard;
 
 
 use App\Models\Pago;
+use App\Traits\Facturas;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;
 use Illuminate\Support\Sleep;
@@ -15,6 +16,7 @@ class PagosComponent extends Component
 {
     use ToastBootstrap;
     use MailBox;
+    use Facturas;
 
     public $metodo = 'all';
     public $verMetodo, $verReferencia, $verBanco, $verMoneda, $verMonto, $verFecha, $classEstatus, $verEstatus, $verFactura, $verRowquid, $verCliente, $verTotal, $verBs;
@@ -95,6 +97,11 @@ class PagosComponent extends Component
         }
     }
 
+    public function btnVerPDF()
+    {
+        $this->showPdfFacturaTrait($this->verRowquid);
+    }
+
     public function btnFiltro($key)
     {
         $this->metodo = $key;
@@ -132,12 +139,6 @@ class PagosComponent extends Component
             $pago->save();
             $this->show($this->rowquid);
         }
-    }
-
-
-    public function btnVerPDF()
-    {
-        $this->dispatch('initModalVerPDF', pdf: $this->verPDF, title: 'Factura', codigo: $this->facturaNumero);
     }
 
 

@@ -3,7 +3,7 @@
         <div class="modal-content">
 
             <div class="modal-header bg-navy">
-                <h4 class="modal-title" wire:loading.class="invisible">
+                <h4 class="modal-title" id="modal_ver_pdf_header" wire:loading.class="invisible">
                     <span class="text-nowrap">
                         {{ $title }}
                         @if($codigo)
@@ -16,7 +16,7 @@
                 </button>
             </div>
 
-            <div class="modal-body embed-responsive embed-responsive-4by3" wire:loading.class="invisible">
+            <div class="modal-body embed-responsive embed-responsive-4by3" id="modal_ver_pdf_body" wire:loading.class="invisible">
 
                 @if($verPDF)
                     <iframe class="embed-responsive-item" src="{{ asset('ViewerJS/#../storage/'.$verPDF) }}" allowfullscreen></iframe>
@@ -24,7 +24,7 @@
 
             </div>
 
-            <div class="modal-footer" wire:loading.class="invisible">
+            <div class="modal-footer" id="modal_ver_pdf_footer" wire:loading.class="invisible">
                 <button type="button" class="btn btn-default" data-dismiss="modal">
                     Cerrar
                 </button>
