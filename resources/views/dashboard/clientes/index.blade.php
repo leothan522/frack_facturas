@@ -8,6 +8,7 @@
     @livewire('dashboard.clientes-component')
     @livewire('dashboard.clientes-servicios-component')
     @livewire('dashboard.clientes-facturas-component')
+    @livewire('dashboard.modal-pdf-component')
     @livewire('dashboard.dolar-component')
 @endsection
 

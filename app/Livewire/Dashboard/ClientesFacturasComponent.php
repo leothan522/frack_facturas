@@ -116,4 +116,9 @@ class ClientesFacturasComponent extends Component
         $this->btnSendFactura($rowquid);
     }
 
+    public function btnVerPDF($rowquid)
+    {
+        $this->showPdfFacturaTrait($rowquid);
+    }
+
 }

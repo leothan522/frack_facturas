@@ -43,7 +43,7 @@ class PagosReportesComponent extends Component
             $pagos = Pago::whereBetween('fecha', [$this->desde, $this->hasta])->where('metodo', $this->filtro)->orderBy('fecha')->get();
         }
 
-        $this->toastBootstrap('info', 'Generando reporte.');
+        $this->toastBootstrap('info', 'Descarga Iniciada.');
         return Excel::download(new PagosExport($pagos), "Pagos_$name.xlsx");
     }
 

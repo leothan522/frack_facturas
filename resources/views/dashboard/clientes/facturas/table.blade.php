@@ -8,7 +8,7 @@
         <th class="text-center" style="width: 5%;"><small>Rows @if($listar) {{ $listar->count() }} @endif</small></th>
     </tr>
     </thead>
-    <tbody id="tbody_facturas_cliente" wire:loading.class="invisible">
+    <tbody id="tbody_facturas_cliente" wire:loading.class="invisible" wire:target.except="btnVerPDF">
     @if($listar)
         @if($listar->isNotEmpty())
             @php($i = 0)
@@ -21,7 +21,7 @@
                         </a>
                     </td>
                     <td class="align-middle">
-                        <a class="d-md-none" href="{{ route('facturas.pdf', $factura->rowquid) }}" target="_blank">
+                        <a class="d-md-none" href="#" wire:click="btnVerPDF('{{ $factura->rowquid }}')"  onclick="verModalPDF()" data-toggle="modal" data-target="#modal-ver-pdf">
                             {{ getFecha($factura->factura_fecha) }}
                         </a>
                         <span class="d-none d-md-inline">

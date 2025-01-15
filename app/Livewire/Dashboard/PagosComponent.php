@@ -3,10 +3,12 @@
 namespace App\Livewire\Dashboard;
 
 
+use App\Mail\ValidacionPagoMail;
 use App\Models\Pago;
 use App\Traits\Facturas;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Sleep;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
@@ -137,9 +139,37 @@ class PagosComponent extends Component
         if ($pago){
             $pago->estatus = $estatus;
             $pago->save();
+            if ($estatus){
+                $this->sendEmail($pago->id);
+            }
             $this->show($this->rowquid);
         }
     }
 
+    protected function sendEmail($id)
+    {
+        $pago = Pago::find($id);
+        if ($pago) {
+            $data = [
+                'from_email' => getCorreoSistema(),
+                'from_name' => config('app.name'),
+                'subject' => 'Información sobre tu Pago',
+                'estatus' => $pago->estatus,
+                'cliente_nombre' => strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido),
+                'factura_mes' => strtoupper(mesEspanol(getFecha($pago->factura->factura_fecha, "m"))),
+                'factura_year' => getFecha($pago->factura->factura_fecha, "Y"),
+                'pago_metodo' => getMetodoPago($pago->metodo),
+                'pago_referencia' => strtoupper($pago->referencia),
+                'pago_banco' => $pago->nombre,
+                'pago_moneda' => $pago->moneda,
+                'pago_monto' => formatoMillares($pago->monto),
+                'pago_fecha' => getFecha($pago->fecha),
+                'email' => getCorreoSistema(),
+                'telefono' => getTelefonoSistema()
+            ];
+            $to = $pago->cliente->email;
+            Mail::to($to)->send(new ValidacionPagoMail($data));
+        }
+    }
 
 }

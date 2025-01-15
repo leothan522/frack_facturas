@@ -9,7 +9,6 @@ use App\Models\Parametro;
 use App\Traits\Facturas;
 use App\Traits\MailBox;
 use App\Traits\ToastBootstrap;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
