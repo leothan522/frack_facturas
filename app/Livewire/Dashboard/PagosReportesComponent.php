@@ -20,7 +20,7 @@ class PagosReportesComponent extends Component
         return view('livewire.dashboard.pagos-reportes-component');
     }
 
-    #[On('limpiar')]
+    #[On('initReporte')]
     public function limpiar()
     {
         $this->reset(['filtro', 'desde', 'hasta']);

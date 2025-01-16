@@ -16,7 +16,7 @@
 </div>
 
 <div class="row justify-content-center @if(!$registrarPago) d-none @endif">
-    <div class="col-md-6">
+    <div class="col-md-8 col-lg-9">
         @livewire('dashboard.pagos-registrar-component')
     </div>
 </div>

@@ -1,6 +1,7 @@
 <div style="height: 30px;">
     &nbsp;
 </div>
+
 <div class="form-group">
     <small class="text-lightblue text-bold text-uppercase">Organización:</small>
     <div wire:ignore>

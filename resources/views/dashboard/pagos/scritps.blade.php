@@ -11,7 +11,7 @@
         });
 
         function initReporte() {
-            Livewire.dispatch('limpiar');
+            Livewire.dispatch('initReporte');
         }
 
         function ocultarFormRegistroPago() {
@@ -28,6 +28,38 @@
             ocultarFormRegistroPago()
             Livewire.dispatch('btnCancelRegistrar');
         }
+
+        function select_2(id, data, event) {
+            let html = '<select class="custom-select" id="'+ id +'"></select>';
+            $('#div_' + id).html(html);
+
+            $('#'  + id).select2({
+                theme: 'bootstrap4',
+                data: data,
+                placeholder: 'Seleccione',
+            })
+                .val(null)
+                .trigger('change')
+                .on('change', function() {
+                    let value = $(this).val();
+                    Livewire.dispatch(event, { id: value });
+                });
+        }
+
+        Livewire.on('initSelectCliente', ({ data }) => {
+            select_2('select_registrar_clientes', data, 'getSelectCliente');
+            if ($('#select_registrar_facturas')){
+                $('#select_registrar_facturas').val(null).trigger('change');
+            }
+        });
+
+        Livewire.on('initSelectFactura', ({ data }) =>{
+            select_2('select_registrar_facturas', data, 'getSelectFactura');
+        });
+
+        Livewire.on('initSelectBanco', ({ data }) => {
+            select_2('select_registrar_bancos', data, 'getSelectBanco');
+        });
 
         $(document).on('select2:open', () => {
             document.querySelector('.select2-search__field').focus();
