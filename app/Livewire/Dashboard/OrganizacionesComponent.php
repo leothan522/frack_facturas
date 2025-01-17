@@ -34,6 +34,7 @@ class OrganizacionesComponent extends Component
         $this->setTitle();
         $this->modulo = 'organizaciones';
         $this->lastRegistro();
+        $this->setSize(306);
     }
 
     public function render()

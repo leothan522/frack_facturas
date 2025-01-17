@@ -99,9 +99,19 @@ trait CardView
     protected function setSizeFooter()
     {
         if ($this->form) {
-            $this->sizeFooter = 55;
+            if ($this->ocultarTable){
+                $this->sizeFooter = 60;
+            }else{
+                $this->sizeFooter = 55;
+            }
+
         }else{
-            $this->sizeFooter = 0;
+            if ($this->ocultarTable){
+                $this->sizeFooter = 5;
+            }else{
+                $this->sizeFooter = 0;
+            }
+
         }
     }
 
