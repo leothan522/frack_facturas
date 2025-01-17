@@ -62,9 +62,15 @@
                 <div class="row col-12 justify-content-between" wire:loading.class="invisible" wire:target.except="btnVerPDF">
 
                     @if($estatus)
-                        <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('btnResetPago', 'NoParametros', { type: 'info', message: 'Su Estatus cambiara a <b>ESPERANDO VALIDACIÓN</b>', button: '¡SI, Reset!'})">
-                            <i class="fas fa-eraser"></i> Reset
-                        </button>
+                        @if($band)
+                            <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('delete', 'NoParametros')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('btnResetPago', 'NoParametros', { type: 'info', message: 'Su Estatus cambiara a <b>ESPERANDO VALIDACIÓN</b>', button: '¡SI, Reset!'})">
+                                <i class="fas fa-eraser"></i> Reset
+                            </button>
+                        @endif
                     @else
                         <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('btnRechazarPago', 'NoParametros', { type: 'error', message: 'Su Estatus cambiara a <b>NO VALIDADO (REVISAR)</b>', button: '¡SI, Rechazar!'})">
                             <i class="fas fa-exclamation-triangle"></i> Rechazar

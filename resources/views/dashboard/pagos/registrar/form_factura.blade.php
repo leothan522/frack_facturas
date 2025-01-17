@@ -1,5 +1,5 @@
 <div class="form-group">
-    <small class="text-lightblue text-bold text-uppercase">Clientes:</small>
+    <small class="text-lightblue text-bold text-uppercase">Cliente:</small>
     <div wire:ignore>
         <div id="div_select_registrar_clientes" class="input-group">
             <select class="custom-select">
@@ -13,7 +13,7 @@
 </div>
 
 <div class="form-group">
-    <small class="text-lightblue text-bold text-uppercase">Facturas Pendientes:</small>
+    <small class="text-lightblue text-bold text-uppercase">Factura:</small>
     <div wire:ignore>
         <div id="div_select_registrar_facturas" class="input-group">
             <select class="custom-select">

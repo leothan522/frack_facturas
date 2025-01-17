@@ -25,7 +25,7 @@
         });
 
         function cancelarRegistroPago() {
-            ocultarFormRegistroPago()
+            ocultarFormRegistroPago();
             Livewire.dispatch('btnCancelRegistrar');
         }
 
@@ -59,6 +59,10 @@
 
         Livewire.on('initSelectBanco', ({ data }) => {
             select_2('select_registrar_bancos', data, 'getSelectBanco');
+        });
+
+        Livewire.on('cerrarFormRegistro', () => {
+            cancelarRegistroPago();
         });
 
         $(document).on('select2:open', () => {

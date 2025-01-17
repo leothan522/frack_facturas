@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pago extends Model
 {
+    use SoftDeletes;
+
     protected $table = "pagos";
     protected $fillable = [
         'referencia',
@@ -27,6 +30,7 @@ class Pago extends Model
         'clientes_id',
         'facturas_id',
         'estatus',
+        'band',
         'rowquid'
     ];
 

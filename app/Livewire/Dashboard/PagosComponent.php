@@ -4,6 +4,7 @@ namespace App\Livewire\Dashboard;
 
 
 use App\Mail\ValidacionPagoMail;
+use App\Models\Factura;
 use App\Models\Pago;
 use App\Traits\Facturas;
 use App\Traits\MailBox;
@@ -25,7 +26,7 @@ class PagosComponent extends Component
     public $registrarPago = false;
 
     #[Locked]
-    public $pagos_id, $rowquid, $estatus;
+    public $pagos_id, $rowquid, $estatus, $band;
 
     public function render()
     {
@@ -52,7 +53,7 @@ class PagosComponent extends Component
         $this->reset([
             'verMetodo', 'verReferencia', 'verBanco', 'verMoneda', 'verMonto', 'verFecha', 'classEstatus', 'verEstatus', 'verFactura', 'verRowquid', 'verCliente', 'verTotal', 'verBs',
             'registrarPago',
-            'pagos_id', 'rowquid', 'estatus'
+            'pagos_id', 'rowquid', 'estatus', 'band',
         ]);
         $this->resetErrorBag();
     }
@@ -94,6 +95,7 @@ class PagosComponent extends Component
             $this->verTotal = $pago->factura->organizacion_moneda." ".formatoMillares($pago->factura->factura_total);
 
             $this->estatus = $pago->estatus;
+            $this->band = $pago->band;
 
         }else{
             Sleep::for(250)->milliseconds();
@@ -109,6 +111,35 @@ class PagosComponent extends Component
     public function btnFiltro($key)
     {
         $this->metodo = $key;
+    }
+
+    #[On('delete')]
+    public function delete()
+    {
+        $registro = Pago::find($this->pagos_id);
+        if ($registro){
+
+            //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
+            $vinculado = false;
+
+            if ($vinculado) {
+                $this->htmlToastBoostrap();
+            } else {
+                $factura = Factura::find($registro->facturas_id);
+                $factura->pagos_id = null;
+
+                $nombre = '<b class="text-uppercase text-warning">'.$registro->referencia.'</b>';
+                $registro->referencia = "*".$registro->referencia;
+                $registro->save();
+                $registro->delete();
+
+                $factura->save();
+                $this->dispatch('cerrarModalShowPago');
+                $this->toastBootstrap('success', "Pago $nombre Eliminado.");
+            }
+
+        }
+
     }
 
     #[On('btnResetPago')]
