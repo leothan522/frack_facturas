@@ -31,6 +31,7 @@ class ClientesComponent extends Component
         $this->setTitle();
         $this->modulo = 'clientes';
         $this->lastRegistro();
+        $this->setSize(306);
     }
 
     public function render()
