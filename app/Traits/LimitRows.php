@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait LimitRows
 {
-    public int $size = 305; //max-height: 305px;
+    public int $size = 299; //max-height: 305px;
     public int $limit = 0;
     public bool $btnDisabled = true;
 

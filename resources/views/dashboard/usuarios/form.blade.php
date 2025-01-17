@@ -18,7 +18,7 @@
             </button>--}}
         </div>
     </div>
-    <div class="card-body" wire:loading.class="invisible" wire:target="create, cancel, save" style="max-height: calc(100vh - {{ $size }}px)">
+    <div class="card-body table-responsive" wire:loading.class="invisible" wire:target="create, cancel, save" style="max-height: calc(100vh - {{ $size - ($sizeShow - 49) }}px)">
 
         <form wire:submit="save">
 

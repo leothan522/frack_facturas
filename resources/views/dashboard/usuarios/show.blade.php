@@ -13,7 +13,7 @@
             </button>
         </div>
     </div>
-    <div id="div_show_body" class="card-body box-profile" wire:loading.class="invisible" wire:target="show, showHide, editHide">
+    <div id="div_show_body" class="card-body box-profile table-responsive" wire:loading.class="invisible" wire:target="show, showHide, editHide" style="max-height: calc(100vh - {{ $size - $sizeShow }}px)">
         <div class="text-center">
             <img class="profile-user-img img-fluid img-circle" src="{{ verImagen(null, true) }}" alt="User profile picture">
         </div>
