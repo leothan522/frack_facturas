@@ -129,7 +129,7 @@
                                     <table cellpadding="0" cellspacing="0" border="0" width="90%" em="atom">
                                         <tr>
                                             <td style="padding-bottom: 15px; padding-top: 15px;" align="justify">
-                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 24px; color: #004449;" class="em-font-Montserrat-Regular" align="justify"><strong>Soporte y asistencia:</strong> Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Nuestro equipo de soporte está disponible las 24 horas del día, los 7 días de la semana, para asistirte en todo lo que necesites.</div>
+                                                <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px; line-height: 24px; color: #004449;" class="em-font-Montserrat-Regular" align="justify"><strong>Soporte y asistencia:</strong> Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos. Nuestro equipo de soporte está disponible en horario laboral de Lunes a Viernes para asistirte en todo lo que necesites.</div>
                                             </td>
                                         </tr>
                                     </table>
