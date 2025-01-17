@@ -28,6 +28,7 @@ class PlanesComponent extends Component
         $this->setTitle();
         $this->modulo = 'planes';
         $this->lastRegistro();
+        $this->setSize(306);
     }
 
     public function render()
