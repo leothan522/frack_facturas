@@ -13,6 +13,7 @@ class MetodosComponent extends Component
 {
     use ToastBootstrap;
 
+    public $size = 179;
     public $view = "show", $classTransferencia = 'card-danger', $classPagoMovil = 'card-danger', $classZelle = 'card-danger';
     public $bancoTransferencia, $bancoPagoMovil;
     public $metodo, $titular, $cuenta, $tipo, $prefijo = 'V-', $numero, $cedula, $telefono, $email;
@@ -35,7 +36,7 @@ class MetodosComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'view',
+            'view', 'size',
             'bancoTransferencia', 'bancoPagoMovil',
             'metodo', 'titular', 'cuenta', 'tipo', 'prefijo', 'numero','cedula', 'telefono', 'email',
             'metodos_id', 'rowquid'
@@ -46,6 +47,7 @@ class MetodosComponent extends Component
     public function irTransferencia()
     {
         $this->limpiar();
+        $this->size = 248;
         $bancos = Banco::all();
         $data = getDataSelect2($bancos, 'nombre', 'id');
         $this->dispatch('initBancoTranferencia', data: $data);
@@ -57,6 +59,7 @@ class MetodosComponent extends Component
     public function irPagoMovil()
     {
         $this->limpiar();
+        $this->size = 248;
         $bancos = Banco::all();
         $data = getDataSelect2($bancos, 'nombre', 'id');
         $this->dispatch('initBancoPagoMovil', data: $data);
@@ -67,6 +70,7 @@ class MetodosComponent extends Component
 
     public function irZelle(){
         $this->limpiar();
+        $this->size = 248;
         $this->getDatosZelle();
         $this->metodo = "zelle";
         $this->view = "zelle";
@@ -220,13 +224,8 @@ class MetodosComponent extends Component
         }
     }
 
-    public function destroy()
-    {
-        $this->confirmToastBootstrap('confirmed');
-    }
-
-    #[On('confirmed')]
-    public function confirmed()
+    #[On('delete')]
+    public function delete()
     {
         $metodo = Metodo::find($this->metodos_id);
 

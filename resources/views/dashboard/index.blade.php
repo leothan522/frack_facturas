@@ -12,12 +12,23 @@
     <p>Correo Electrónico: <b class="text-danger" id="ver_print_email"></b></p>
     <p>Teléfono Soporte: <b class="text-danger" id="ver_print_telefono"></b></p>--}}
 
-    <div class="card card-primary card-outline">
-        <div class="card-body">
-            <p>Bienvenido al Panel de Administración.</p>
-            <p>Precio Dólar: <b class="text-lightblue" id="ver_print_dollar"></b></p>
-            <p>Correo Electrónico: <b class="text-lightblue" id="ver_print_email"></b></p>
-            <p>Teléfono Soporte: <b class="text-lightblue" id="ver_print_telefono"></b></p>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card card-primary card-outline" id="card_dashboard">
+                <div class="card-body invisible" id="card_dashboard_body">
+                    <p>Bienvenido al Panel de Administración.</p>
+                    <p>Precio Dólar: <b class="text-lightblue" id="ver_print_dollar"></b></p>
+                    <p>Correo Soporte: <b class="text-lightblue" id="ver_print_email"></b></p>
+                    <p>Teléfono Soporte: <b class="text-lightblue" id="ver_print_telefono"></b></p>
+                </div>
+                <div class="overlay-wrapper" id="ver_cargando_dashboard">
+                <div class="overlay bg-transparent">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            </div>
         </div>
     </div>
 
@@ -47,8 +58,14 @@
             Livewire.dispatch('verTelefono');
         });
 
+        function removerCargando() {
+            $("#ver_cargando_dashboard").addClass('d-none');
+            $("#card_dashboard_body").removeClass('invisible');
+        }
+
         Livewire.on('printDollar', ({ dollar }) => {
             $("#ver_print_dollar").text(dollar);
+            removerCargando();
         });
 
         Livewire.on('printEmail', ({ email }) => {

@@ -1,4 +1,4 @@
-<div class="card card-navy">
+<div class="card card-primary card-outline">
 
     <div class="card-header">
         <h3 class="card-title">Pago móvil</h3>
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="card-body">
+    <div class="card-body table-responsive" wire:loading.class="invisible" style="max-height: calc(100vh - {{ $size }}px)">
 
 
         <form wire:submit="savePagoMovil">
@@ -20,30 +20,24 @@
 
             @if($metodos_id)
                 <div class="float-right">
-                    <button type="button" class="btn btn-sm" wire:click="destroy">
+                    <button type="button" class="btn btn-sm" onclick="confirmToastBootstrap('delete', 'NoParametros')">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </button>
                 </div>
             @endif
 
             <div class="form-group">
-                <label for="name">Número de teléfono:</label>
+                <small class="text-lightblue text-bold text-uppercase">Número de teléfono:</small>
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="far fa-bookmark"></i></span>
-                    </div>
-                    <input type="number" step="2" class="form-control" wire:model="telefono" placeholder="Número de teléfono">
+                    <input type="number" step="1" wire:model="telefono" class="form-control @error('telefono') is-invalid @enderror" placeholder="Número de teléfono">
                     @error('telefono')
-                    <span class="col-sm-12 text-sm text-bold text-danger">
-                        <i class="icon fas fa-exclamation-triangle"></i>
-                        {{ $message }}
-                    </span>
+                    <span class="error invalid-feedback text-bold">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="name">Rif / Cedula:</label>
+                <small class="text-lightblue text-bold text-uppercase">Rif / Cedula:</small>
                 <div class="input-group">
                     <div class="input-group-prepend mr-2">
                         {{--<span class="input-group-text"><i class="far fa-bookmark"></i></span>--}}
@@ -53,39 +47,31 @@
                             <option value="J-">J-</option>
                         </select>
                     </div>
-                    <input type="number" step="1" class="form-control" wire:model="numero" placeholder="numero">
+                    <input type="number" step="1" wire:model="numero" class="form-control @error('numero') is-invalid @enderror @error('cedula') is-invalid @enderror"  placeholder="numero">
                     @error('numero')
                     <span class="col-sm-12 text-sm text-bold text-danger">
-                        <i class="icon fas fa-exclamation-triangle"></i>
-                        {{ $message }}
-                    </span>
+                    {{ $message }}
+                </span>
                     @enderror
                     @error('cedula')
                     <span class="col-sm-12 text-sm text-bold text-danger">
-                        <i class="icon fas fa-exclamation-triangle"></i>
-                        {{ $message }}
-                    </span>
+                    {{ $message }}
+                </span>
                     @enderror
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="name">Banco:</label>
+                <small class="text-lightblue text-bold text-uppercase">Banco:</small>
                 <div wire:ignore>
                     <div class="input-group" id="div_pagomovil_select_bancos">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="far fa-bookmark"></i></span>
-                        </div>
-                        <select class="custom-control custom-select">
+                        <select class="custom-select">
                             <option>Seleccione</option>
                         </select>
                     </div>
                 </div>
                 @error('bancoPagoMovil')
-                <span class="col-sm-12 text-sm text-bold text-danger">
-                    <i class="icon fas fa-exclamation-triangle"></i>
-                    {{ $message }}
-                </span>
+                <small class="text-danger text-bold">{{ $message }}</small>
                 @enderror
             </div>
 
@@ -105,5 +91,7 @@
 
 
     </div>
+
+    {!! verSpinner() !!}
 
 </div>

@@ -1,4 +1,4 @@
-<div class="card card-navy">
+<div class="card card-primary card-outline">
 
     <div class="card-header">
         <h3 class="card-title">Zelle</h3>
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="card-body">
+    <div class="card-body table-responsive" wire:loading.class="invisible" style="max-height: calc(100vh - {{ $size }}px)">
 
 
         <form wire:submit="saveZelle">
@@ -20,40 +20,28 @@
 
             @if($metodos_id)
                 <div class="float-right">
-                    <button type="button" class="btn btn-sm" wire:click="destroy">
+                    <button type="button" class="btn btn-sm" onclick="confirmToastBootstrap('delete', 'NoParametros')">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </button>
                 </div>
             @endif
 
             <div class="form-group">
-                <label for="name">Beneficiario:</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="far fa-bookmark"></i></span>
-                    </div>
-                    <input type="text" class="form-control" wire:model="titular" placeholder="Nombre Completo">
+                <small class="text-lightblue text-bold text-uppercase">Beneficiario:</small>
+                <div class="input-group">
+                    <input type="text" wire:model="titular" class="form-control @error('titular') is-invalid @enderror" placeholder="Nombre completo">
                     @error('titular')
-                    <span class="col-sm-12 text-sm text-bold text-danger">
-                        <i class="icon fas fa-exclamation-triangle"></i>
-                        {{ $message }}
-                    </span>
+                    <span class="error invalid-feedback text-bold">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="name">Correo Electrónico:</label>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="far fa-bookmark"></i></span>
-                    </div>
-                    <input type="email" class="form-control" wire:model="email" placeholder="Correo Electrónico">
+                <small class="text-lightblue text-bold text-uppercase">{{ __('Email') }}:</small>
+                <div class="input-group">
+                    <input type="text" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}">
                     @error('email')
-                    <span class="col-sm-12 text-sm text-bold text-danger">
-                        <i class="icon fas fa-exclamation-triangle"></i>
-                        {{ $message }}
-                    </span>
+                    <span class="error invalid-feedback text-bold">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -74,5 +62,7 @@
 
 
     </div>
+
+    {!! verSpinner() !!}
 
 </div>
