@@ -18,7 +18,7 @@ class PagosRegistrarComponent extends Component
     use ToastBootstrap;
 
     public $title = "Registrar Pago";
-    public int $size = 179; //max-height: 305px;
+    public int $size = 251; //max-height: 305px;
     public $clientes_id, $facturas_id;
     public $verOrganizacionFactura, $verNumeroFactura, $verFechaFactura, $verTotalFactura;
     public $listarMetodos, $ocultarBanco = true;
