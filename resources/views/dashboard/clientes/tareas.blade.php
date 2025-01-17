@@ -10,7 +10,12 @@
     </div>
     <div class="card-body p-0">
         <ul class="nav nav-pills flex-column">
-            <li class="nav-item active">
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-default-antena-sectorial">
+                    <i class="fas fa-satellite-dish"></i> Antena Sectorial
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('clientes.excel') }}"  class="nav-link" onclick="toastBootstrap({ toast: 'toast', type: 'info', message: 'Descargando Archivo.'})">
                     <span wire:loading wire:target="">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
@@ -18,12 +23,6 @@
                     <span wire:loading.class="d-none" wire:target="">
                         <i class="far fa-file-excel"></i> Exportar Excel
                     </span>
-                </a>
-            </li>
-            <li class="nav-item d-none">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-filter"></i> Terceros
-                    <span class="badge bg-warning float-right">65</span>
                 </a>
             </li>
         </ul>

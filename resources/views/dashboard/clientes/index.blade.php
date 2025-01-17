@@ -10,6 +10,7 @@
     @livewire('dashboard.clientes-facturas-component')
     @livewire('dashboard.modal-pdf-component')
     @livewire('dashboard.dolar-component')
+    @livewire('dashboard.antena-sectorial-component')
 @endsection
 
 @section('footer')

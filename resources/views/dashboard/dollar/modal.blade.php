@@ -10,25 +10,18 @@
                         <span aria-hidden="true" class="text-white">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <small>Monto Bs:</small>
-                                <div class="input-group mb-3">
-                                    <input type="number" wire:model="monto" step="0.01" min="1" class="form-control" placeholder="Monto en Bs.">
-                                    @error('monto')
-                                    <span class="col-sm-12 text-sm text-bold text-danger">
-                                        <i class="icon fas fa-exclamation-triangle"></i>
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="modal-body" wire:loading.class="invisible">
+                    <div class="form-group">
+                        <small class="text-lightblue text-bold text-uppercase">Monto Bs:</small>
+                        <div class="input-group">
+                            <input type="number" step="0.01" min="1" wire:model="monto" class="form-control @error('monto') is-invalid @enderror" placeholder="Monto en Bs.">
+                            @error('monto')
+                            <span class="error invalid-feedback text-bold">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" wire:loading.class="invisible">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default_dollar">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
@@ -46,31 +39,25 @@
             <div class="modal-content {{--fondo--}}">
                 <div class="modal-header bg-navy">
                     <h4 class="modal-title">
-                        Correo Electrónico
+                        Correo Soporte
                     </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" class="text-white">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <small>Email:</small>
-                                <div class="input-group mb-3">
-                                    <input type="email" wire:model="email" class="form-control" placeholder="Email">
-                                    @error('email')
-                                    <span class="col-sm-12 text-sm text-bold text-danger">
-                                        <i class="icon fas fa-exclamation-triangle"></i>
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="modal-body" wire:loading.class="invisible">
+
+                    <div class="form-group">
+                        <small class="text-lightblue text-bold text-uppercase">{{ __('Email') }}:</small>
+                        <div class="input-group">
+                            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email">
+                            @error('email')
+                            <span class="error invalid-feedback text-bold">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" wire:loading.class="invisible">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_email_sistema">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>
@@ -94,25 +81,18 @@
                         <span aria-hidden="true" class="text-white">×</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <small>Teléfono:</small>
-                                <div class="input-group mb-3">
-                                    <input type="text" wire:model="telefono" class="form-control" placeholder="Teléfono">
-                                    @error('telefono')
-                                    <span class="col-sm-12 text-sm text-bold text-danger">
-                                        <i class="icon fas fa-exclamation-triangle"></i>
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="modal-body" wire:loading.class="invisible">
+                    <div class="form-group">
+                        <small class="text-lightblue text-bold text-uppercase">Teléfono:</small>
+                        <div class="input-group">
+                            <input type="text" wire:model="telefono" class="form-control @error('telefono') is-invalid @enderror" placeholder="Teléfono">
+                            @error('telefono')
+                            <span class="error invalid-feedback text-bold">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" wire:loading.class="invisible">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_email_sistema">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Guardar</button>
                 </div>

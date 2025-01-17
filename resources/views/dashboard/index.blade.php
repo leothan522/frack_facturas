@@ -46,7 +46,23 @@
 
 @section('css')
     {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
-@stop
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] { -moz-appearance:textfield; }
+
+
+        input[type=date]::-webkit-inner-spin-button,
+        input[type=date]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=date] { -moz-appearance:textfield; }
+    </style>
+@endsection
 
 @section('js')
     <script src="{{ asset("js/app.js") }}"></script>
