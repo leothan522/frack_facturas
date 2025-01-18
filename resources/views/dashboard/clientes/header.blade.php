@@ -8,7 +8,7 @@
                 <ol class="breadcrumb float-sm-right">
                     {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
                     <li class="breadcrumb-item">
-                        <a href="#" data-toggle="modal" data-target="#modal-default-antena-sectorial">
+                        <a href="#" data-toggle="modal" data-target="#modal-default-antena-sectorial" onclick="verAntenasSectoriales()">
                             <i class="fas fa-satellite-dish"></i> Antena Sectorial
                         </a>
                     </li>

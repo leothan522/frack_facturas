@@ -11,7 +11,7 @@
     <div class="card-body p-0">
         <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-                <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-default-antena-sectorial">
+                <a href="#" class="nav-link" data-toggle="modal" data-target="#modal-default-antena-sectorial" onclick="verAntenasSectoriales()">
                     <i class="fas fa-satellite-dish"></i> Antena Sectorial
                 </a>
             </li>

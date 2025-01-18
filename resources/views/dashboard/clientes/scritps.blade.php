@@ -87,6 +87,10 @@
             $("#btn_cerrar_modal_facturas_cliente").click();
         });
 
+        function verAntenasSectoriales() {
+            Livewire.dispatch('initModalAntena');
+        }
+
         console.log('Hi!');
     </script>
 @endsection

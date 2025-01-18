@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -25,6 +26,8 @@ class Cliente extends Model
         'fecha_instalacion',
         'fecha_pago',
         'direccion',
+        'antenas_id',
+        'rango',
         'rowquid'
     ];
 
@@ -49,6 +52,11 @@ class Cliente extends Model
     public function pagos(): HasMany
     {
         return $this->hasMany(Pago::class, 'clientes_id', 'id');
+    }
+
+    public function antena(): BelongsTo
+    {
+        return $this->belongsTo(Antena::class, 'antenas_id', 'id');
     }
 
 }
