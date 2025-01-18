@@ -91,6 +91,33 @@
             Livewire.dispatch('initModalAntena');
         }
 
+        function select_2(id, data, event) {
+            let html = '<select class="custom-select" id="'+ id +'"></select>';
+            $('#div_' + id).html(html);
+
+            $('#'  + id).select2({
+                theme: 'bootstrap4',
+                data: data,
+                placeholder: 'Seleccione',
+            })
+                .val(null)
+                .trigger('change')
+                .on('change', function() {
+                    let value = $(this).val();
+                    Livewire.dispatch(event, { id: value });
+                });
+        }
+
+        Livewire.on('initSelectAntenas', ({ data }) => {
+            select_2('select_cliente_antena', data, 'getSelectAntenas');
+        });
+
+        Livewire.on('setSelectAntenas', ({ id }) => {
+            $("#select_cliente_antena").val(id).trigger('change');
+        });
+
+
+
         console.log('Hi!');
     </script>
 @endsection

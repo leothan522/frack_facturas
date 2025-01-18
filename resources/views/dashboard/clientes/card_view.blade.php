@@ -1,6 +1,6 @@
 <div class="card card-primary card-outline" id="div_view_card_{{ $modulo }}">
 
-    <div class="card-header" id="div_view_header_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, show, showHide, edit, btnReenviar">
+    <div class="card-header" id="div_view_header_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, show, showHide, edit, btnReenviar, editCliente">
         <h3 class="card-title">
             {{ $title }}
         </h3>
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="card-body table-responsive" id="div_view_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, save, show, showHide, edit, btnReenviar" style="max-height: calc(100vh - {{ $size - $sizeFooter }}px)">
+    <div class="card-body table-responsive" id="div_view_body_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, save, show, showHide, edit, btnReenviar, editCliente" style="max-height: calc(100vh - {{ $size - $sizeFooter }}px)">
 
         <form class="row" wire:submit="save">
 
@@ -66,11 +66,14 @@
                     </div>
 
                     <div class="card-body @if(!$form) p-0 @endif ">
-                        @if($form)
+
+                        <div class="@if(!$form) d-none @endif">
                             @include('dashboard.clientes.form_instalacion')
-                        @else
+                        </div>
+                        <div class="@if($form) d-none @endif">
                             @include('dashboard.clientes.show_instalacion')
-                        @endif
+                        </div>
+
                     </div>
 
                 </div>
@@ -105,7 +108,7 @@
     </div>
 
     @if(!$form)
-        <div class="card-footer text-center" id="div_view_footer_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, show, showHide, edit, btnReenviar">
+        <div class="card-footer text-center" id="div_view_footer_{{ $modulo }}" wire:loading.class="invisible" wire:target="create, cancel, show, showHide, edit, btnReenviar, editCliente">
 
 
             <button type="button" class="btn btn-default btn-sm mr-1" onclick="confirmToastBootstrap('{{ $confirmed }}', { rowquid: '{{ $rowquid }}'})"
@@ -123,7 +126,7 @@
                 <i class="fas fa-file-invoice"></i> Facturas Cliente
             </button>
 
-            <button type="button" class="btn btn-default btn-sm" wire:click="edit"
+            <button type="button" class="btn btn-default btn-sm" wire:click="editCliente"
                     @if(!comprobarPermisos($modulo.'.edit')) disabled @endif>
                 <i class="fas fa-edit"></i> Editar
             </button>
@@ -131,6 +134,6 @@
         </div>
     @endif
 
-    {!! verSpinner('create, cancel, save, show, showHide, edit, btnReenviar') !!}
+    {!! verSpinner('create, cancel, save, show, showHide, edit, btnReenviar, editCliente') !!}
 
 </div>

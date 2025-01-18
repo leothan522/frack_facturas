@@ -19,6 +19,30 @@
 </div>
 
 <div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Antena Sectorial:</small>
+    <div wire:ignore>
+        <div id="div_select_cliente_antena" class="input-group">
+            <select class="custom-select">
+                <option value="">Seleccione</option>
+            </select>
+        </div>
+    </div>
+    @error('antena')
+    <small class="text-danger text-bold">{{ $message }}</small>
+    @enderror
+</div>
+
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Rango Señal:</small>
+    <div class="input-group">
+        <input type="number" step="0.01" max="100" min="0" wire:model="rango" class="form-control @error('rango') is-invalid @enderror" placeholder="Rango Señal">
+        @error('rango')
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group">
     <small class="text-lightblue text-bold text-uppercase">Latitud:</small>
     <div class="input-group">
         <input type="text" wire:model="latitud" class="form-control @error('latitud') is-invalid @enderror" placeholder="Latitud">

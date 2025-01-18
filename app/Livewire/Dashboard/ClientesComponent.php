@@ -3,6 +3,7 @@
 namespace App\Livewire\Dashboard;
 
 use App\Mail\BienvenidaMail;
+use App\Models\Antena;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Servicio;
@@ -23,7 +24,7 @@ class ClientesComponent extends Component
 
     public $texto = "Cliente";
     public $cedula, $nombre, $apellido, $telefono, $email, $direccion;
-    public $fechaInstalacion, $fechaPago, $latitud, $longitud, $gps;
+    public $fechaInstalacion, $fechaPago, $latitud, $longitud, $gps, $rango, $antena, $verAntena, $verIP;
 
     public function mount()
     {
@@ -54,9 +55,10 @@ class ClientesComponent extends Component
         $this->limpiarCardView();
         $this->reset([
             'cedula', 'nombre', 'apellido', 'telefono', 'email', 'direccion',
-            'fechaInstalacion', 'fechaPago', 'latitud', 'longitud', 'gps'
+            'fechaInstalacion', 'fechaPago', 'latitud', 'longitud', 'gps', 'rango', 'antena', 'verAntena', 'verIP',
         ]);
         $this->resetErrorBag();
+        $this->getAntenasSectoriales();
     }
 
     public function save()
@@ -110,6 +112,8 @@ class ClientesComponent extends Component
             $model->latitud = $this->latitud;
             $model->longitud = $this->longitud;
             $model->gps = $this->gps;
+            $model->antenas_id = $this->antena;
+            $model->rango = $this->rango;
             $model->save();
 
             $this->show($model->rowquid);
@@ -140,8 +144,21 @@ class ClientesComponent extends Component
             $this->latitud = $registro->latitud;
             $this->longitud = $registro->longitud;
             $this->gps = $registro->gps;
+            $this->rango = $registro->rango;
+            if ($registro->antenas_id){
+                $this->antena = $registro->antenas_id;
+                $this->verAntena = $registro->antena->nombre;
+                $this->verIP = $registro->antena->direccion_ip;
+            }
 
         }
+    }
+
+    public function editCliente()
+    {
+        $this->getAntenasSectoriales();
+        $this->dispatch('setSelectAntenas', id: $this->antena);
+        $this->edit();
     }
 
     #[On('delete')]
@@ -231,6 +248,57 @@ class ClientesComponent extends Component
             //cerrarModal
             Sleep::for(250)->milliseconds();
             $this->dispatch('cerrarModalFacturasCliente');
+        }
+    }
+
+    protected function getAntenasSectoriales()
+    {
+        $antena = Antena::orderBy('nombre', 'ASC')->get();
+        $data = [];
+        foreach ($antena as $row){
+            $id = $row->id;
+            $ip = "0.0.0.0";
+            if ($row->direccion_ip){
+                $ip = $row->direccion_ip;
+            }
+            $option = [
+                'id' => $id,
+                'text' => mb_strtoupper($row->nombre." | ".$ip)
+            ];
+            $data[] = $option;
+        }
+        $this->dispatch('initSelectAntenas', data: $data);
+    }
+
+    #[On('initSelectAntenas')]
+    public function initSelectAntenas($data)
+    {
+        //JS
+    }
+
+    #[On('getSelectAntenas')]
+    public function getSelectAntenas($id)
+    {
+        $antena = Antena::find($id);
+        if ($antena){
+            $this->antena = $antena->id;
+        }
+    }
+
+    #[On('setSelectAntenas')]
+    public function setSelectAntenas($id)
+    {
+        //JS
+    }
+
+    #[On('actualizarAntenas')]
+    public function actualizarAntenas()
+    {
+        if ($this->form){
+            $this->getAntenasSectoriales();
+            $this->dispatch('setSelectAntenas', id: $this->antena);
+        }else{
+            $this->show($this->rowquid);
         }
     }
 

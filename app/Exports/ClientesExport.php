@@ -28,6 +28,13 @@ class ClientesExport implements FromView, WithTitle, WithProperties, ShouldAutoS
                $cliente->organizacion = null;
                $cliente->plan = null;
            }
+           if ($cliente->antenas_id){
+               $cliente->verAntena = $cliente->antena->nombre;
+               $cliente->verIP = $cliente->antena->direccion_ip;
+           }else{
+               $cliente->verAntena = null;
+               $cliente->verIP = null;
+           }
         });
         return view('dashboard._export.export_excel_clientes')
             ->with('clientes', $clientes);

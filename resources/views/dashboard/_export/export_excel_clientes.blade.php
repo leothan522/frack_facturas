@@ -44,6 +44,15 @@
         <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
             Plan de Servicio
         </th>
+        <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
+            Antena Sectorial
+        </th>
+        <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
+            IP Antena
+        </th>
+        <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
+            Rango Señal
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -65,6 +74,9 @@
             <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->codigo) }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->organizacion) }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->plan) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->verAntena) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->verIP) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ mb_strtoupper($cliente->rango) }}</td>
         </tr>
     @endforeach
     </tbody>

@@ -63,12 +63,14 @@ class AntenaSectorialComponent extends Component
             $antena->nombre = $this->nombre;
             $antena->direccion_ip = $this->ip;
             $antena->save();
+            $this->dispatch('actualizarAntenas');
             if ($this->nuevo){
                 $this->edit($antena->rowquid);
+                $this->toastBootstrap('success', 'Antena Creada.');
             }else{
                 $this->limpiar();
+                $this->toastBootstrap();
             }
-            $this->toastBootstrap();
         }
     }
 
