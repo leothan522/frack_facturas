@@ -1,3 +1,6 @@
+<button id="launch-modal-pagos-show" type="button" class="d-none" data-toggle="modal" data-target="#modal-pagos-show">
+    Launch Default Modal
+</button>
 <div wire:ignore.self class="modal fade" id="modal-pagos-show">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">

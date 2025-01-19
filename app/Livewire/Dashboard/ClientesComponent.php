@@ -89,6 +89,7 @@ class ClientesComponent extends Component
         if ($this->table_id){
             //editar
             $model = Cliente::find($this->table_id);
+            $enviarBienvenida = false;
         }else{
             //nuevo
             $model = new Cliente();
@@ -97,6 +98,7 @@ class ClientesComponent extends Component
                 $existe = Cliente::where('rowquid', $rowquid)->first();
             }while($existe);
             $model->rowquid = $rowquid;
+            $enviarBienvenida = true;
         }
 
         if ($model){
@@ -116,9 +118,15 @@ class ClientesComponent extends Component
             $model->rango = $this->rango;
             $model->save();
 
+            if ($enviarBienvenida){
+                $this->sendBienvenida($model->id);
+            }
+
             $this->show($model->rowquid);
             $this->toastBootstrap();
 
+        }else{
+            $this->lastRegistro();
         }
 
     }
@@ -151,6 +159,8 @@ class ClientesComponent extends Component
                 $this->verIP = $registro->antena->direccion_ip;
             }
 
+        }else{
+            $this->lastRegistro();
         }
     }
 
@@ -192,39 +202,10 @@ class ClientesComponent extends Component
         }
     }
 
-    protected function lastRegistro()
-    {
-        $registro = Cliente::orderBy('created_at', 'DESC')->first();
-        if ($registro){
-            $this->show($registro->rowquid);
-        }else{
-            $this->create();
-        }
-
-    }
-
     public function btnReenviar()
     {
         $this->sendBienvenida($this->table_id);
         $this->toastBootstrap('info', 'Email Enviado.');
-    }
-
-    protected function sendBienvenida($id)
-    {
-        $cliente = Cliente::find($id);
-        if ($cliente){
-            //anexamos los datos extras en data para enviar email
-            $data['from_email'] = getCorreoSistema();
-            $data['from_name'] = config('app.name');
-            $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
-            $data['nombre'] = strtoupper($cliente->nombre);
-            $data['apellido'] = strtoupper($cliente->apellido);
-            $data['email'] = getCorreoSistema();
-            $data['telefono'] = getTelefonoSistema();
-            //enviamos el correo
-            $to = strtolower($cliente->email);
-            Mail::to($to)->send(new BienvenidaMail($data));
-        }
     }
 
     public function btnPlanServicio()
@@ -249,25 +230,6 @@ class ClientesComponent extends Component
             Sleep::for(250)->milliseconds();
             $this->dispatch('cerrarModalFacturasCliente');
         }
-    }
-
-    protected function getAntenasSectoriales()
-    {
-        $antena = Antena::orderBy('nombre', 'ASC')->get();
-        $data = [];
-        foreach ($antena as $row){
-            $id = $row->id;
-            $ip = "0.0.0.0";
-            if ($row->direccion_ip){
-                $ip = $row->direccion_ip;
-            }
-            $option = [
-                'id' => $id,
-                'text' => mb_strtoupper($row->nombre." | ".$ip)
-            ];
-            $data[] = $option;
-        }
-        $this->dispatch('initSelectAntenas', data: $data);
     }
 
     #[On('initSelectAntenas')]
@@ -299,6 +261,54 @@ class ClientesComponent extends Component
             $this->dispatch('setSelectAntenas', id: $this->antena);
         }else{
             $this->show($this->rowquid);
+        }
+    }
+
+    protected function lastRegistro()
+    {
+        $registro = Cliente::orderBy('created_at', 'DESC')->first();
+        if ($registro){
+            $this->show($registro->rowquid);
+        }else{
+            $this->create();
+        }
+
+    }
+
+    protected function getAntenasSectoriales()
+    {
+        $antena = Antena::orderBy('nombre', 'ASC')->get();
+        $data = [];
+        foreach ($antena as $row){
+            $id = $row->id;
+            $ip = "0.0.0.0";
+            if ($row->direccion_ip){
+                $ip = $row->direccion_ip;
+            }
+            $option = [
+                'id' => $id,
+                'text' => mb_strtoupper($row->nombre." | ".$ip)
+            ];
+            $data[] = $option;
+        }
+        $this->dispatch('initSelectAntenas', data: $data);
+    }
+
+    protected function sendBienvenida($id)
+    {
+        $cliente = Cliente::find($id);
+        if ($cliente){
+            //anexamos los datos extras en data para enviar email
+            $data['from_email'] = getCorreoSistema();
+            $data['from_name'] = config('app.name');
+            $data['subject'] = "Bienvenido a ENLAZADOSWIFI ELORZA";
+            $data['nombre'] = strtoupper($cliente->nombre);
+            $data['apellido'] = strtoupper($cliente->apellido);
+            $data['email'] = getCorreoSistema();
+            $data['telefono'] = getTelefonoSistema();
+            //enviamos el correo
+            $to = strtolower($cliente->email);
+            Mail::to($to)->send(new BienvenidaMail($data));
         }
     }
 

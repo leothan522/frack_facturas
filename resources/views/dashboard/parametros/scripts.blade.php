@@ -2,6 +2,10 @@
     <script src="{{ asset("js/app.js") }}"></script>
     <script>
 
+        Livewire.on('initModal', () => {
+            $("#launch_default_modal").click();
+        });
+
         const btnCerrarModal = document.querySelector("#btn_modal_default");
 
         Livewire.on('cerrarModal', () => {

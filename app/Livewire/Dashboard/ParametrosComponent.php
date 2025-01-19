@@ -124,9 +124,7 @@ class ParametrosComponent extends Component
             $this->valor = $parametro->valor;
             $this->rowquid = $parametro->rowquid;
             $this->view = "edit";
-        }else{
-            Sleep::for(500)->millisecond();
-            $this->dispatch('cerrarModal');
+            $this->dispatch('initModal');
         }
 
     }
@@ -169,6 +167,12 @@ class ParametrosComponent extends Component
     public function actualizar()
     {
         //Refresh
+    }
+
+    #[On('initModal')]
+    public function initModal()
+    {
+        //JS
     }
 
     protected function getParametro($rowquid): ?Parametro

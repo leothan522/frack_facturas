@@ -43,7 +43,7 @@
             </li>
             @if(comprobarPermisos() && $users_id != auth()->id() && !$form)
                 <li class="list-group-item text-center">
-                    <span class="text-primary" onclick="verPermisos('{{ $rowquid }}')" data-toggle="modal" data-target="#modal-default-roles" style="cursor: pointer;">Ver Permisos</span>
+                    <button type="button" class="btn btn-link" onclick="verPermisos('{{ $rowquid }}')" data-toggle="modal" data-target="#modal-default-roles" @if(!$users_id) disabled @endif>Ver Permisos</button>
                 </li>
             @endif
             @if($newPassword)

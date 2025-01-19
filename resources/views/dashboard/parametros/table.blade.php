@@ -45,7 +45,7 @@
                 <th class="text-center" style="width: 5%;"><small>Rows {{ $ListarParametros->count() }}</small></th>
             </tr>
             </thead>
-            <tbody id="tbody_parametros" wire:loading.class="invisible" wire:target="actualizar, cerrarBusqueda, setLimit">
+            <tbody id="tbody_parametros" wire:loading.class="invisible" wire:target="actualizar, cerrarBusqueda, setLimit, edit">
             @if($ListarParametros->isNotEmpty())
                 @foreach($ListarParametros as $parametro)
                     <tr>
@@ -72,7 +72,7 @@
                         <td class="justify-content-end">
 
                             <div class="btn-group d-sm-none">
-                                <button wire:click="edit('{{ $parametro->rowquid }}')" class="btn btn-primary"
+                                <button type="button" wire:click="edit('{{ $parametro->rowquid }}')" class="btn btn-primary"
                                         data-toggle="modal" data-target="#modal-default">
                                     <i class="fas fa-eye"></i>
                                 </button>
@@ -80,12 +80,11 @@
 
                             <div class="btn-group d-none d-sm-flex">
 
-                                <button wire:click="edit('{{ $parametro->rowquid }}')" class="btn btn-primary btn-sm"
-                                        data-toggle="modal" data-target="#modal-default">
+                                <button type="button" wire:click="edit('{{ $parametro->rowquid }}')" class="btn btn-primary btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <button onclick="confirmToastBootstrap('delete',  { rowquid: '{{ $parametro->rowquid }}' })"
+                                <button type="button" onclick="confirmToastBootstrap('delete',  { rowquid: '{{ $parametro->rowquid }}' })"
                                         class="btn btn-primary btn-sm">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -115,6 +114,6 @@
         <small>Mostrando {{ $ListarParametros->count() }}</small>
     </div>
 
-    {!! verSpinner('actualizar, cerrarBusqueda, setLimit') !!}
+    {!! verSpinner('actualizar, cerrarBusqueda, setLimit, edit') !!}
 
 </div>

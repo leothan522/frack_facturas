@@ -75,24 +75,25 @@
                         <td class="justify-content-end">
 
                             <div class="btn-group d-md-none">
-                                <button wire:click="showHide('{{ $user->rowquid }}')" class="btn btn-primary"
-                                        data-toggle="modal" data-target="#modal-default">
+                                <button wire:click="showHide('{{ !$this->getComprobarPermisos($user) ? $user->rowquid : '' }}')" class="btn btn-primary"
+                                        @if($this->getComprobarPermisos($user)) disabled @endif>
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
 
                             <div class="btn-group d-none d-md-flex">
 
-                                <button type="button" wire:click="show('{{ $user->rowquid }}')" class="btn btn-primary btn-sm">
+                                <button type="button" wire:click="show('{{ !$this->getComprobarPermisos($user) ? $user->rowquid : '' }}')" class="btn btn-primary btn-sm"
+                                        @if($this->getComprobarPermisos($user)) disabled @endif>
                                     <i class="fas fa-eye"></i>
                                 </button>
 
-                                <button type="button" wire:click="edit('{{ $user->rowquid }}')" class="btn btn-primary btn-sm"
+                                <button type="button" wire:click="edit('{{ !$this->getComprobarPermisos($user) ? $user->rowquid : '' }}')" class="btn btn-primary btn-sm"
                                         @if($this->getComprobarPermisos($user)) disabled @endif >
                                     <i class="fas fa-edit"></i>
                                 </button>
 
-                                <button type="button" onclick="confirmToastBootstrap('delete',  { rowquid: '{{ $user->rowquid }}' })"  class="btn btn-primary btn-sm"
+                                <button type="button" onclick="confirmToastBootstrap('delete',  { rowquid: '{{ !$this->getComprobarPermisos($user, 'usuarios.destroy') ? $user->rowquid : '' }}' })"  class="btn btn-primary btn-sm"
                                         @if($this->getComprobarPermisos($user, 'usuarios.destroy')) disabled @endif >
                                     <i class="fas fa-trash-alt"></i>
                                 </button>

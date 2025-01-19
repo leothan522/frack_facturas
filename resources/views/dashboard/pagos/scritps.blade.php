@@ -6,6 +6,10 @@
             $('#navbar_search_id').addClass('d-none');
         });
 
+        Livewire.on('initModal', () => {
+            $('#launch-modal-pagos-show').click();
+        });
+
         Livewire.on('cerrarModalShowPago', () => {
             $('#btn_modal_show_pagos').click();
         });

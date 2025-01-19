@@ -105,6 +105,8 @@ class PlanesComponent extends Component
             $this->show($model->rowquid);
             $this->toastBootstrap();
 
+        }else{
+            $this->lastRegistro();
         }
 
     }
@@ -129,6 +131,8 @@ class PlanesComponent extends Component
             $this->getOrganizacion($registro->organizaciones_id);
             $this->dispatch('setSelectOrganizacion', rowquid: $registro->organizacion->rowquid);
 
+        }else{
+            $this->lastRegistro();
         }
     }
 
@@ -163,25 +167,6 @@ class PlanesComponent extends Component
         }
     }
 
-    protected function lastRegistro()
-    {
-        $registro = Plan::orderBy('created_at', 'DESC')->first();
-        if ($registro){
-            $this->show($registro->rowquid);
-        }else{
-            $this->create();
-        }
-
-    }
-
-    protected function getOrganizacion($id)
-    {
-        $organizacion = Organizacion::find($id);
-        if ($organizacion){
-            $this->verOrganizacion = $organizacion;
-        }
-    }
-
     #[On('initSelectOrganizacion')]
     public function initSelectOrganizacion($data)
     {
@@ -208,6 +193,25 @@ class PlanesComponent extends Component
         $organizaciones = Organizacion::orderBy('nombre', 'ASC')->get();
         $data = getDataSelect2($organizaciones, 'nombre');
         $this->dispatch('initSelectOrganizacion', data: $data);
+    }
+
+    protected function getOrganizacion($id)
+    {
+        $organizacion = Organizacion::find($id);
+        if ($organizacion){
+            $this->verOrganizacion = $organizacion;
+        }
+    }
+
+    protected function lastRegistro()
+    {
+        $registro = Plan::orderBy('created_at', 'DESC')->first();
+        if ($registro){
+            $this->show($registro->rowquid);
+        }else{
+            $this->create();
+        }
+
     }
 
 }

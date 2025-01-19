@@ -8,7 +8,7 @@
                         {!! $icono[$registro->estatus] !!}
                     </td>
                     <td class="text-nowrap text-uppercase" style="width: 10%">
-                        <a href="#" wire:click="show('{{ $registro->rowquid }}')" data-toggle="modal" data-target="#modal-pagos-show">
+                        <a href="#" wire:click.prevent="show('{{ $registro->rowquid }}')">
                             {{ $registro->referencia}}
                         </a>
                     </td>

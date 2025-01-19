@@ -17,7 +17,7 @@ class UsuariosComponent extends Component
     use LimitRows;
 
     public $sizeShow = 97; // 145 movil
-    public $keyword, $title = "Crear Usuario", $btnNuevo = true, $form = false;
+    public $keyword, $title = "Crear Usuario", $btnNuevo = true, $form = false, $existe = false;
     public $name, $email, $password, $role, $newPassword, $btnEditar = false;
     public $verName, $verEmail, $verEstatus, $verRegistro, $verRole, $estatus, $btnEstatus, $btnReset, $verEditar, $verBorrar;
     public $listarRoles = [];
@@ -53,7 +53,7 @@ class UsuariosComponent extends Component
     {
         $this->reset([
             'sizeShow',
-            'title', 'btnNuevo', 'form',
+            'title', 'btnNuevo', 'form', 'existe',
             'name', 'email', 'password', 'role', 'newPassword', 'btnEditar',
             'users_id',
         ]);
@@ -147,6 +147,8 @@ class UsuariosComponent extends Component
                 $this->sizeShow = 49;
             }
 
+            $this->existe = true;
+
         }
     }
 
@@ -158,9 +160,11 @@ class UsuariosComponent extends Component
         }else{
             $this->show($this->rowquid);
         }
-        $this->title = "Editar Usuario";
-        $this->btnEditar = true;
-        $this->form = true;
+        if ($this->existe){
+            $this->title = "Editar Usuario";
+            $this->btnEditar = true;
+            $this->form = true;
+        }
     }
 
     #[On('delete')]

@@ -130,6 +130,8 @@ class FacturasComponent extends Component
                 }
             }
 
+            $this->dispatch('initModal');
+
         }
 
     }
@@ -137,33 +139,6 @@ class FacturasComponent extends Component
     public function btnVerPDF()
     {
         $this->showPdfFacturaTrait($this->rowquid);
-    }
-
-    #[On('delete')]
-    public function delete()
-    {
-        $registro = Factura::where('rowquid', $this->rowquid)->first();
-        if ($registro){
-
-            //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
-            $vinculado = false;
-
-            $pagos = Pago::where('facturas_id', $registro->id)->first();
-            if ($pagos){
-                $vinculado = true;
-            }
-
-            if ($vinculado) {
-                $this->htmlToastBoostrap();
-            } else {
-                $nombre = '<b class="text-uppercase text-warning">'.$registro->factura_numero.'</b>';
-                $registro->delete();
-                $this->dispatch('confirmedDelete');
-                $this->actualizar();
-                $this->toastBootstrap('success', "Factura $nombre Eliminada.");
-            }
-
-        }
     }
 
     public function btnSendFactura()
@@ -174,18 +149,6 @@ class FacturasComponent extends Component
             $nombre = '<b class="text-uppercase text-warning">'.$this->facturaNumero.'</b>';
             $this->toastBootstrap('info', "Factura $nombre Enviada.");
         }
-    }
-
-    #[On('reeviarFactura')]
-    public function btnReenviar()
-    {
-        $this->btnSendFactura();
-    }
-
-    #[On('confirmedDelete')]
-    public function confirmedDelete()
-    {
-        //JS
     }
 
     public function btnGenerarFacturas()
@@ -235,6 +198,51 @@ class FacturasComponent extends Component
             }
         }
         $this->verFacturasEnviadas = true;
+    }
+
+    #[On('delete')]
+    public function delete()
+    {
+        $registro = Factura::where('rowquid', $this->rowquid)->first();
+        if ($registro){
+
+            //codigo para verificar si realmente se puede borrar, dejar false si no se requiere validacion
+            $vinculado = false;
+
+            $pagos = Pago::where('facturas_id', $registro->id)->first();
+            if ($pagos){
+                $vinculado = true;
+            }
+
+            if ($vinculado) {
+                $this->htmlToastBoostrap();
+            } else {
+                $nombre = '<b class="text-uppercase text-warning">'.$registro->factura_numero.'</b>';
+                $registro->delete();
+                $this->dispatch('confirmedDelete');
+                $this->actualizar();
+                $this->toastBootstrap('success', "Factura $nombre Eliminada.");
+            }
+
+        }
+    }
+
+    #[On('reeviarFactura')]
+    public function btnReenviar()
+    {
+        $this->btnSendFactura();
+    }
+
+    #[On('confirmedDelete')]
+    public function confirmedDelete()
+    {
+        //JS
+    }
+
+    #[On('initModal')]
+    public function initModal()
+    {
+        //JS
     }
 
 }

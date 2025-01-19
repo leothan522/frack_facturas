@@ -10,6 +10,10 @@
             $('#btn_modal_ver_factura').click();
         });
 
+        Livewire.on('initModal', () => {
+            $('#launch-modal-ver-factura').click();
+        });
+
         console.log('Hi!');
     </script>
 @endsection

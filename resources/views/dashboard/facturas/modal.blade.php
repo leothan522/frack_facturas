@@ -1,3 +1,6 @@
+<button id="launch-modal-ver-factura" type="button" class="d-none" data-toggle="modal" data-target="#modal-ver-factura">
+    Launch Default Modal
+</button>
 <div wire:ignore.self class="modal fade" id="modal-ver-factura">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">

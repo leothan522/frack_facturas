@@ -128,6 +128,8 @@ class OrganizacionesComponent extends Component
             $this->show($model->rowquid);
             $this->toastBootstrap();
 
+        }else{
+            $this->lastRegistro();
         }
 
     }
@@ -162,6 +164,8 @@ class OrganizacionesComponent extends Component
             }
 
 
+        }else{
+            $this->lastRegistro();
         }
     }
 

@@ -1,6 +1,6 @@
-{{--<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+<button id="launch-modal-default" type="button" class="d-none" data-toggle="modal" data-target="#modal-default">
     Launch Default Modal
-</button>--}}
+</button>
 
 <div wire:ignore.self class="modal fade" id="modal-default">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

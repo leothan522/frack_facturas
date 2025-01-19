@@ -58,7 +58,13 @@ class PagosComponent extends Component
         $this->resetErrorBag();
     }
 
-    public function show($rowquid)
+    public function btnRegistrarPago()
+    {
+        $this->dispatch('initRegistrarPago');
+        $this->registrarPago = true;
+    }
+
+    public function show($rowquid, $initModal = true)
     {
         $this->limpiar();
         $pago = Pago::where('rowquid', $rowquid)->first();
@@ -97,9 +103,10 @@ class PagosComponent extends Component
             $this->estatus = $pago->estatus;
             $this->band = $pago->band;
 
-        }else{
-            Sleep::for(250)->milliseconds();
-            $this->dispatch('cerrarModalShowPago');
+            if ($initModal){
+                $this->dispatch('initModal');
+            }
+
         }
     }
 
@@ -111,6 +118,12 @@ class PagosComponent extends Component
     public function btnFiltro($key)
     {
         $this->metodo = $key;
+    }
+
+    #[On('initModal')]
+    public function initModal()
+    {
+        //JS
     }
 
     #[On('delete')]
@@ -160,22 +173,16 @@ class PagosComponent extends Component
         $this->setEstatusPago(1);
     }
 
-    #[On('cerrarModalShowPago')]
-    public function cerrarModal()
-    {
-        //JS
-    }
-
-    public function btnRegistrarPago()
-    {
-        $this->dispatch('initRegistrarPago');
-        $this->registrarPago = true;
-    }
-
     #[On('btnCancelRegistrar')]
     public function btnCancelRegistrar()
     {
         $this->limpiar();
+    }
+
+    #[On('cerrarModalShowPago')]
+    public function cerrarModal()
+    {
+        //JS
     }
 
     protected function setEstatusPago($estatus)
@@ -198,7 +205,7 @@ class PagosComponent extends Component
                 $this->sendEmail($pago->id);
             }
 
-            $this->show($this->rowquid);
+            $this->show($this->rowquid, false);
         }
     }
 

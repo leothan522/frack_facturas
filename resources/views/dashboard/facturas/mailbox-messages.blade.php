@@ -5,7 +5,7 @@
             @foreach($listar as $registro)
                 <tr>
                     <td class="text-nowrap text-uppercase" style="width: 10%">
-                        <a href="#" wire:click="show('{{ $registro->rowquid }}')" data-toggle="modal" data-target="#modal-ver-factura">
+                        <a href="#" wire:click.prevent="show('{{ $registro->rowquid }}')">
                             {{ $registro->factura_numero }}
                         </a>
                     </td>
