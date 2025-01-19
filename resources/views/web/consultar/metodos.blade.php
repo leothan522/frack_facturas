@@ -1,6 +1,9 @@
-<p class="text-justify pr-3 pl-3">
-    Si no ves alguno de los métodos de pago usuales, es porque no lo tenemos disponible ahora.
-</p>
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">¿Cómo vas a pagar?</small>
+    <p class="text-justify">
+        Si no ves alguno de los métodos de pago usuales, es porque no lo tenemos disponible ahora.
+    </p>
+</div>
 
 @if($datosTransferencia)
     <div class="row pr-3 pl-3" wire:click="verDetalles('transferencia')">

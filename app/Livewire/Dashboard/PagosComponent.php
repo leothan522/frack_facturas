@@ -182,11 +182,22 @@ class PagosComponent extends Component
     {
         $pago = Pago::find($this->pagos_id);
         if ($pago){
+
             $pago->estatus = $estatus;
             $pago->save();
+
+            $factura = Factura::find($pago->facturas_id);
+            if ($estatus == 1){
+                $factura->estatus = 1;
+            }else{
+                $factura->estatus = 0;
+            }
+            $factura->save();
+
             if ($estatus){
                 $this->sendEmail($pago->id);
             }
+
             $this->show($this->rowquid);
         }
     }

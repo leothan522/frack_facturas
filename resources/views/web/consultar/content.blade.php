@@ -1,26 +1,22 @@
-<div id="div_content_home">
-    <div  class="row justify-content-center" wire:loading.class="invisible" wire:target.except="initModal, verDetalles, btnRegistrar, save">
-        @include('web.consultar.show')
+<div class="row justify-content-around">
+    <div class="col-md-4 d-none d-md-block">
+        @include('web.consultar.plan_servicio')
+        @include('web.consultar.soporte')
     </div>
-</div>
+    @if($facturas->isNotEmpty())
+        <div class="col-md-6">
+            <div class="@if($ocultarFacturas) d-none @endif">
+                @include('web.consultar.facturas')
+            </div>
+            <div class="@if(!$ocultarFacturas) d-none @endif">
+                @include('web.consultar.pagar')
+            </div>
 
-<div>
-    @include('web.consultar.modal')
-</div>
-
-
-<div class="overlay-wrapper verCargando" wire:loading wire:target.except="initModal, verDetalles, btnRegistrar, save">
-    <div class="overlay bg-transparent">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
+            @include('web.consultar.modal_pago')
         </div>
-    </div>
-</div>
-
-<div id="div_preloader" class="overlay-wrapper d-none">
-    <div class="overlay bg-transparent">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
+    @endif
+    <div class="col-md-4 @if($ocultarFacturas) d-none @endif d-md-none">
+        @include('web.consultar.plan_servicio')
+        @include('web.consultar.soporte')
     </div>
 </div>

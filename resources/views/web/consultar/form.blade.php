@@ -1,66 +1,59 @@
-<p class="text-justify pr-3 pl-3">
-    Asegúrate de escribir todos los dígitos en la referencia y verificar los demás datos antes de guardar.
-</p>
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">{{ getMetodoPago($metodo) }}</small>
+    <p class="text-justify">
+        Asegúrate de escribir todos los dígitos en la referencia y verificar los demás datos antes de guardar.
+    </p>
+</div>
 
-<div class="pr-3 pl-3">
-
-    <div class="form-group">
-        <small>Referencia:</small>
-        <div class="input-group mb-3">
-            <input @if($displayDetalles == "zelle") type="text" @else type="number" @endif wire:model="referencia" class="form-control" placeholder="Referencia" id="input_referencia">
-            <div class="input-group-append">
-                <button type="button" class="input-group-text text-primary" onclick="pegarPortapapeles()">
-                    Pegar
-                </button>
-            </div>
-            @error('referencia')
-            <span class="col-sm-12 text-sm text-bold text-danger">
-                <i class="icon fas fa-exclamation-triangle"></i>
-                {{ $message }}
-            </span>
-            @enderror
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Referencia:</small>
+    <div class="input-group">
+        @if($metodo == "zelle")
+            <input type="text" wire:model="referencia" class="form-control @error('referencia') is-invalid @enderror" placeholder="Referencia">
+        @else
+            <input type="number" step="1" wire:model="referencia" class="form-control @error('referencia') is-invalid @enderror" placeholder="Referencia">
+        @endif
+        <div class="input-group-append">
+            <button type="button" class="input-group-text text-primary" onclick="pegarPortapapeles()">
+                Pegar
+            </button>
         </div>
-    </div>
-
-    <div class="form-group @if($displayDetalles == "zelle") d-none @endif">
-        <small>¿Qué banco utilizaste?</small>
-        <div wire:ignore>
-            <div class="input-group mb-3" id="div_select_bancos">
-                <select class="custom-control custom-select">
-                    <option>Seleccione</option>
-                </select>
-            </div>
-        </div>
-        @error('idBanco')
-        <span class="col-sm-12 text-sm text-bold text-danger">
-            <i class="icon fas fa-exclamation-triangle"></i>
-            {{ $message }}
-        </span>
+        @error('referencia')
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
         @enderror
     </div>
+</div>
 
-    <div class="form-group">
-        <small>Fecha de pago:</small>
-        <input type="date" wire:model="fecha" class="form-control" placeholder="Fecha">
+<div class="form-group @if($metodo == "zelle") d-none @endif">
+    <small class="text-lightblue text-bold text-uppercase">Banco:</small>
+    <div wire:ignore>
+        <div id="div_select_bancos" class="input-group">
+            <select class="custom-select">
+                <option value="">Seleccione</option>
+            </select>
+        </div>
+    </div>
+    @error('bancos_id')
+    <small class="text-danger text-bold">{{ $message }}</small>
+    @enderror
+</div>
+
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Fecha Pago:</small>
+    <div class="input-group">
+        <input type="date" wire:model="fecha" class="form-control @error('fecha') is-invalid @enderror" placeholder="Fecha Pago">
         @error('fecha')
-        <span class="col-sm-12 text-sm text-bold text-danger">
-            <i class="icon fas fa-exclamation-triangle"></i>
-            {{ $message }}
-        </span>
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
         @enderror
     </div>
+</div>
 
-    <div class="form-group">
-        <small>Monto:</small>
-        <div class="input-group mb-3">
-            <input type="number" wire:model="montoPago" step="0.01" class="form-control" placeholder="{{ number_format($monto, 2, '.', '') }}" id="input_referencia">
-            @error('montoPago')
-            <span class="col-sm-12 text-sm text-bold text-danger">
-                <i class="icon fas fa-exclamation-triangle"></i>
-                {{ $message }}
-            </span>
-            @enderror
-        </div>
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Monto:</small>
+    <div class="input-group">
+        <input type="number" step="0.01" wire:model="montoPago" class="form-control @error('montoPago') is-invalid @enderror" placeholder="{{ number_format($monto, 2, '.', '') }}">
+        @error('montoPago')
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
+        @enderror
     </div>
-
 </div>
