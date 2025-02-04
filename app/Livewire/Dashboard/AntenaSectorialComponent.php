@@ -79,6 +79,7 @@ class AntenaSectorialComponent extends Component
         $this->limpiar();
         $antena = Antena::where('rowquid', $rowquid)->first();
         if ($antena){
+            $this->title = "Editar Antena";
             $this->antenas_id = $antena->id;
             $this->nombre = $antena->nombre;
             $this->ip = $antena->direccion_ip;

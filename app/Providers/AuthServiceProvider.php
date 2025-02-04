@@ -62,5 +62,9 @@ class AuthServiceProvider extends ServiceProvider
             return comprobarPermisos('pagos.index');
         });
 
+        Gate::define('configuracion', function ($user){
+            return comprobarPermisos();
+        });
+
     }
 }

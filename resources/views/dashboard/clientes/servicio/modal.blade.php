@@ -27,12 +27,11 @@
                 <div class="modal-footer" id="modal_clientes_servicio_footer">
 
                     @if($form)
-                        <div class="row col-12 justify-content-between" wire:loading.class="invisible"
-                             wire:target="limpiar, edit">
+                        <div class="row col-12 justify-content-between" wire:loading.class="invisible" wire:target="limpiar, edit">
                             <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default">
                                 Cerrar
                             </button>
-                            <button type="submit" class="btn  @if($servicios_id) btn-primary @else btn-success @endif ">
+                            <button type="submit" class="btn  @if($servicios_id) btn-primary @else btn-success @endif " @if(!comprobarPermisos('clientes.createplan')) disabled @endif>
                                 Guardar @if($servicios_id)
                                     Cambios
                                 @endif
@@ -43,11 +42,11 @@
 
                             <div class="btn-group">
 
-                                <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('deleteClienteServicio')">
+                                <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('deleteClienteServicio')" @if(!comprobarPermisos('clientes.destroyplan')) disabled @endif>
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
 
-                                <button type="button" class="btn btn-primary" wire:click="edit">
+                                <button type="button" class="btn btn-primary" wire:click="edit" @if(!comprobarPermisos('clientes.createplan')) disabled @endif>
                                     <i class="fas fa-edit"></i>
                                 </button>
 

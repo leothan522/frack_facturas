@@ -50,17 +50,17 @@
                         <div class="btn-group d-md-none">
 
                             <button type="button" onclick="confirmToastBootstrap('deleteFacturaCliente',  { rowquid: '{{ $factura->rowquid }}' })"
-                                    class="btn btn-primary" @if($factura->pagos_id) disabled @endif >
+                                    class="btn btn-primary" @if($factura->pagos_id || !comprobarPermisos('facturas.destroy')) disabled @endif >
                                 <i class="fas fa-trash-alt"></i>
                             </button>
 
                             @if($factura->send)
                                 <button type="button" onclick="confirmToastBootstrap('reeviarFacturaCliente',  { rowquid: '{{ $factura->rowquid }}' }, { type: 'warning', message: '¡Esta Factura ya fue enviada anteriormente!', button: '¡Sí, volver a enviar!' })"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                     <i class="fas fa-envelope-open"></i>
                                 </button>
                             @else
-                                <button type="button" wire:click="btnSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary">
+                                <button type="button" wire:click="btnSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             @endif
@@ -70,17 +70,17 @@
                         <div class="btn-group  d-none d-md-flex">
 
                             <button type="button" onclick="confirmToastBootstrap('deleteFacturaCliente',  { rowquid: '{{ $factura->rowquid }}' })"
-                                    class="btn btn-primary btn-sm" @if($factura->pagos_id) disabled @endif >
+                                    class="btn btn-primary btn-sm" @if($factura->pagos_id || !comprobarPermisos('facturas.destroy')) disabled @endif >
                                 <i class="fas fa-trash-alt"></i>
                             </button>
 
                             @if($factura->send)
                                 <button type="button" onclick="confirmToastBootstrap('reeviarFacturaCliente',  { rowquid: '{{ $factura->rowquid }}' }, { type: 'warning', message: '¡Esta Factura ya fue enviada anteriormente!', button: '¡Sí, volver a enviar!' })"
-                                        class="btn btn-primary btn-sm">
+                                        class="btn btn-primary btn-sm" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                     <i class="fas fa-envelope-open"></i>
                                 </button>
                             @else
-                                <button type="button" wire:click="btnSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-sm">
+                                <button type="button" wire:click="btnSendFactura('{{ $factura->rowquid }}')" class="btn btn-primary btn-sm" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                     <i class="fas fa-paper-plane"></i>
                                 </button>
                             @endif

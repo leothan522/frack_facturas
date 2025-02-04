@@ -92,7 +92,7 @@
                 </div>
             @else
                 <div class="col-12 text-right">
-                    <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar">
+                    <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar" @if(!comprobarPermisos('clientes.bienvenida')) disabled @endif>
                         <i class="fas fa-paper-plane"></i> Reenviar Bienvenida
                     </button>
                     <button type="button" class="btn btn-default btn-sm ml-1 d-md-none" wire:click="btnFacturasCliente"

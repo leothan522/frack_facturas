@@ -70,16 +70,16 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         @else
-                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('btnResetPago', 'NoParametros', { type: 'info', message: 'Su Estatus cambiara a <b>ESPERANDO VALIDACIÓN</b>', button: '¡SI, Reset!'})">
+                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('btnResetPago', 'NoParametros', { type: 'info', message: 'Su Estatus cambiara a <b>ESPERANDO VALIDACIÓN</b>', button: '¡SI, Reset!'})" @if(!comprobarPermisos('pagos.reset')) disabled @endif>
                                 <i class="fas fa-eraser"></i> Reset
                             </button>
                         @endif
                     @else
-                        <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('btnRechazarPago', 'NoParametros', { type: 'error', message: 'Su Estatus cambiara a <b>NO VALIDADO (REVISAR)</b>', button: '¡SI, Rechazar!'})">
+                        <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('btnRechazarPago', 'NoParametros', { type: 'error', message: 'Su Estatus cambiara a <b>NO VALIDADO (REVISAR)</b>', button: '¡SI, Rechazar!'})" @if(!comprobarPermisos('pagos.validar')) disabled @endif>
                             <i class="fas fa-exclamation-triangle"></i> Rechazar
                         </button>
 
-                        <button type="button" class="btn btn-success" onclick="confirmToastBootstrap('btnAprobarPago', 'NoParametros', { type: 'success', message: 'Su Estatus cambiara a <b>VALIDADO</b>', button: '¡SI, Aprobar!'})">
+                        <button type="button" class="btn btn-success" onclick="confirmToastBootstrap('btnAprobarPago', 'NoParametros', { type: 'success', message: 'Su Estatus cambiara a <b>VALIDADO</b>', button: '¡SI, Aprobar!'})" @if(!comprobarPermisos('pagos.validar')) disabled @endif>
                             <i class="fas fa-check"></i> Aprobar
                         </button>
                     @endif

@@ -23,7 +23,7 @@
                             <input type="text" wire:model="nombre" class="form-control @error('nombre') is-invalid @enderror" placeholder="Nombre">
                             @if(!$form)
                                 <span class="input-group-append">
-                                    <button type="submit" class="btn @if($antenas_id) btn-primary @else btn-success @endif">
+                                    <button type="submit" class="btn @if($antenas_id) btn-primary @else btn-success @endif" @if(!comprobarPermisos('antenas.create')) disabled @endif>
                                         <i class="fas fa-save"></i>
                                     </button>
                                 </span>
@@ -47,8 +47,8 @@
             </div>
             <div class="modal-footer @if($form) justify-content-between @endif" wire:loading.class="invisible">
                 @if($form)
-                    <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('deleteAntena')"><i class="fas fa-trash-alt"></i></button>
-                    <button type="submit" class="btn btn-primary">Actualizar Antena</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('deleteAntena')" @if(!comprobarPermisos('antenas.destroy')) disabled @endif><i class="fas fa-trash-alt"></i></button>
+                    <button type="submit" class="btn btn-primary" @if(!comprobarPermisos('antenas.edit')) disabled @endif>Actualizar Antena</button>
                     <button type="button" class="btn btn-default" wire:click="cancel">Volver</button>
                 @else
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default_antena_sectorial">Cerrar</button>

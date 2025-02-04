@@ -7,9 +7,10 @@
                 <img class="rounded mr-4" src="{{ asset('img/payment_9359413.png') }}" width="100px" height="100px" alt="Datos para Transferencias">
             </div>
 
-            <a href="#" class="card-link" wire:click.prevent="irTransferencia">
+            <button type="button" class="btn btn-link" wire:click="irTransferencia">
                 <i class="fas fa-edit"></i> Verificar
-            </a>
+            </button>
+
         </div>
         {!! verSpinner('irTransferencia') !!}
     </div>
@@ -24,9 +25,9 @@
                 <img class="rounded mr-4" src="{{ asset('img/sms_9195052.png') }}" width="100px" height="100px" alt="Datos para Pago Movil">
             </div>
 
-            <a href="#" class="card-link" wire:click.prevent="irPagoMovil">
+            <button type="button" class="btn btn-link" wire:click="irPagoMovil">
                 <i class="fas fa-edit"></i> Verificar
-            </a>
+            </button>
         </div>
         {!! verSpinner('irPagoMovil') !!}
     </div>
@@ -41,9 +42,9 @@
                 <img class="rounded mr-4" src="{{ asset('img/zelle.svg') }}" width="100px" height="100px" alt="Datos para Zelle">
             </div>
 
-            <a href="#" class="card-link" wire:click.prevent="irZelle">
+            <button type="button" class="btn btn-link" wire:click="irZelle">
                 <i class="fas fa-edit"></i> Verificar
-            </a>
+            </button>
         </div>
         {!! verSpinner('irZelle') !!}
     </div>

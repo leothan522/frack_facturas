@@ -62,16 +62,16 @@
 
                     <div class="btn-group">
 
-                        <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('delete')">
+                        <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('delete')" @if(!comprobarPermisos('facturas.destroy')) disabled @endif>
                             <i class="fas fa-trash-alt"></i>
                         </button>
 
                         @if($send)
-                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('reeviarFactura',  'NoParametros', { type: 'warning', message: '¡Esta Factura ya fue enviada anteriormente!', button: '¡Sí, volver a enviar!' })">
+                            <button type="button" class="btn btn-primary" onclick="confirmToastBootstrap('reeviarFactura',  'NoParametros', { type: 'warning', message: '¡Esta Factura ya fue enviada anteriormente!', button: '¡Sí, volver a enviar!' })" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                 <i class="fas fa-envelope-open"></i>
                             </button>
                         @else
-                            <button type="button" class="btn btn-primary" wire:click="btnSendFactura">
+                            <button type="button" class="btn btn-primary" wire:click="btnSendFactura" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         @endif

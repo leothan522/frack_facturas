@@ -31,7 +31,7 @@
 
 <div class="row">
     <div class="col-12 mt-3 text-right float-right">
-        <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar">
+        <button type="button" class="btn btn-default btn-sm" wire:click="btnReenviar" @if(!comprobarPermisos('clientes.contrato')) disabled @endif>
             <i class="fas fa-paper-plane"></i> Reenviar Contrato
         </button>
     </div>

@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <small class="text-lightblue text-bold text-uppercase">Monto Bs:</small>
                         <div class="input-group">
-                            <input type="number" step="0.01" min="1" wire:model="monto" class="form-control @error('monto') is-invalid @enderror" placeholder="Monto en Bs.">
+                            <input type="number" step="0.01" min="1" wire:model="monto" class="form-control @error('monto') is-invalid @enderror" placeholder="Monto en Bs." @if(!comprobarPermisos('precio.dollar')) readonly @endif>
                             @error('monto')
                             <span class="error invalid-feedback text-bold">{{ $message }}</span>
                             @enderror
@@ -23,7 +23,7 @@
                 </div>
                 <div class="modal-footer justify-content-between" wire:loading.class="invisible">
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_default_dollar">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary" @if(!comprobarPermisos('precio.dollar')) disabled @endif>Guardar</button>
                 </div>
                 {!! verSpinner() !!}
             </div>

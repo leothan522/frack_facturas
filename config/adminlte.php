@@ -366,7 +366,7 @@ return [
         [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
-            'can'       => ['usuarios', 'parametros', 'pruebas'],
+            'can'       => ['usuarios', 'parametros', 'pruebas', 'configuracion'],
             'submenu' => [
                 [
                     'text' => 'Correo Soporte',
@@ -376,7 +376,8 @@ return [
                         'toggle' => 'modal',
                         'target' => '#modal-corro-email-sistema',
                     ],
-                    'id' => 'button_email_dispath_sistema'
+                    'id' => 'button_email_dispath_sistema',
+                    'can' => 'configuracion',
                 ],
                 [
                     'text' => 'Teléfono Soporte',
@@ -386,7 +387,8 @@ return [
                         'toggle' => 'modal',
                         'target' => '#modal-telefono-soporte-sistema',
                     ],
-                    'id' => 'button_telefono_soporte_sistema'
+                    'id' => 'button_telefono_soporte_sistema',
+                    'can' => 'configuracion',
                 ],
                 [
                     'text' => 'Usuarios',

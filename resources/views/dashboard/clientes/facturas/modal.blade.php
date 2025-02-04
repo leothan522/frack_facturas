@@ -23,7 +23,7 @@
 
                 <div class="row col-12 justify-content-between" wire:loading.class="invisible" wire:target.except="btnVerPDF">
 
-                    <button type="button" wire:click="btnGenerarFactura" class="btn btn-primary" @if(!$servicios_id) disabled @endif>
+                    <button type="button" wire:click="btnGenerarFactura" class="btn btn-primary" @if(!$servicios_id || !comprobarPermisos('facturas.create')) disabled @endif>
                         <i class="fas fa-file-invoice mr-1"></i> Generar Factura
                     </button>
 

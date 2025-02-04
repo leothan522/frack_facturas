@@ -10,8 +10,8 @@
     </div>
     <div class="card-body p-0">
         <ul class="nav nav-pills flex-column">
-            <li class="nav-item active">
-                <a href="#" class="nav-link" wire:click.prevent="setFacturarAutomatico">
+            <li class="nav-item">
+                <button type="button" class="btn btn-block nav-link text-left" wire:click="setFacturarAutomatico" @if(!comprobarPermisos('facturas.automatico')) disabled @endif>
                     <span wire:loading wire:target="setFacturarAutomatico">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
                     </span>
@@ -23,10 +23,10 @@
                             <span class="badge bg-warning float-right">Inactivo</span>
                         @endif
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" wire:click.prevent="btnGenerarFacturas">
+                <button type="button" class="btn btn-block nav-link text-left" wire:click="btnGenerarFacturas" @if(!comprobarPermisos('facturas.create')) disabled @endif>
                     <span wire:loading wire:target="btnGenerarFacturas">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
                     </span>
@@ -36,10 +36,10 @@
                             <span class="badge bg-warning float-right">{{ $nuevasFacturas }}</span>
                         @endif
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" wire:click.prevent="btnSendFacturas">
+                <button type="button" class="btn btn-block nav-link text-left" wire:click="btnSendFacturas" @if(!comprobarPermisos('facturas.send')) disabled @endif>
                     <span wire:loading wire:target="btnSendFacturas">
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
                     </span>
@@ -49,7 +49,7 @@
                             <span class="badge bg-warning float-right">{{ $facturasEnviadas }}</span>
                         @endif
                     </span>
-                </a>
+                </button>
             </li>
             <li class="nav-item d-none">
                 <a href="#" class="nav-link">

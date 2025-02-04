@@ -18,9 +18,9 @@
         <form wire:submit="saveZelle">
 
 
-            @if($metodos_id)
+            @if($metodos_id && comprobarPermisos('metodos.edit'))
                 <div class="float-right">
-                    <button type="button" class="btn btn-sm" onclick="confirmToastBootstrap('delete', 'NoParametros')">
+                    <button type="button" class="btn btn-sm" onclick="confirmToastBootstrap('delete', 'NoParametros')" @if(!comprobarPermisos('metodos.destroy')) disabled @endif>
                         <i class="fas fa-trash-alt text-danger"></i>
                     </button>
                 </div>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <small class="text-lightblue text-bold text-uppercase">Beneficiario:</small>
                 <div class="input-group">
-                    <input type="text" wire:model="titular" class="form-control @error('titular') is-invalid @enderror" placeholder="Nombre completo">
+                    <input type="text" wire:model="titular" class="form-control @error('titular') is-invalid @enderror" placeholder="Nombre completo" @if(!comprobarPermisos('metodos.edit')) readonly @endif>
                     @error('titular')
                     <span class="error invalid-feedback text-bold">{{ $message }}</span>
                     @enderror
@@ -39,24 +39,26 @@
             <div class="form-group">
                 <small class="text-lightblue text-bold text-uppercase">{{ __('Email') }}:</small>
                 <div class="input-group">
-                    <input type="text" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}">
+                    <input type="text" wire:model="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}" @if(!comprobarPermisos('metodos.edit')) readonly @endif>
                     @error('email')
                     <span class="error invalid-feedback text-bold">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
-            <div class="form-group">
-                @if($metodos_id)
-                    <button type="submit" class="btn btn-block btn-primary">
-                        <i class="fas fa-save"></i> Actualizar
-                    </button>
-                @else
-                    <button type="submit" class="btn btn-block btn-success">
-                        <i class="fas fa-save"></i> Guardar
-                    </button>
-                @endif
-            </div>
+            @if(comprobarPermisos('metodos.edit'))
+                <div class="form-group">
+                    @if($metodos_id)
+                        <button type="submit" class="btn btn-block btn-primary">
+                            <i class="fas fa-save"></i> Actualizar
+                        </button>
+                    @else
+                        <button type="submit" class="btn btn-block btn-success">
+                            <i class="fas fa-save"></i> Guardar
+                        </button>
+                    @endif
+                </div>
+            @endif
 
         </form>
 
