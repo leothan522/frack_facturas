@@ -32,6 +32,7 @@ return new class extends Migration
             $table->foreign('clientes_id')->references('id')->on('clientes')->cascadeOnDelete();
             $table->foreign('facturas_id')->references('id')->on('facturas')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

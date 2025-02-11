@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('pagos', function (Blueprint $table) {
             $table->integer('band')->default(0)->after('estatus');
-            $table->softDeletes()->after('updated_at');
+            //$table->softDeletes()->after('updated_at');
         });
     }
 
