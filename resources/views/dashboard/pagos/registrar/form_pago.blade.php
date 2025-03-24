@@ -28,11 +28,26 @@
 </div>
 
 
-<div class="form-group">
+<div class="form-group @if($ocultarReferencia) d-none @endif">
     <small class="text-lightblue text-bold text-uppercase">Referencia:</small>
     <div class="input-group">
         <input type="text" wire:model="referencia" class="form-control @error('referencia') is-invalid @enderror" placeholder="Referencia">
         @error('referencia')
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
+        @enderror
+    </div>
+</div>
+
+<div class="form-group @if($ocultarMoneda) d-none @endif">
+    <small class="text-lightblue text-bold text-uppercase">Moneda:</small>
+    <div class="input-group">
+        <select class="custom-select @error('moneda') is-invalid @enderror" wire:model="moneda">
+            {{--<option value="">Seleccione</option>--}}
+            @foreach($listarMonedas as $moneda)
+                <option value="{{ $moneda->codigo }}">{{ $moneda->nombre }}</option>
+            @endforeach
+        </select>
+        @error('moneda')
         <span class="error invalid-feedback text-bold">{{ $message }}</span>
         @enderror
     </div>

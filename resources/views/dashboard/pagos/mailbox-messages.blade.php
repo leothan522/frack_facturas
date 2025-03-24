@@ -9,7 +9,11 @@
                     </td>
                     <td class="text-nowrap text-uppercase" style="width: 10%">
                         <a href="#" wire:click.prevent="show('{{ $registro->rowquid }}')">
-                            {{ $registro->referencia}}
+                            @if($registro->metodo == 'efectivo')
+                                Efectivo
+                            @else
+                                {{ $registro->referencia}}
+                            @endif
                         </a>
                     </td>
                     <td class="text-nowrap d-none d-md-table-cell " style="width: 10%">

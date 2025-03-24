@@ -25,10 +25,12 @@
                         <span>Metodo:</span>
                         <span class="float-right text-bold text-lightblue text-uppercase">{{ $verMetodo }}</span>
                     </li>
-                    <li class="list-group-item">
-                        <span>Referencia:</span>
-                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verReferencia }}</span>
-                    </li>
+                    @if(mb_strtolower($verMetodo) != 'efectivo')
+                        <li class="list-group-item">
+                            <span>Referencia:</span>
+                            <span class="float-right text-bold text-lightblue text-uppercase">{{ $verReferencia }}</span>
+                        </li>
+                    @endif
                     @if($verBanco)
                         <li class="list-group-item">
                             <span>Banco:</span>

@@ -493,6 +493,7 @@ function getMetodoPago($metodo = null): array|string
         'transferencia' => 'Tranferencias',
         'movil' => 'Pago Móvil',
         'zelle' => 'Zelle',
+        'efectivo' => 'Efectivo',
         'all'   => 'Todos'
     ];
 

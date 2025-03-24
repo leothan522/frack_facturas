@@ -6,6 +6,7 @@ use App\Models\Banco;
 use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Metodo;
+use App\Models\Moneda;
 use App\Models\Pago;
 use App\Traits\ToastBootstrap;
 use Illuminate\Validation\Rule;
@@ -21,9 +22,9 @@ class PagosRegistrarComponent extends Component
     public int $size = 251; //max-height: 305px;
     public $clientes_id, $facturas_id;
     public $verOrganizacionFactura, $verNumeroFactura, $verFechaFactura, $verTotalFactura;
-    public $listarMetodos, $ocultarBanco = true;
+    public $listarMetodos, $ocultarBanco = true, $listarMonedas, $ocultarMoneda = true, $ocultarReferencia = false;
 
-    public $metodo, $bancos_id, $referencia, $fecha, $monto;
+    public $metodo, $bancos_id, $referencia, $fecha, $monto, $moneda;
     public $titular, $cuenta, $tipo, $cedula, $telefono, $email, $nombre, $codigo, $dollar, $factura_numero;
 
     #[Locked]
@@ -37,9 +38,9 @@ class PagosRegistrarComponent extends Component
     public function limpiar()
     {
         $this->reset([
-            'title', 'clientes_id', 'facturas_id', 'ocultarBanco',
+            'title', 'clientes_id', 'facturas_id', 'ocultarBanco', 'ocultarMoneda', 'ocultarReferencia',
             'verOrganizacionFactura', 'verNumeroFactura', 'verFechaFactura', 'verTotalFactura',
-            'metodo', 'bancos_id', 'referencia', 'fecha', 'monto',
+            'metodo', 'bancos_id', 'referencia', 'fecha', 'monto', 'moneda',
             'titular', 'cuenta', 'tipo', 'cedula', 'telefono', 'email', 'nombre', 'codigo', 'dollar', 'factura_numero',
             'pagos_id',
         ]);
@@ -52,12 +53,22 @@ class PagosRegistrarComponent extends Component
         if (!empty($this->metodo)){
             $model = Metodo::where('metodo', $this->metodo)->first();
             if ($model){
+
                 if ($model->metodo != 'zelle'){
-                    $this->ocultarBanco = false;
-                    $this->getBancos();
+                    if ($model->metodo == 'efectivo'){
+                        $this->ocultarBanco = true;
+                        $this->ocultarMoneda = false;
+                        $this->referencia = 'E00'.generarStringAleatorio(12, true);
+                        $this->ocultarReferencia = true;
+                    }else{
+                        $this->reset(['referencia', 'ocultarReferencia', 'ocultarMoneda', 'moneda']);
+                        $this->ocultarBanco = false;
+                        $this->getBancos();
+                    }
                 }else{
                     $this->ocultarBanco = true;
                     $this->reset(['bancos_id']);
+                    $this->reset(['referencia', 'ocultarReferencia', 'ocultarMoneda', 'moneda']);
                 }
                 $this->titular = $model->titular;
                 $this->cuenta = $model->cuenta;
@@ -81,7 +92,7 @@ class PagosRegistrarComponent extends Component
             'facturas_id' => 'required',
             'metodo' => 'required',
             'referencia' => ['required', 'alpha_num', 'min:8', 'max:15', Rule::unique('pagos', 'referencia')],
-            'bancos_id' => Rule::requiredIf($this->metodo != "zelle"),
+            'bancos_id' => Rule::requiredIf($this->metodo == "movil" || $this->metodo == 'tranferencia'),
             'fecha' => 'required',
             'monto' => 'required|numeric'
         ];
@@ -107,7 +118,11 @@ class PagosRegistrarComponent extends Component
         $pago->fecha = $this->fecha;
         $pago->monto = $this->monto;
         if ($this->metodo != 'zelle'){
-            $pago->moneda = 'Bs';
+            if ($this->metodo == 'efectivo'){
+                $pago->moneda = $this->moneda;
+            }else{
+                $pago->moneda = 'Bs';
+            }
         }else{
             $pago->moneda = 'USD';
         }
@@ -265,6 +280,7 @@ class PagosRegistrarComponent extends Component
     protected function getMetodos()
     {
         $this->listarMetodos = Metodo::all();
+        $this->listarMonedas = Moneda::all();
     }
 
     protected function getBancos()
