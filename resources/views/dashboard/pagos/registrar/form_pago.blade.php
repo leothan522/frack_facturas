@@ -42,7 +42,7 @@
     <small class="text-lightblue text-bold text-uppercase">Moneda:</small>
     <div class="input-group">
         <select class="custom-select @error('moneda') is-invalid @enderror" wire:model="moneda">
-            {{--<option value="">Seleccione</option>--}}
+            <option value="">Seleccione</option>
             @foreach($listarMonedas as $moneda)
                 <option value="{{ $moneda->codigo }}">{{ $moneda->nombre }}</option>
             @endforeach

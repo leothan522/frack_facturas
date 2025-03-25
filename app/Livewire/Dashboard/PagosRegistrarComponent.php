@@ -93,6 +93,7 @@ class PagosRegistrarComponent extends Component
             'metodo' => 'required',
             'referencia' => ['required', 'alpha_num', 'min:8', 'max:15', Rule::unique('pagos', 'referencia')],
             'bancos_id' => Rule::requiredIf($this->metodo == "movil" || $this->metodo == 'tranferencia'),
+            'moneda' => Rule::requiredIf($this->metodo == "efectivo"),
             'fecha' => 'required',
             'monto' => 'required|numeric'
         ];
