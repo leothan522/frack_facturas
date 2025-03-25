@@ -106,14 +106,14 @@
                                                 <div class="whitespace-nowrap font-bold text-main">{{ $organizacion_moneda }} {{ $total }}</div>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {{--<tr>
                                             <td class="p-3">
                                                 <div class="whitespace-nowrap text-slate-400">I.V.A:</div>
                                             </td>
                                             <td class="p-3 text-right">
                                                 <div class="whitespace-nowrap font-bold text-main">-</div>
                                             </td>
-                                        </tr>
+                                        </tr>--}}
                                         <tr>
                                             <td class="bg-main p-3">
                                                 <div class="whitespace-nowrap font-bold text-white">Total:</div>
