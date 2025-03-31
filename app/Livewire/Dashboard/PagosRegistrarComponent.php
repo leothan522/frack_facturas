@@ -27,6 +27,8 @@ class PagosRegistrarComponent extends Component
     public $metodo, $bancos_id, $referencia, $fecha, $monto, $moneda;
     public $titular, $cuenta, $tipo, $cedula, $telefono, $email, $nombre, $codigo, $dollar, $factura_numero;
 
+    public $verCheckbox = false, $pagoAdelantado = false;
+
     #[Locked]
     public $pagos_id;
     public function render()
@@ -43,6 +45,7 @@ class PagosRegistrarComponent extends Component
             'metodo', 'bancos_id', 'referencia', 'fecha', 'monto', 'moneda',
             'titular', 'cuenta', 'tipo', 'cedula', 'telefono', 'email', 'nombre', 'codigo', 'dollar', 'factura_numero',
             'pagos_id',
+            'verCheckbox', 'pagoAdelantado',
         ]);
         $this->resetErrorBag();
         $this->dataClientes();
@@ -89,13 +92,13 @@ class PagosRegistrarComponent extends Component
     {
         $rules = [
             'clientes_id' => 'required',
-            'facturas_id' => 'required',
+            'facturas_id' => Rule::requiredIf(!$this->pagoAdelantado),
             'metodo' => 'required',
             'referencia' => ['required', 'alpha_num', 'min:8', 'max:15', Rule::unique('pagos', 'referencia')],
             'bancos_id' => Rule::requiredIf($this->metodo == "movil" || $this->metodo == 'tranferencia'),
             'moneda' => Rule::requiredIf($this->metodo == "efectivo"),
             'fecha' => 'required',
-            'monto' => 'required|numeric'
+            'monto' => 'required|numeric',
         ];
         $messages = [
             'clientes_id.required' => 'El campo cliente es obligatorio.',
@@ -149,10 +152,12 @@ class PagosRegistrarComponent extends Component
         $pago->rowquid = $rowquid;
         $pago->save();
 
-        $factura = Factura::find($this->facturas_id);
-        $factura->pagos_id = $pago->id;
-        $factura->estatus = 1;
-        $factura->save();
+        if ($this->facturas_id){
+            $factura = Factura::find($this->facturas_id);
+            $factura->pagos_id = $pago->id;
+            $factura->estatus = 1;
+            $factura->save();
+        }
 
         $this->dispatch('cerrarFormRegistro');
         $this->toastBootstrap();
@@ -174,8 +179,12 @@ class PagosRegistrarComponent extends Component
     public function getSelectCliente($id)
     {
         $this->clientes_id = $id;
-        //dd($this->getFacturasCliente($id));
-        $this->dispatch('initSelectFactura', data: $this->getFacturasCliente($id));
+        $data = $this->getFacturasCliente($id);
+        $this->reset(['verCheckbox', 'pagoAdelantado', 'facturas_id','verNumeroFactura', 'verOrganizacionFactura', 'verFechaFactura', 'verTotalFactura']);
+        if (empty($data)){
+            $this->verCheckbox = true;
+        }
+        $this->dispatch('initSelectFactura', data: $data);
     }
 
     #[On('initSelectFactura')]

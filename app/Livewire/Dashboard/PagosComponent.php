@@ -96,9 +96,9 @@ class PagosComponent extends Component
                 $this->verEstatus = $this->icono[$pago->estatus]." NO Validado (Revisar)";
             }
             $this->verFactura = $pago->factura_numero;
-            $this->verRowquid = $pago->factura->rowquid;
+            $this->verRowquid = $pago->facturas_id ? $pago->factura->rowquid : null;
             $this->verCliente = $pago->cliente->nombre." ".$pago->cliente->apellido;
-            $this->verTotal = $pago->factura->organizacion_moneda." ".formatoMillares($pago->factura->factura_total);
+            $this->verTotal = $pago->facturas_id ? $pago->factura->organizacion_moneda." ".formatoMillares($pago->factura->factura_total) : null;
 
             $this->estatus = $pago->estatus;
             $this->band = $pago->band;

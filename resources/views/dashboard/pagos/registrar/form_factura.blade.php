@@ -60,4 +60,11 @@
 
 </div>
 
+<div class="form-group @if(!$verCheckbox) d-none @endif">
+    <div class="custom-control custom-checkbox">
+        <input class="custom-control-input" type="checkbox" id="customCheckbox1" wire:model.lazy="pagoAdelantado">
+        <label for="customCheckbox1" class="custom-control-label">Pago Adelantado</label>
+    </div>
+</div>
+
 

@@ -20,7 +20,7 @@
                         {{ getFecha($registro->fecha) }}
                     </td>
                     <td class="text-nowrap d-none d-md-table-cell  text-uppercase text-truncate" style="max-width: 150px;">
-                        <b>{{ $registro->factura_numero }}</b> - {{ $registro->cliente->nombre }} {{ $registro->cliente->apellido }}
+                        <b>{{ $registro->factura_numero ?? 'Adelanto' }}</b> - {{ $registro->cliente->nombre }} {{ $registro->cliente->apellido }}
                     </td>
                     <td class="text-nowrap text-right" style="width: 10%">
                         <span class="text-bold">{{ $registro->moneda }} {{ formatoMillares($registro->monto) }}</span>

@@ -53,7 +53,7 @@
             </td>
             <td style="border: 1px solid #000000; text-align: center">{{ $pago->cliente->cedula  }}</td>
             <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pago->cliente->nombre.' '.$pago->cliente->apellido)}}</td>
-            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pago->factura->factura_numero) }}</td>
+            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pago->factura->factura_numero ?? "Adelanto") }}</td>
             <td style="border: 1px solid #000000; text-align: center">
                 @if($pago->estatus == 0)
                     {{ strtoupper('Esperando Validación') }}

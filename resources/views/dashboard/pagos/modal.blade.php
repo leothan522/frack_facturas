@@ -47,17 +47,24 @@
                     </li>
                     <li class="list-group-item">
                         <span>Factura:</span>
-                        <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" onclick="verModalPDF()" data-toggle="modal" data-target="#modal-ver-pdf">{{ $verFactura }}</a>
-                        <a href="{{ route('facturas.pdf', $verRowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase d-none d-md-inline">{{ $verFactura }}</a>
+                        @if($verFactura)
+                            <a href="#" target="_blank" class="float-right text-bold text-uppercase d-md-none" wire:click="btnVerPDF" onclick="verModalPDF()" data-toggle="modal" data-target="#modal-ver-pdf">{{ $verFactura }}</a>
+                            <a href="{{ route('facturas.pdf', $verRowquid ?? '') }}" target="_blank" class="float-right text-bold text-uppercase d-none d-md-inline">{{ $verFactura }}</a>
+                        @else
+                            <span class="float-right text-bold text-lightblue text-uppercase">Pago Adelantado</span>
+                        @endif
                     </li>
                     <li class="list-group-item">
                         <span>Cliente:</span>
                         <span class="float-right text-bold text-lightblue text-uppercase">{{ $verCliente }}</span>
                     </li>
-                    <li class="list-group-item">
-                        <span>Total Factura:</span>
-                        <span class="float-right text-bold text-lightblue text-uppercase">{{ $verTotal }}{{ $verBs }}</span>
-                    </li>
+                    @if($verTotal)
+                        <li class="list-group-item">
+                            <span>Total Factura:</span>
+                            <span class="float-right text-bold text-lightblue text-uppercase">{{ $verTotal }}{{ $verBs }}</span>
+                        </li>
+                    @endif
+
                 </ul>
 
             </div>
