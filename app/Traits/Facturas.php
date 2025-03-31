@@ -8,6 +8,7 @@ use App\Models\Cliente;
 use App\Models\Factura;
 use App\Models\Imagen;
 use App\Models\Organizacion;
+use App\Models\Pago;
 use App\Models\Plan;
 use App\Models\Servicio;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -125,6 +126,20 @@ trait Facturas
                 }while($existe);
                 $factura->rowquid = $rowquid;
                 $factura->save();
+
+                //verificar Pagos adelantados
+                $pago = Pago::where('clientes_id', $cliente->id)
+                        ->where('facturas_id', null)
+                        ->orderBy('fecha', 'ASC')
+                        ->first();
+                if ($pago) {
+                    $pago->factura_numero = $factura->factura_numero;
+                    $pago->facturas_id = $factura->id;
+                    $pago->save();
+                    $factura->pagos_id = $pago->id;
+                    $factura->estatus = 1;
+                    $factura->save();
+                }
 
                 $organizacion->proxima_factura = ++$next;
                 $organizacion->save();

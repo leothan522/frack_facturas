@@ -138,15 +138,20 @@ class PagosComponent extends Component
             if ($vinculado) {
                 $this->htmlToastBoostrap();
             } else {
-                $factura = Factura::find($registro->facturas_id);
-                $factura->pagos_id = null;
+
+                $idFactura = $registro->facturas_id;
 
                 $nombre = '<b class="text-uppercase text-warning">'.$registro->referencia.'</b>';
                 $registro->referencia = "*".$registro->referencia;
                 $registro->save();
                 $registro->delete();
 
-                $factura->save();
+                if ($idFactura){
+                    $factura = Factura::find($registro->facturas_id);
+                    $factura->pagos_id = null;
+                    $factura->save();
+                }
+
                 $this->dispatch('cerrarModalShowPago');
                 $this->toastBootstrap('success', "Pago $nombre Eliminado.");
             }
