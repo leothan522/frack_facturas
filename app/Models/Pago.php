@@ -30,6 +30,7 @@ class Pago extends Model
         'facturas_id',
         'estatus',
         'band',
+        'observacion',
         'rowquid'
     ];
 

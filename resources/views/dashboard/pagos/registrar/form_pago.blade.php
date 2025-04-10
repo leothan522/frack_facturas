@@ -72,3 +72,13 @@
         @enderror
     </div>
 </div>
+
+<div class="form-group">
+    <small class="text-lightblue text-bold text-uppercase">Observación o Comentario:</small>
+    <div class="input-group">
+        <textarea wire:model="observacion" class="form-control" cols="1" rows="2" placeholder="Observaciones"></textarea>
+        @error('direccion')
+        <span class="error invalid-feedback text-bold">{{ $message }}</span>
+        @enderror
+    </div>
+</div>

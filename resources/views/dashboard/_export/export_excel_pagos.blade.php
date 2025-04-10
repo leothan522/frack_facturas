@@ -29,6 +29,9 @@
         <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
             ESTATUS
         </th>
+        <th style="border: 1px solid #000000;background-color: #00B0F0; font-weight: bold; text-align: center; ">
+            OBSERVACIONES
+        </th>
     </tr>
     </thead>
     <tbody>
@@ -65,6 +68,7 @@
                     {{ strtoupper('NO Validado (Revisar)"') }}
                 @endif
             </td>
+            <td style="border: 1px solid #000000; text-align: center">{{ strtoupper($pago->observacion ?? "") }}</td>
         </tr>
     @endforeach
     </tbody>

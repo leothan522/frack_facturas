@@ -64,6 +64,12 @@
                             <span class="float-right text-bold text-lightblue text-uppercase">{{ $verTotal }}{{ $verBs }}</span>
                         </li>
                     @endif
+                    @if($verObservacion)
+                        <li class="list-group-item">
+                            <span>Observación:</span>
+                            <span class="float-right text-bold text-lightblue text-uppercase">{{ $verObservacion }}{{ $verBs }}</span>
+                        </li>
+                    @endif
 
                 </ul>
 

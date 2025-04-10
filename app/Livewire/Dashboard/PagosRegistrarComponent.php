@@ -28,6 +28,7 @@ class PagosRegistrarComponent extends Component
     public $titular, $cuenta, $tipo, $cedula, $telefono, $email, $nombre, $codigo, $dollar, $factura_numero;
 
     public $verCheckbox = false, $pagoAdelantado = false;
+    public $observacion;
 
     #[Locked]
     public $pagos_id;
@@ -46,6 +47,7 @@ class PagosRegistrarComponent extends Component
             'titular', 'cuenta', 'tipo', 'cedula', 'telefono', 'email', 'nombre', 'codigo', 'dollar', 'factura_numero',
             'pagos_id',
             'verCheckbox', 'pagoAdelantado',
+            'observacion',
         ]);
         $this->resetErrorBag();
         $this->dataClientes();
@@ -145,6 +147,9 @@ class PagosRegistrarComponent extends Component
         $pago->facturas_id = $this->facturas_id;
         $pago->estatus = 1;
         $pago->band = 1;
+        if ($this->observacion) {
+            $pago->observacion = $this->observacion;
+        }
         do{
             $rowquid = generarStringAleatorio(16);
             $existe = Pago::where('rowquid', $rowquid)->first();

@@ -25,6 +25,8 @@ class PagosComponent extends Component
     public $verMetodo, $verReferencia, $verBanco, $verMoneda, $verMonto, $verFecha, $classEstatus, $verEstatus, $verFactura, $verRowquid, $verCliente, $verTotal, $verBs;
     public $registrarPago = false;
 
+    public $verObservacion;
+
     #[Locked]
     public $pagos_id, $rowquid, $estatus, $band;
 
@@ -54,6 +56,7 @@ class PagosComponent extends Component
             'verMetodo', 'verReferencia', 'verBanco', 'verMoneda', 'verMonto', 'verFecha', 'classEstatus', 'verEstatus', 'verFactura', 'verRowquid', 'verCliente', 'verTotal', 'verBs',
             'registrarPago',
             'pagos_id', 'rowquid', 'estatus', 'band',
+            'verObservacion',
         ]);
         $this->resetErrorBag();
     }
@@ -102,6 +105,8 @@ class PagosComponent extends Component
 
             $this->estatus = $pago->estatus;
             $this->band = $pago->band;
+
+            $this->verObservacion = $pago->observacion;
 
             if ($initModal){
                 $this->dispatch('initModal');
