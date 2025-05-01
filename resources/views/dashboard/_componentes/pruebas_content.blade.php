@@ -13,12 +13,11 @@
             Prueba Toast
         </button>
 
-
-
-
-
-
-
         {!! verSpinner()  !!}
+    </div>
+    <div class="col-12">
+        <button type="button" class="btn btn-default" wire:click="serviciosDuplicados">
+            Servicios Duplicados
+        </button>
     </div>
 </div>

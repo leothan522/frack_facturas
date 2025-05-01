@@ -274,4 +274,35 @@ class PruebasComponent extends Component
         $this->toastBootstrap();
     }
 
+    public function serviciosDuplicados()
+    {
+        $data = [];
+        $servicios = Servicio::all();
+        foreach ($servicios as $servicio){
+            $data[] = [
+                'id' => $servicio->id,
+                'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
+                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido,
+                'idCliente' => $servicio->clientes_id,
+            ];
+        }
+        $myCollection = collect($data)->sortBy('fecha');
+        $duplicatePositions = $myCollection->duplicates('idCliente');
+        $uniqueCollection = $duplicatePositions->unique();
+        $hola = array();
+        foreach ($uniqueCollection as $idCliente){
+            $hola[] = $idCliente;
+            $servicios = Servicio::where('clientes_id', $idCliente)->get();
+            $i = 1;
+            foreach ($servicios as $servicio){
+                if ($i != 1){
+                   $servicio->delete();
+                }
+                $i++;
+            }
+
+        }
+        dd($hola);
+    }
+
 }

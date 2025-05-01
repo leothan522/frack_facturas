@@ -274,10 +274,12 @@ trait Facturas
             $data[] = [
                 'id' => $servicio->id,
                 'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
-                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido
+                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido,
+                'idCliente' => $servicio->clientes_id,
             ];
         }
-        return collect($data)->sortBy('fecha');
+        $myCollection = collect($data)->sortBy('fecha');
+        return $myCollection->unique('idCliente');
     }
 
     protected function avisoDeCorteTrait(): void
