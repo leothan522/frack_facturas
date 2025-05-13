@@ -39,6 +39,9 @@ class Pago extends Model
         return $query->where('referencia', 'LIKE', "%$keyword%")
             ->orWhere('fecha', 'LIKE', "%$keyword%")
             ->orWhere('factura_numero', 'LIKE', "%$keyword%")
+            ->orWhereHas('cliente', function ($q) use ($keyword) {
+                $q->where('nombre', 'LIKE', "%$keyword%")->orWhere('apellido', 'LIKE', "%$keyword%");
+            })
             ;
     }
 
