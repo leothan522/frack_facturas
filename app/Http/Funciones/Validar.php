@@ -56,6 +56,14 @@ function allPermisos()
                 'Borrar Facturas' => 'facturas.destroy',
             ]
         ],
+        'Gastos' => [
+            'route' => 'gastos.index',
+            'submenu' => [
+                'Crear Gastos' => 'gastos.create',
+                'Editar Gastos' => 'gastos.edit',
+                'Borrar Gastos' => 'gastos.destroy',
+            ]
+        ],
         'Planes' => [
             'route' => 'planes.index',
             'submenu' => [
