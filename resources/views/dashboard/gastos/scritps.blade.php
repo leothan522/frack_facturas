@@ -29,6 +29,10 @@
             $('#launch-modal-gastos-show').click();
         });
 
+        Livewire.on('cerrarModal', () => {
+            $('#btn_modal_show_gastos').click();
+        });
+
         console.log('Hi!');
     </script>
 @endsection

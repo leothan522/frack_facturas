@@ -1,5 +1,5 @@
 <div wire:ignore.self class="card card-primary card-outline" id="card_registro_gasto">
-    <div class="card-header" id="card_registro_gasto_header" wire:loading.class="invisible" wire:target="">
+    <div class="card-header" id="card_registro_gasto_header" wire:loading.class="invisible" wire:target="save">
         <h3 class="card-title">
             {{ $title }}
         </h3>
@@ -13,7 +13,7 @@
             </button>--}}
         </div>
     </div>
-    <div class="card-body table-responsive" id="card_registro_gasto_body" wire:loading.class="invisible" wire:target="save" style="max-height: calc(100vh - {{ $size }}px)">
+    <div class="card-body table-responsive" id="card_registro_gasto_body" wire:loading.class="invisible" wire:target="save, limpiar" style="max-height: calc(100vh - {{ $size }}px)">
 
         <form class="row justify-content-center" wire:submit="save">
 

@@ -48,7 +48,7 @@
 <div class="form-group">
     <small class="text-lightblue text-bold text-uppercase">Observación o Explicación:</small>
     <div class="input-group">
-        <textarea wire:model="descripcion" class="form-control" cols="1" rows="2" placeholder="Observaciones"></textarea>
+        <textarea wire:model="descripcion" class="form-control @error('descripcion') is-invalid @enderror" cols="1" rows="2" placeholder="Observaciones"></textarea>
         @error('descripcion')
         <span class="error invalid-feedback text-bold">{{ $message }}</span>
         @enderror

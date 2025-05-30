@@ -47,10 +47,10 @@
                     <button type="button" class="btn btn-danger" onclick="confirmToastBootstrap('delete', 'NoParametros')" @if(!comprobarPermisos('gastos.destroy')) disabled @endif>
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal" @if(!comprobarPermisos('gastos.edit')) disabled @endif>
+                    <button type="button" class="btn btn-primary" wire:click="edit" data-dismiss="modal" @if(!comprobarPermisos('gastos.edit')) disabled @endif>
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_show_pagos">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_modal_show_gastos">
                         Cerrar
                     </button>
 
