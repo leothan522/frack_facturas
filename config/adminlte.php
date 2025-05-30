@@ -364,6 +364,19 @@ return [
             ],
         ],
         [
+            'text'      => 'Gestionar Gastos',
+            'icon'      => 'fas fa-fw fa-bookmark',
+            'can'       => ['gastos'],
+            'submenu' => [
+                [
+                    'text' => 'Gastos',
+                    'icon' => 'fas fa-fw fa-receipt',
+                    'route'  => 'gastos.index',
+                    'can'  => 'gastos',
+                ]
+            ],
+        ],
+        [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
             'can'       => ['usuarios', 'parametros', 'pruebas', 'configuracion'],

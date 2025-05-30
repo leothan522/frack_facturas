@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\ClientesController;
 use App\Http\Controllers\Dashboard\FacturasController;
+use App\Http\Controllers\Dashboard\GastosController;
 use App\Http\Controllers\Dashboard\MetodosController;
 use App\Http\Controllers\Dashboard\OrganizacionesController;
 use App\Http\Controllers\Dashboard\PagosController;
@@ -47,6 +48,7 @@ Route::middleware([
     Route::get('facturas', [FacturasController::class, 'index'])->name('facturas.index');
     Route::get('metodos', [MetodosController::class, 'index'])->name('metodos.index');
     Route::get('pagos', [PagosController::class, 'index'])->name('pagos.index');
+    Route::get('gastos', [GastosController::class, 'index'])->name('gastos.index');
 
 
 
