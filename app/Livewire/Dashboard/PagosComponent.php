@@ -80,8 +80,10 @@ class PagosComponent extends Component
             $this->verReferencia = $pago->referencia;
             if ($pago->metodo != "zelle"){
                 $this->verBanco = $pago->nombre;
-                $alCambio = $pago->dollar * $pago->factura->factura_total;
-                $this->verBs = " / Bs ".formatoMillares($alCambio);
+                if ($pago->facturas_id){
+                    $alCambio = $pago->dollar * $pago->factura->factura_total;
+                    $this->verBs = " / Bs ".formatoMillares($alCambio);
+                }
             }
             $this->verMoneda = $pago->moneda;
             $this->verMonto = formatoMillares($pago->monto);
