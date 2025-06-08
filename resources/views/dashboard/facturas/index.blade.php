@@ -4,6 +4,7 @@
 
 @section('content')
     @livewire('dashboard.facturas-component')
+    @livewire('dashboard.facturas-reportes-component')
     @livewire('dashboard.modal-pdf-component')
     @livewire('dashboard.dolar-component')
 @endsection

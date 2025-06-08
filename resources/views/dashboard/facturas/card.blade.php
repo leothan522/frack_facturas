@@ -51,15 +51,11 @@
                     </span>
                 </button>
             </li>
-            <li class="nav-item d-none">
-                <a href="#" class="nav-link">
-                    <span wire:loading wire:target="getOrganizacion">
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Cargando...
-                    </span>
-                    <span wire:loading.class="d-none" wire:target="getOrganizacion">
-                        <i class="fas fa-filter"></i> Prueba
-                    </span>
-                </a>
+            <li class="nav-item">
+                <button type="button" class="btn btn-block nav-link text-left" onclick="initReporte()" data-toggle="modal" data-target="#modal-default-generar-reporte" @if(!comprobarPermisos('pagos.excel')) disabled @endif>
+                    <i class="far fa-file-excel"></i> Generar Reporte
+                    {{--<span class="badge bg-warning float-right">65</span>--}}
+                </button>
             </li>
         </ul>
     </div>

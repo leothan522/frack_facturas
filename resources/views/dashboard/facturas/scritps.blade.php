@@ -14,6 +14,10 @@
             $('#launch-modal-ver-factura').click();
         });
 
+        function initReporte() {
+            Livewire.dispatch('initReporte');
+        }
+
         console.log('Hi!');
     </script>
 @endsection
