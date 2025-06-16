@@ -21,7 +21,7 @@ trait Facturas
     public $facturaNumero, $facturaRowquid;
     public $verPDF;
 
-    protected function createFacturaTrait($servicios_id): bool
+    protected function createFacturaTrait($servicios_id, $fecha = null): bool
     {
         $servicio = Servicio::find($servicios_id);
 
@@ -38,7 +38,10 @@ trait Facturas
             $cliente = Cliente::find($servicio->clientes_id);
             $plan = Plan::find($servicio->planes_id);
 
-            $hoy = Carbon::parse(date("Y-m-d"));
+            if (empty($fecha)){
+                $fecha = Carbon::now()->format('Y-m-d');
+            }
+
 
             //numero Factura
             $next = 1;
@@ -54,101 +57,76 @@ trait Facturas
                 if ($existe){ $i++; }
             }while($existe);
 
-            //fecha factura
-            $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
-            if ($ultima) {
-                $ultima_fecha = Carbon::parse($ultima->factura_fecha)->addMonth();
-            } else {
-                $ultima_fecha = Carbon::parse($cliente->fecha_pago);
-            }
-            $factura_fecha = Carbon::parse($ultima_fecha);
+            //montos factura
+            $factura_subtotal = $plan->precio;
+            $factura_iva = null;
+            $factura_total = $plan->precio;
 
-            if ($factura_fecha->gt($hoy)) {
-                //no
-                /*$this->confirmToastBootstrap(null, [
-                    'type' => 'warning',
-                    'title' => "¡No se puede Generar la Factura!",
-                    'message' => 'Aún no se ha alcanzado la fecha de pago del cliente para la proxima factura.'
-                ]);*/
-                return false;
-            } else {
+            //Guardamos Factura
+            $factura = new Factura();
+            $factura->factura_numero = $factura_numero;
+            $factura->factura_fecha = $fecha;
+            $factura->factura_subtotal = $factura_subtotal;
+            $factura->factura_iva = $factura_iva;
+            $factura->factura_total = $factura_total;
+            $factura->servicios_codigo = $servicio->codigo;
+            $factura->organizacion_nombre = $organizacion->nombre;
+            $factura->organizacion_email = $organizacion->email;
+            $factura->organizacion_telefono = $organizacion->telefono;
+            $factura->organizacion_web = $organizacion->web;
+            $factura->organizacion_moneda = $organizacion->moneda;
+            $factura->organizacion_direccion = $organizacion->direccion;
+            $factura->organizacion_representante = $organizacion->representante;
+            $factura->organizacion_rif = $organizacion->rif;
+            $factura->organizacion_imagen = $imagen;
+            $factura->organizacion_mini = $mini;
+            $factura->cliente_cedula = $cliente->cedula;
+            $factura->cliente_nombre = $cliente->nombre;
+            $factura->cliente_apellido = $cliente->apellido;
+            $factura->cliente_email = $cliente->email;
+            $factura->cliente_telefono = $cliente->telefono;
+            $factura->cliente_latitud = $cliente->latitud;
+            $factura->cliente_longitud = $cliente->longitud;
+            $factura->cliente_gps = $cliente->gps;
+            $factura->cliente_fecha_instalacion = $cliente->fecha_instalacion;
+            $factura->cliente_fecha_pago = $cliente->fecha_pago;
+            $factura->cliente_direccion = $cliente->direccion;
+            $factura->plan_nombre = $plan->nombre;
+            $factura->plan_etiqueta = $plan->etiqueta_factura;
+            $factura->plan_bajada = $plan->bajada;
+            $factura->plan_subida = $plan->subida;
+            $factura->plan_precio = $plan->precio;
+            $factura->servicios_id = $servicio->id;
+            $factura->clientes_id = $cliente->id;
+            $factura->organizaciones_id = $organizacion->id;
+            $factura->planes_id = $plan->id;
+            do{
+                $rowquid = generarStringAleatorio(16);
+                $existe = Factura::where('rowquid', $rowquid)->first();
+            }while($existe);
+            $factura->rowquid = $rowquid;
+            $factura->save();
 
-                if (!$ultima) {
-                    $factura_fecha = $hoy->format('Y') . "-" . $hoy->format('m') . "-" . Carbon::parse($cliente->fecha_pago)->format('d');
-                }
-
-                //montos factura
-                $factura_subtotal = $plan->precio;
-                $factura_iva = null;
-                $factura_total = $plan->precio;
-
-                //Guardamos Factura
-                $factura = new Factura();
-                $factura->factura_numero = $factura_numero;
-                $factura->factura_fecha = $factura_fecha;
-                $factura->factura_subtotal = $factura_subtotal;
-                $factura->factura_iva = $factura_iva;
-                $factura->factura_total = $factura_total;
-                $factura->servicios_codigo = $servicio->codigo;
-                $factura->organizacion_nombre = $organizacion->nombre;
-                $factura->organizacion_email = $organizacion->email;
-                $factura->organizacion_telefono = $organizacion->telefono;
-                $factura->organizacion_web = $organizacion->web;
-                $factura->organizacion_moneda = $organizacion->moneda;
-                $factura->organizacion_direccion = $organizacion->direccion;
-                $factura->organizacion_representante = $organizacion->representante;
-                $factura->organizacion_rif = $organizacion->rif;
-                $factura->organizacion_imagen = $imagen;
-                $factura->organizacion_mini = $mini;
-                $factura->cliente_cedula = $cliente->cedula;
-                $factura->cliente_nombre = $cliente->nombre;
-                $factura->cliente_apellido = $cliente->apellido;
-                $factura->cliente_email = $cliente->email;
-                $factura->cliente_telefono = $cliente->telefono;
-                $factura->cliente_latitud = $cliente->latitud;
-                $factura->cliente_longitud = $cliente->longitud;
-                $factura->cliente_gps = $cliente->gps;
-                $factura->cliente_fecha_instalacion = $cliente->fecha_instalacion;
-                $factura->cliente_fecha_pago = $cliente->fecha_pago;
-                $factura->cliente_direccion = $cliente->direccion;
-                $factura->plan_nombre = $plan->nombre;
-                $factura->plan_etiqueta = $plan->etiqueta_factura;
-                $factura->plan_bajada = $plan->bajada;
-                $factura->plan_subida = $plan->subida;
-                $factura->plan_precio = $plan->precio;
-                $factura->servicios_id = $servicio->id;
-                $factura->clientes_id = $cliente->id;
-                $factura->organizaciones_id = $organizacion->id;
-                $factura->planes_id = $plan->id;
-                do{
-                    $rowquid = generarStringAleatorio(16);
-                    $existe = Factura::where('rowquid', $rowquid)->first();
-                }while($existe);
-                $factura->rowquid = $rowquid;
+            //verificar Pagos adelantados
+            $pago = Pago::where('clientes_id', $cliente->id)
+                ->where('facturas_id', null)
+                ->orderBy('fecha', 'ASC')
+                ->first();
+            if ($pago) {
+                $pago->factura_numero = $factura->factura_numero;
+                $pago->facturas_id = $factura->id;
+                $pago->save();
+                $factura->pagos_id = $pago->id;
+                $factura->estatus = 1;
                 $factura->save();
-
-                //verificar Pagos adelantados
-                $pago = Pago::where('clientes_id', $cliente->id)
-                        ->where('facturas_id', null)
-                        ->orderBy('fecha', 'ASC')
-                        ->first();
-                if ($pago) {
-                    $pago->factura_numero = $factura->factura_numero;
-                    $pago->facturas_id = $factura->id;
-                    $pago->save();
-                    $factura->pagos_id = $pago->id;
-                    $factura->estatus = 1;
-                    $factura->save();
-                }
-
-                $organizacion->proxima_factura = ++$next;
-                $organizacion->save();
-
-                //$this->toastBootstrap('info', 'Factura Generada.');
-                $this->facturaRowquid = $factura->rowquid;
-                return true;
             }
 
+            $organizacion->proxima_factura = ++$next;
+            $organizacion->save();
+
+            //$this->toastBootstrap('info', 'Factura Generada.');
+            $this->facturaRowquid = $factura->rowquid;
+            return true;
         }else{
             return false;
         }
@@ -270,13 +248,35 @@ trait Facturas
     {
         $data = [];
         $servicios = Servicio::all();
+        $hoy = Carbon::now();
+        $mes = Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         foreach ($servicios as $servicio){
-            $data[] = [
-                'id' => $servicio->id,
-                'fecha' => getFecha($servicio->cliente->fecha_pago, 'd'),
-                'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido,
-                'idCliente' => $servicio->clientes_id,
-            ];
+            $dia = Carbon::parse($servicio->cliente->fecha_pago)->format('d');
+            $fecha_pago = Carbon::parse($year.'-'.$mes.'-'.$dia);
+            if ($fecha_pago->lte($hoy)){
+                $ultima = Factura::where('servicios_id', $servicio->id)->orderBy('factura_fecha', 'DESC')->first();
+                if ($ultima){
+                    $fecha_ultima = Carbon::parse($ultima->factura_fecha)->addMonth();
+                    if ($fecha_ultima->lte($hoy)){
+                        $data[] = [
+                            'id' => $servicio->id,
+                            'fecha' => $fecha_pago->format('Y-m-d'),
+                            'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido,
+                            'idCliente' => $servicio->clientes_id,
+                        ];
+                    }
+                }else{
+                    $data[] = [
+                        'id' => $servicio->id,
+                        'fecha' => $fecha_pago->format('Y-m-d'),
+                        'cliente' => $servicio->cliente->nombre." ".$servicio->cliente->apellido,
+                        'idCliente' => $servicio->clientes_id,
+                    ];
+                }
+
+            }
+
         }
         $myCollection = collect($data)->sortBy('fecha');
         return $myCollection->unique('idCliente');

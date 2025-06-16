@@ -46,7 +46,7 @@ class FacturarAutomatico extends Command
     {
         $orderServicios = $this->getServiciosTrait();
         foreach ($orderServicios as $servicio){
-            $factura = $this->createFacturaTrait($servicio['id']);
+            $factura = $this->createFacturaTrait($servicio['id'], $servicio['fecha']);
             if ($factura){
                 $this->sendFacturaTrait($this->facturaRowquid);
             }

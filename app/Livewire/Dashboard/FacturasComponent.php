@@ -156,7 +156,7 @@ class FacturasComponent extends Component
         $this->reset(['nuevasFacturas', 'verNuevasFacturas']);
         $orderServicios = $this->getServiciosTrait();
         foreach ($orderServicios as $servicio){
-            $factura = $this->createFacturaTrait($servicio['id']);
+            $factura = $this->createFacturaTrait($servicio['id'], $servicio['fecha']);
             if ($factura){
                 $this->nuevasFacturas++;
             }
